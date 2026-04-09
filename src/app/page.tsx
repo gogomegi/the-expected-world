@@ -14,14 +14,14 @@ const heroSlides = [
   },
   {
     slug: "ehrlich-england-famine-1971",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a3/London_from_a_hot_air_balloon.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Central_London_aerial_2011.jpg",
     highlight: "a small group of impoverished islands,",
     duotoneColor: "#B05454",
     layout: "split" as const,
   },
   {
     slug: "clarke-year-2100-internet-1964",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9c/Golden_Gate_bridge_at_night.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Greater_Chicago_from_ISS.jpg",
     highlight: "The city is abolished.",
     layout: "full" as const,
   },
