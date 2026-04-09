@@ -1,0 +1,14 @@
+{
+  "slug": "lardner-trains-tunnels-1830",
+  "text": "Rail travel at high speed is not possible because passengers, unable to breathe, would die of asphyxia.",
+  "author": "Dionysius Lardner",
+  "authorSlug": "dionysius-lardner",
+  "source": "Lecture to the British Association for the Advancement of Science, c. 1830",
+  "yearWritten": 1830,
+  "yearImagined": "future",
+  "categories": ["Transportation", "Technology", "Health & Medicine"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "A professor of natural philosophy warned that trains traveling over 30 mph would suffocate their passengers. The specific concern about tunnels had a grain of logic — early steam engines in enclosed spaces did produce fumes — but the general claim was absurd even then. Trains reached 60 mph within a decade. Today's bullet trains exceed 200 mph with passengers breathing comfortably. The prediction captures a recurring pattern: imagining that new speeds or environments will kill us, when humans are far more adaptable than we fear."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "slug": "von-braun-moon-mars-1969",
+  "text": "By the year 2000, we will undoubtedly have a sizable operation on the Moon, we will have achieved a manned Mars landing, and it's entirely possible we will have flown with men past Jupiter.",
+  "author": "Wernher von Braun",
+  "authorSlug": "wernher-von-braun",
+  "source": "Interview, 1969",
+  "yearWritten": 1969,
+  "yearImagined": "2000",
+  "categories": ["Space"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "Von Braun made this prediction at the absolute peak of Apollo-era confidence — humanity had just reached the Moon, and the momentum felt unstoppable. Then the funding stopped. The last Moon landing was Apollo 17 in 1972. NASA's budget was slashed, and human spaceflight retreated to low-Earth orbit for half a century. No Moon base. No Mars landing. No Jupiter flyby. It's a powerful lesson in how golden ages can end abruptly, and how linear extrapolation from a peak moment can be the worst kind of forecasting."
+  }
+}

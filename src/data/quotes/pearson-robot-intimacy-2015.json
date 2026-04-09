@@ -1,0 +1,14 @@
+{
+  "slug": "pearson-robot-intimacy-2015",
+  "text": "Robots will become commonplace in the bedroom by 2025, with many people preferring robot partners to human ones.",
+  "author": "Ian Pearson",
+  "authorSlug": "ian-pearson",
+  "source": "Bondara/Futurologist report",
+  "yearWritten": 2015,
+  "yearImagined": "2025",
+  "categories": ["Technology", "Society"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "While robotics and AI have advanced significantly, humanoid companion robots remain far from commonplace. The technology exists in primitive forms, but social acceptance and technical sophistication are nowhere near the predicted level."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "slug": "metcalfe-internet-collapse-1995",
+  "text": "I predict the Internet will soon go spectacularly supernova and in 1996 catastrophically collapse.",
+  "author": "Robert Metcalfe",
+  "authorSlug": "robert-metcalfe",
+  "source": "InfoWorld column, 1995",
+  "yearWritten": 1995,
+  "yearImagined": "1996",
+  "categories": ["Technology", "Communication"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "The inventor of Ethernet — the man whose own law (Metcalfe's Law) explains exactly why networks grow exponentially — predicted the Internet would collapse. When it didn't, he honored his bet in spectacular fashion: at a 1997 conference, he blended a copy of his column into a smoothie and drank it on stage. The Internet, meanwhile, went on to become the most transformative technology since electricity. Points for showmanship, though."
+  }
+}

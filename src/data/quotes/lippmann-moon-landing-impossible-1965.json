@@ -1,0 +1,14 @@
+{
+  "slug": "lippmann-moon-landing-impossible-1965",
+  "text": "The delusion that a trip to the Moon is now feasible is a product of our age of mass media manipulation.",
+  "author": "Lee De Forest",
+  "authorSlug": "lee-de-forest",
+  "source": "Letter to the press, 1957",
+  "yearWritten": 1957,
+  "yearImagined": "near future",
+  "categories": ["Space", "Technology"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "The inventor of the Audion vacuum tube — the man whose work made radio and television possible — called the Moon landing a 'delusion' driven by media hype. Twelve years later, 600 million people watched Neil Armstrong step onto the lunar surface on the television technology De Forest helped create. He lived to see Sputnik but died in 1961, eight years before Apollo 11 proved him wrong. An inventor of the media age dismissed the space age, using the very tools he'd built."
+  }
+}

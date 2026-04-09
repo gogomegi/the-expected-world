@@ -1,0 +1,14 @@
+{
+  "slug": "frontinus-inventions-limit-10ad",
+  "text": "Inventions have long since reached their limit, and I see no hope for further developments.",
+  "author": "Julius Sextus Frontinus",
+  "authorSlug": "julius-frontinus",
+  "source": "Attributed, c. 10 AD",
+  "yearWritten": 10,
+  "yearImagined": "indefinite",
+  "categories": ["Technology", "Society"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "A Roman engineer looked at aqueducts, concrete, and paved roads and thought: we're done here. Nearly 2,000 years of inventions later — printing press, steam engine, electricity, flight, computers, the internet, space travel — this stands as possibly the longest-running wrong prediction in human history. Frontinus built impressive things, but he couldn't imagine that the pace of invention would accelerate exponentially. Every generation since has had its own Frontinus. None of them have been right."
+  }
+}

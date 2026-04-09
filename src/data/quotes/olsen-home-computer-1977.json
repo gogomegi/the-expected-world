@@ -1,0 +1,14 @@
+{
+  "slug": "olsen-home-computer-1977",
+  "text": "There is no reason anyone would want a computer in their home.",
+  "author": "Ken Olsen",
+  "authorSlug": "ken-olsen",
+  "source": "Convention of the World Future Society, 1977",
+  "yearWritten": 1977,
+  "yearImagined": "future",
+  "categories": ["Technology"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "The founder of Digital Equipment Corporation — one of the biggest computer companies in the world — couldn't imagine a computer in your living room. Olsen later said he meant computers that control your home, not personal computers. Regardless, both interpretations turned out wrong. The IBM PC arrived in 1981, the Mac in 1984, and today the average home has more computing power than NASA used to reach the Moon. Smart home devices now do exactly the 'controlling your home' thing Olsen actually dismissed."
+  }
+}

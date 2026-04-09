@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Primary palette */
+  --color-deep-ink: #12121F;
+  --color-surface: #1C1C2E;
+  --color-elevated: #252540;
+  --color-parchment: #E8E4DC;
+  --color-dusk: #8A8697;
+  --color-graphite: #5A5770;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Accent */
+  --color-brass: #C9A84C;
+  --color-brass-bright: #D4B85E;
+  --color-brass-muted: #7B6D3A;
+
+  /* Verdict */
+  --color-sage: #4CA882;
+  --color-ochre: #C9A84C;
+  --color-crimson: #B05454;
+  --color-steel: #6B8CCE;
+
+  /* Utility */
+  --color-divider: #2A2A42;
+  --color-focus: #6B8CCE;
+  --color-mono-bg: #1A1A30;
+
+  /* Font families */
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-quote: "Newsreader", serif;
+  --font-mono: "Space Mono", monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-deep-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+::selection {
+  background-color: rgba(201, 168, 76, 0.25);
+  color: var(--color-parchment);
 }

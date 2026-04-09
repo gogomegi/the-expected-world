@@ -1,0 +1,15 @@
+{
+  "slug": "summerfield-rocket-mail-1959",
+  "text": "Before man reaches the moon, your mail will be delivered within hours from New York to Australia by guided missiles. We stand on the threshold of rocket mail.",
+  "author": "Arthur Summerfield",
+  "authorSlug": "arthur-summerfield",
+  "source": "Press conference after USS Barbero missile mail test, 1959",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Rocket_mail",
+  "yearWritten": 1959,
+  "yearImagined": "1960s",
+  "categories": ["Communication", "Transportation"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "The U.S. Postmaster General wasn't bluffing — the USS Barbero really did fire a missile carrying 3,000 letters in 1959. But here's the thing: it turns out strapping envelopes to guided missiles isn't exactly cost-effective. Email arrived instead, delivering messages in seconds rather than hours, no warhead required. The prediction was technically demonstrated but commercially absurd — a perfect time capsule of Atomic Age optimism, when every problem looked like it could be solved with more rockets."
+  }
+}

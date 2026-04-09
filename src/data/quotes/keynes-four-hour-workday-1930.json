@@ -1,0 +1,15 @@
+{
+  "slug": "keynes-four-hour-workday-1930",
+  "text": "Our grandchildren would work around three hours a day — and even then, only because people would want something to do.",
+  "author": "John Maynard Keynes",
+  "authorSlug": "john-maynard-keynes",
+  "source": "Economic Possibilities for our Grandchildren, 1930",
+  "sourceUrl": "https://archive.org/details/essaysinpersuasi0000keyn",
+  "yearWritten": 1930,
+  "yearImagined": "2030",
+  "categories": ["Economy", "Society"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "Keynes predicted a 15-hour work week by 2030, freed by technological productivity. He was right about productivity — it has soared. But he was wrong about humans. Instead of converting productivity gains into leisure, we converted them into consumption. Bigger houses, more gadgets, fancier vacations. We chose more stuff over more free time. Keynes understood economics perfectly but underestimated something economics can't easily model: the bottomless human appetite for more."
+  }
+}

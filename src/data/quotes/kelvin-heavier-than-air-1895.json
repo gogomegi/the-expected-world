@@ -1,0 +1,14 @@
+{
+  "slug": "kelvin-heavier-than-air-1895",
+  "text": "Heavier-than-air flying machines are impossible.",
+  "author": "Lord Kelvin",
+  "authorSlug": "lord-kelvin",
+  "source": "Attributed, c. 1895",
+  "yearWritten": 1895,
+  "yearImagined": "indefinite",
+  "categories": ["Transportation", "Technology"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "Lord Kelvin was president of the Royal Society and one of the most accomplished physicists of his era. Eight years later, the Wright brothers flew at Kitty Hawk. Today, over 100,000 flights take off daily. Kelvin also predicted that radio had no future and that X-rays were a hoax — making him perhaps history's most distinguished serial skeptic of real technologies. His batting average on predictions was terrible, which is oddly comforting: being brilliant at physics doesn't make you brilliant at prophecy."
+  }
+}

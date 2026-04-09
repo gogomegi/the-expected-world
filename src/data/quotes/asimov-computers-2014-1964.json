@@ -1,0 +1,14 @@
+{
+  "slug": "asimov-computers-2014-1964",
+  "text": "The world of A.D. 2014 will have few routine jobs that cannot be done better by some machine than by any human being. Mankind will therefore have become largely a race of machine tenders.",
+  "author": "Isaac Asimov",
+  "authorSlug": "isaac-asimov",
+  "source": "Visit to the World's Fair of 2014, New York Times, 1964",
+  "yearWritten": 1964,
+  "yearImagined": "2014",
+  "categories": ["AI & Robots", "Economy", "Technology"],
+  "didItHoldUp": {
+    "verdict": "partially-true",
+    "analysis": "By 2014, automation had eliminated millions of routine manufacturing and clerical jobs. Self-checkout, robotic assembly lines, and algorithmic trading were all reality. But 'machine tenders' undersells what happened — many humans shifted to service, creative, and knowledge work rather than simply minding machines. The 2020s brought AI that threatens even those refuges. Asimov was early on the timeline but increasingly right about the trajectory. The question he raised — what do humans do when machines do everything? — is now the defining economic question of our era."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "slug": "clarke-year-2100-internet-1964",
+  "text": "The city is abolished. It no longer matters where you live or work. A man can carry on his business from Tahiti or Bali just as well as from London. All he needs is a telephone and a screen.",
+  "author": "Arthur C. Clarke",
+  "authorSlug": "arthur-c-clarke",
+  "source": "BBC Horizon interview, 1964",
+  "yearWritten": 1964,
+  "yearImagined": "2000s",
+  "categories": ["Technology", "Society", "Communication"],
+  "didItHoldUp": {
+    "verdict": "partially-true",
+    "analysis": "Clarke described remote work 56 years before COVID-19 made it mainstream. A telephone and a screen — that's a laptop with Zoom. Digital nomads work from Bali today exactly as he imagined. But 'the city is abolished' was too bold. Cities have grown, not shrunk, because humans crave in-person connection, culture, and serendipity. The pandemic proved both halves: yes, you can work from anywhere; no, most people don't actually want to live in isolation. Clarke got the technology right but underestimated the social animal."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "slug": "time-remote-shopping-1966",
+  "text": "Remote shopping, while entirely feasible, will flop — because women like to get out of the house, like to handle merchandise, like to be able to change their minds.",
+  "author": "TIME Magazine",
+  "authorSlug": "time-magazine",
+  "source": "TIME, 'The Futurist' feature, 1966",
+  "yearWritten": 1966,
+  "yearImagined": "future",
+  "categories": ["Economy", "Technology", "Society"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "E-commerce hit $5 trillion globally by 2022. Amazon alone ships billions of packages per year. The prediction failed on every count — and the reasoning is a time capsule of 1960s gender assumptions. People of all genders enthusiastically adopted remote shopping, and COVID-19 turned it from convenience to necessity. As for changing their minds? Free returns solved that. The future didn't just prove this wrong — it made it look quaint."
+  }
+}

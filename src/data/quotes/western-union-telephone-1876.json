@@ -1,0 +1,14 @@
+{
+  "slug": "western-union-telephone-1876",
+  "text": "The telephone has too many shortcomings to be seriously considered as a means of communication.",
+  "author": "Western Union internal memo",
+  "authorSlug": "western-union",
+  "source": "Internal memo evaluating Bell's telephone patent, 1876",
+  "yearWritten": 1876,
+  "yearImagined": "future",
+  "categories": ["Communication", "Technology"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "Western Union passed on acquiring Alexander Graham Bell's telephone patents for $100,000. Within a decade, there were over 150,000 telephones in the United States. Within a century, virtually every human on Earth would carry one. This may be the most expensive bad prediction in business history — the telegraph monopoly chose to protect its existing business rather than embrace the technology that would make it obsolete. The lesson has been repeated by Kodak, Blockbuster, and Nokia since."
+  }
+}

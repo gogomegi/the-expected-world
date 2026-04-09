@@ -1,0 +1,14 @@
+{
+  "slug": "gates-spam-solved-2004",
+  "text": "Two years from now, spam will be solved.",
+  "author": "Bill Gates",
+  "authorSlug": "bill-gates",
+  "source": "World Economic Forum, Davos, 2004",
+  "yearWritten": 2004,
+  "yearImagined": "2006",
+  "categories": ["Technology", "Communication"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "Twenty years later, spam accounts for roughly 45% of all email sent worldwide. Spam filters have improved enormously — most users rarely see spam in their inbox — but 'solved' it is not. The problem evolved: phishing, spear-phishing, and AI-generated spam are more sophisticated than ever. Gates was overconfident about a technical fix for a fundamentally human problem. As long as spam is profitable (and it is), someone will send it. You can't debug greed."
+  }
+}

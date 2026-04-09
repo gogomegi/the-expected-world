@@ -1,0 +1,14 @@
+{
+  "slug": "marconi-wireless-peace-1912",
+  "text": "The coming of the wireless era will make war impossible, because it will make war ridiculous.",
+  "author": "Guglielmo Marconi",
+  "authorSlug": "guglielmo-marconi",
+  "source": "Technical World Magazine, 1912",
+  "yearWritten": 1912,
+  "yearImagined": "future",
+  "categories": ["War & Politics", "Communication"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "Two years later, World War I erupted — and radio was used extensively for military coordination. Every subsequent communication breakthrough has inspired the same hope: television will show us the horrors of war, the internet will connect us across borders, social media will foster understanding. Every time, the technology gets weaponized instead. Marconi's optimism is touching and persistent, a dream that each generation reinvents with the latest tool and that reality keeps dashing."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "slug": "ehrlich-population-1971",
+  "text": "In the 1970s hundreds of millions of people will starve to death in spite of any crash programs embarked upon now.",
+  "author": "Paul Ehrlich",
+  "authorSlug": "paul-ehrlich",
+  "source": "The Population Bomb",
+  "yearWritten": 1968,
+  "yearImagined": "1980s",
+  "categories": ["Environment", "Society"],
+  "didItHoldUp": {
+    "verdict": "did-not-come-true",
+    "analysis": "The Green Revolution — advances in agricultural science led by Norman Borlaug — dramatically increased food production worldwide. While famines did occur, the scale of mass starvation Ehrlich predicted never materialized."
+  }
+}

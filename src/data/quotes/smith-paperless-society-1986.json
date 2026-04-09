@@ -1,0 +1,14 @@
+{
+  "slug": "smith-paperless-society-1986",
+  "text": "By 2019, we will be living in a paperless society.",
+  "author": "Roger Smith",
+  "authorSlug": "roger-smith",
+  "source": "Various industry speeches, GM Chairman, 1986",
+  "yearWritten": 1986,
+  "yearImagined": "2019",
+  "categories": ["Technology", "Society"],
+  "didItHoldUp": {
+    "verdict": "partially-true",
+    "analysis": "Here's the punchline: paper use actually increased after computers arrived, because suddenly everyone could print everything. It peaked around 2007 and has been declining since. Digital signatures, e-tickets, online billing, and e-books have replaced a lot of paper. We're not paperless — but paper's role is dramatically diminished. COVID-19 accelerated the shift further. The prediction was directionally right but too absolute. We didn't go paperless. We went paper-light."
+  }
+}

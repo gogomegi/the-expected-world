@@ -1,0 +1,14 @@
+{
+  "slug": "fourier-commerce-1808",
+  "text": "Commerce is the art of buying for three francs what is worth six, and selling for six what is worth three.",
+  "author": "Charles Fourier",
+  "authorSlug": "charles-fourier",
+  "source": "The Social Destiny of Man",
+  "yearWritten": 1808,
+  "yearImagined": "1818",
+  "categories": ["Commerce", "Society"],
+  "didItHoldUp": {
+    "verdict": "came-true",
+    "analysis": "Fourier's cynical view of commerce as arbitrage has only become more relevant. Modern financial markets, retail markups, and platform economics all operate on versions of this principle — buy low, sell high remains the fundamental commercial impulse."
+  }
+}
