@@ -147,7 +147,7 @@ export default function Home() {
 
       {/* Newsletter */}
       <section
-        className="min-h-[60vh] snap-section flex flex-col items-center justify-center p-24 max-md:p-6 text-center bg-gradient-to-b from-ink to-surface"
+        className="min-h-[60vh] flex flex-col items-center justify-center p-24 max-md:p-6 text-center bg-gradient-to-b from-ink to-surface"
         id="newsletter"
       >
         <div className="font-mono text-[11px] tracking-[0.15em] uppercase text-brass mb-6">
