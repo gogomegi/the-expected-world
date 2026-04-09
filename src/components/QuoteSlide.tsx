@@ -54,7 +54,7 @@ export function QuoteSlide({
           <span className="text-parchment">{quote.yearImagined}</span>
         </div>
 
-        <div className="quote-text-block font-quote text-[clamp(24px,4vw,52px)] leading-[1.25] tracking-[-0.01em] mb-10">
+        <div className="quote-text-block font-quote text-[clamp(26px,4.5vw,58px)] leading-[1.2] tracking-[-0.01em] mb-10">
           &ldquo;{quoteContent}&rdquo;
         </div>
 

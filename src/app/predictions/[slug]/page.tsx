@@ -71,7 +71,16 @@ export default async function PredictionPage({
       <main className="min-h-screen bg-ink">
         {/* Hero area */}
         <div className="h-[50vh] relative flex items-end p-12 max-md:p-6 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-ink to-transparent" />
+          {quote.imageUrl && (
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('${quote.imageUrl}')`,
+                filter: "brightness(0.25) saturate(0.5) contrast(1.15)",
+              }}
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
           <div className="relative z-[2] max-w-[800px]">
             <div className="font-mono text-[13px] tracking-[0.14em] uppercase text-dusk mb-5">
               <span>Written</span>{" "}
