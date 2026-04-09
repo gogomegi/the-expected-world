@@ -1,5 +1,9 @@
 export type Verdict = "came-true" | "partially-true" | "did-not-come-true" | "pending";
 
+export type QuoteStatus = "draft" | "pending-review" | "published";
+
+export type QuoteSource = "original" | "ai-generated" | "user-submission";
+
 export interface Quote {
   slug: string;
   text: string;
@@ -16,4 +20,20 @@ export interface Quote {
     verdict: Verdict;
     analysis: string;
   };
+  status?: QuoteStatus;
+  quoteSource?: QuoteSource;
+}
+
+export interface Submission {
+  id: string;
+  text: string;
+  author: string;
+  source: string;
+  yearWritten: number;
+  yearImagined?: string;
+  topic?: string;
+  sourceUrl?: string;
+  email?: string;
+  submittedAt: string;
+  status: "pending" | "approved" | "rejected";
 }

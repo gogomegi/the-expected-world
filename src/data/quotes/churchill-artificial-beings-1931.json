@@ -1,0 +1,16 @@
+{
+  "slug": "churchill-artificial-beings-1931",
+  "text": "A few years ago London was surprised by a play called Rossum's Universal Robots. The production of such beings may well be possible within fifty years. They will not be made, but grown under glass. There seems little doubt that it will be possible to carry out in artificial surroundings the entire cycle which now leads to the birth of a child. Interference with the mental development of such beings, expert suggestion and treatment in the earlier years, would produce beings specialized to thought or toil. The production of creatures, for instance, which have admirable physical development, with their mental endowment stunted in particular directions, is almost within the range of human power. A being might be produced capable of tending a machine, but without other ambitions.",
+  "author": "Winston Churchill",
+  "authorSlug": "winston-churchill",
+  "source": "Fifty Years Hence",
+  "sourceUrl": "https://winstonchurchill.org/publications/finest-hour/finest-hour-195/life-in-a-world-controlled-by-the-scientists/",
+  "yearWritten": 1931,
+  "yearImagined": "1981",
+  "imageCaption": "Breechpre, Public Domain, Wikimedia Commons",
+  "categories": ["AI & Robots", "Technology", "Society"],
+  "didItHoldUp": {
+    "verdict": "partially-true",
+    "analysis": "Churchill — writing as a politician, not a scientist — anticipated both artificial intelligence and genetic engineering in a single passage. The play he references, R.U.R., coined the word 'robot.' His prediction of beings 'grown under glass' uncannily anticipates in vitro fertilization (achieved 1978) and genetic engineering. The idea of beings 'specialized to thought or toil' with 'mental endowment stunted in particular directions' reads like a description of narrow AI — systems brilliant at one task, incapable of others. Churchill didn't foresee silicon minds, but his vision of manufactured intelligence, purpose-built and limited, is exactly what we've built."
+  }
+}

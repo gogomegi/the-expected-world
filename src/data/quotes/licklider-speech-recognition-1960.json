@@ -1,0 +1,15 @@
+{
+  "slug": "licklider-speech-recognition-1960",
+  "text": "Two or three years ago, it appeared that automatic recognition of sizeable vocabularies would not be achieved for ten or fifteen years; that it would have to await much further, gradual accumulation of knowledge of acoustic, phonetic, linguistic, and psychological processes in speech communication. Now, however, many see a prospect of accelerating the acquisition of that knowledge with the aid of computer processing of speech signals, and not a few workers have the feeling that sophisticated computer programs will be able to perform well as speech-pattern recognizers even without the aid of much substantive knowledge of speech signals and processes. Putting those two considerations together brings the estimate of the time required to achieve practically significant speech recognition down to perhaps five years, the five years just mentioned.",
+  "author": "J. C. R. Licklider",
+  "authorSlug": "jcr-licklider",
+  "source": "Man-Computer Symbiosis",
+  "sourceUrl": "https://worrydream.com/refs/Licklider_1960_-_Man-Computer_Symbiosis.pdf",
+  "yearWritten": 1960,
+  "yearImagined": "1965",
+  "categories": ["Technology", "AI & Robots", "Communication"],
+  "didItHoldUp": {
+    "verdict": "partially-true",
+    "analysis": "Licklider — the visionary who helped create the internet — was right about the destination but wildly optimistic about the timeline. 'Practically significant speech recognition' didn't arrive in 1965. It didn't arrive in 1985, or 1995 either. Apple's Siri launched in 2011, and even then was mediocre. It took until the 2020s for speech recognition to become genuinely reliable, with systems like Whisper achieving near-human accuracy. What's fascinating is Licklider's reasoning: he thought brute-force computing could bypass the need for deep linguistic knowledge. He was right — that's exactly how modern neural networks work. He saw the method. He just misjudged the timeline by 60 years."
+  }
+}

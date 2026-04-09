@@ -1,14 +1,15 @@
 {
   "slug": "pearson-robot-intimacy-2015",
-  "text": "Robots will become commonplace in the bedroom by 2025, with many people preferring robot partners to human ones.",
-  "author": "Ian Pearson",
+  "text": "We will start to see some forms of robot sex appearing in high-income, very wealthy households as soon as 2025.",
+  "author": "Bondara / Dr Ian Pearson",
   "authorSlug": "ian-pearson",
-  "source": "Bondara/Futurologist report",
+  "source": "The Future of Sex Report - The Rise of the Robosexuals",
+  "sourceUrl": "https://web.archive.org/web/20160310000549/https:/graphics.bondara.com/Future_sex_report.pdf",
   "yearWritten": 2015,
   "yearImagined": "2025",
-  "categories": ["Technology", "Society"],
+  "categories": ["AI & Robots", "Society"],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
-    "analysis": "While robotics and AI have advanced significantly, humanoid companion robots remain far from commonplace. The technology exists in primitive forms, but social acceptance and technical sophistication are nowhere near the predicted level."
+    "analysis": "By 2025, humanoid companion robots remain rudimentary and niche — nowhere near 'commonplace,' even among the wealthy. AI chatbots have created new forms of digital intimacy, but physical robots capable of meaningful interaction are still firmly in the uncanny valley. The prediction overestimated robotics and underestimated the social barriers: even if the technology existed, adoption would face enormous stigma. What actually happened is stranger than Pearson imagined — people formed emotional bonds with text-based AI instead, no robot body required."
   }
 }

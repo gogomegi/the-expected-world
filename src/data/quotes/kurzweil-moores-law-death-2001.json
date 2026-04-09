@@ -1,0 +1,15 @@
+{
+  "slug": "kurzweil-moores-law-death-2001",
+  "text": "After sixty years of devoted service, Moore's Law will die a dignified death no later than the year 2019. By that time, transistor features will be just a few atoms in width, and the strategy of ever finer photolithography will have run its course.",
+  "author": "Ray Kurzweil",
+  "authorSlug": "ray-kurzweil",
+  "source": "The Law of Accelerating Returns",
+  "sourceUrl": "https://link.springer.com/chapter/10.1007/978-3-662-05642-4_16",
+  "yearWritten": 2001,
+  "yearImagined": "2019",
+  "categories": ["Technology"],
+  "didItHoldUp": {
+    "verdict": "partially-true",
+    "analysis": "Kurzweil was remarkably close. By 2019, traditional Moore's Law scaling had indeed slowed dramatically — transistor features were approaching atomic limits, and the classic strategy of shrinking everything was hitting physics walls. Intel struggled to move beyond 14nm for years. But Moore's Law didn't die so much as evolve: chipmakers found new tricks (3D stacking, chiplet architectures, new materials) that kept performance improving even as traditional scaling stalled. Kurzweil was right about the mechanism dying but underestimated the industry's ability to find workarounds. The dignified death he predicted turned out to be more of a dignified metamorphosis."
+  }
+}

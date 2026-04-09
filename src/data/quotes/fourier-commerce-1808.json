@@ -1,14 +1,16 @@
 {
   "slug": "fourier-commerce-1808",
-  "text": "Commerce is the art of buying for three francs what is worth six, and selling for six what is worth three.",
+  "text": "Proportional access to professions or The middle way between free competition and commercial farmage. This would be a debate of the greatest importance if civilisation were to continue even for another ten years. But as that misfortune is unlikely to happen, it will be enough merely to touch on the question, and show that commerce is in danger of being subjected to farmage because of the need to remedy its increasing anarchy.",
   "author": "Charles Fourier",
   "authorSlug": "charles-fourier",
-  "source": "The Social Destiny of Man",
+  "source": "The Theory of the Four Movements",
+  "sourceUrl": "https://ia600604.us.archive.org/5/items/TheTheoryOfTheFourMovementsByCharlesFourier/The%20Theory%20of%20the%20Four%20Movements%20by%20Charles%20Fourier.pdf",
   "yearWritten": 1808,
   "yearImagined": "1818",
-  "categories": ["Commerce", "Society"],
+  "imageCaption": "Crops Kansas, Public Domain, Wikimedia Commons",
+  "categories": ["Economy", "Society"],
   "didItHoldUp": {
-    "verdict": "came-true",
-    "analysis": "Fourier's cynical view of commerce as arbitrage has only become more relevant. Modern financial markets, retail markups, and platform economics all operate on versions of this principle — buy low, sell high remains the fundamental commercial impulse."
+    "verdict": "did-not-come-true",
+    "analysis": "Fourier believed civilization itself had perhaps ten years left — that unchecked commercial competition would collapse into anarchy. Two centuries later, civilization persists, and commerce has only accelerated. But his underlying anxiety isn't entirely wrong: the tension between free markets and regulated access to professions remains one of the defining debates in economics. Gig economy, licensing battles, antitrust regulation — these are modern versions of Fourier's 'middle way.' He was catastrophically wrong about the timeline but planted a seed of critique that still flowers in every debate about whether markets need guardrails."
   }
 }
