@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="max-w-[720px] mx-auto px-12 max-md:px-4">
+    <>
+      <SiteHeader />
+      <main className="max-w-[720px] mx-auto px-12 max-md:px-4">
       {/* Hero statement */}
       <h1 className="font-display font-semibold text-[40px] max-md:text-[28px] tracking-[0.02em] text-center mt-24 mb-12">
         Every era imagines what comes next.
@@ -121,5 +124,7 @@ export default function AboutPage() {
         </Link>
       </div>
     </main>
+      <SiteFooter />
+    </>
   );
 }

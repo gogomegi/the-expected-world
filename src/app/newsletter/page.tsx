@@ -1,3 +1,4 @@
+import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
 
 export default function NewsletterPage() {
   return (
-    <main className="max-w-[720px] mx-auto px-12 max-md:px-4 py-16 flex items-center justify-center min-h-[60vh]">
+    <>
+      <SiteHeader />
+      <main className="max-w-[720px] mx-auto px-12 max-md:px-4 py-16 flex items-center justify-center min-h-[60vh]">
       <div className="bg-surface border border-divider rounded-lg p-8 max-w-[540px] w-full text-center">
         <h1 className="font-display font-semibold text-[28px] tracking-[0.02em] mb-2">
           Tomorrow, Yesterday
@@ -38,5 +41,7 @@ export default function NewsletterPage() {
         </p>
       </div>
     </main>
+      <SiteFooter />
+    </>
   );
 }

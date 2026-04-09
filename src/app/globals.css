@@ -2,9 +2,10 @@
 
 @theme inline {
   /* Primary palette */
+  --color-ink: #0c0c16;
   --color-deep-ink: #12121F;
-  --color-surface: #1C1C2E;
-  --color-elevated: #252540;
+  --color-surface: #141422;
+  --color-elevated: #1c1c30;
   --color-parchment: #E8E4DC;
   --color-dusk: #8A8697;
   --color-graphite: #5A5770;
@@ -21,26 +22,138 @@
   --color-steel: #6B8CCE;
 
   /* Utility */
-  --color-divider: #2A2A42;
-  --color-focus: #6B8CCE;
-  --color-mono-bg: #1A1A30;
+  --color-divider: #222238;
 
   /* Font families */
-  --font-display: "Cormorant Garamond", serif;
-  --font-body: "IBM Plex Sans", sans-serif;
-  --font-quote: "Newsreader", serif;
-  --font-mono: "Space Mono", monospace;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "IBM Plex Sans", -apple-system, sans-serif;
+  --font-quote: "Newsreader", Georgia, serif;
+  --font-mono: "Space Mono", "Courier New", monospace;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #222238 #0c0c16;
 }
 
 body {
-  background-color: var(--color-deep-ink);
+  background-color: var(--color-ink);
   color: var(--color-parchment);
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background-color: rgba(201, 168, 76, 0.25);
+  background-color: rgba(201, 168, 76, 0.3);
   color: var(--color-parchment);
 }
+
+/* Scroll-snap container */
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.snap-section {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Opening animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes growLine {
+  to { height: 80px; }
+}
+
+/* Quote slide reveal - triggered by .in-view */
+.quote-slide .timeline,
+.quote-slide .quote-text-block,
+.quote-slide .attribution-block,
+.quote-slide .verdict-block,
+.quote-slide .analysis-text {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quote-slide .timeline { transition-delay: 0.2s; }
+.quote-slide .quote-text-block { transition-delay: 0.4s; transform: translateY(30px); transition-duration: 1s; }
+.quote-slide .attribution-block { transition-delay: 0.8s; }
+.quote-slide .verdict-block { transition-delay: 1s; }
+.quote-slide .analysis-text { transition-delay: 1.2s; }
+
+.quote-slide.in-view .timeline,
+.quote-slide.in-view .quote-text-block,
+.quote-slide.in-view .attribution-block,
+.quote-slide.in-view .verdict-block,
+.quote-slide.in-view .analysis-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Background image zoom on enter */
+.quote-slide .bg-image {
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+.quote-slide.in-view .bg-image {
+  transform: scale(1);
+}
+
+/* Split slide */
+.split-slide .split-image .bg-image {
+  transform: scale(1.08);
+  transition: transform 6s ease;
+}
+.split-slide.in-view .split-image .bg-image {
+  transform: scale(1);
+}
+
+/* Era color tints */
+.quote-slide[data-era="1920s"] .bg-overlay { background: linear-gradient(180deg, rgba(40,25,10,0.3) 0%, rgba(12,12,22,0.7) 40%, rgba(12,12,22,0.92) 100%); }
+.quote-slide[data-era="1960s"] .bg-overlay { background: linear-gradient(180deg, rgba(40,25,10,0.3) 0%, rgba(12,12,22,0.7) 40%, rgba(12,12,22,0.92) 100%); }
+.quote-slide[data-era="1970s"] .bg-overlay { background: linear-gradient(180deg, rgba(30,15,10,0.4) 0%, rgba(12,12,22,0.7) 40%, rgba(12,12,22,0.92) 100%); }
+.quote-slide[data-era="1930s"] .bg-overlay { background: linear-gradient(180deg, rgba(10,15,30,0.4) 0%, rgba(12,12,22,0.7) 40%, rgba(12,12,22,0.92) 100%); }
+.quote-slide[data-era="1880s"] .bg-overlay { background: linear-gradient(180deg, rgba(20,15,30,0.4) 0%, rgba(12,12,22,0.7) 40%, rgba(12,12,22,0.92) 100%); }
+
+/* Masonry */
+.masonry {
+  columns: 3;
+  column-gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .masonry { columns: 2; column-gap: 12px; }
+  .masonry-item { margin-bottom: 12px; }
+  .split-slide { flex-direction: column; }
+  .split-slide .split-image { min-height: 40vh; flex: none; }
+  .split-slide .split-text { padding: 32px; }
+}
+
+@media (max-width: 600px) {
+  .masonry { columns: 1; }
+}
+
+/* Verdict pills */
+.verdict-confirmed { background: rgba(76,168,130,0.1); border: 1px solid rgba(76,168,130,0.25); color: var(--color-sage); }
+.verdict-partial { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); color: var(--color-brass); }
+.verdict-busted { background: rgba(176,84,84,0.1); border: 1px solid rgba(176,84,84,0.25); color: var(--color-crimson); }
+.verdict-pending { background: rgba(107,140,206,0.1); border: 1px solid rgba(107,140,206,0.25); color: var(--color-steel); }

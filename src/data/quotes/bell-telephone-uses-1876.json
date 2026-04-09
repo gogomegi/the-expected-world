@@ -1,0 +1,14 @@
+{
+  "slug": "bell-telephone-uses-1876",
+  "text": "One day, every major city in the world will be connected by a network of telephones, and a man in one part of the world will be able to talk to a man in another.",
+  "author": "Alexander Graham Bell",
+  "authorSlug": "alexander-graham-bell",
+  "source": "Various attributed remarks after first telephone demonstration, 1876",
+  "yearWritten": 1876,
+  "yearImagined": "future",
+  "categories": ["Communication", "Technology"],
+  "didItHoldUp": {
+    "verdict": "came-true",
+    "analysis": "Bell's prediction was considered wildly ambitious in 1876, when his telephone could barely transmit a clear sentence across a room. But he undershot reality by orders of magnitude. Not just every major city — every pocket. Not just voice — video, text, images, and data. Not just men — everyone, including children who use the telephone network primarily to watch short videos of other people dancing. Bell imagined a connected world and got something far stranger and more wonderful than he could have conceived."
+  }
+}

@@ -1,5 +1,6 @@
 import { getAllCategories, getQuotesByCategory, slugify } from "@/lib/quotes";
-import { QuoteCard } from "@/components/QuoteCard";
+import { MasonryCard } from "@/components/MasonryCard";
+import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -33,20 +34,24 @@ export default async function TopicPage({
   const quotes = getQuotesByCategory(topic);
 
   return (
-    <main className="max-w-[1200px] mx-auto px-12 max-md:px-4 py-16">
-      <nav className="font-mono text-[11px] uppercase tracking-[0.06em] text-dusk mb-12">
-        <Link href="/" className="hover:text-parchment transition-colors">Home</Link>
-        {" / "}
-        <span className="text-parchment">{cat}</span>
-      </nav>
-      <h1 className="font-display font-semibold text-[40px] max-md:text-[28px] tracking-[0.02em] mb-12">
-        {cat} Predictions
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {quotes.map((q) => (
-          <QuoteCard key={q.slug} quote={q} compact />
-        ))}
-      </div>
-    </main>
+    <>
+      <SiteHeader />
+      <main className="max-w-[1200px] mx-auto px-12 max-md:px-4 py-16">
+        <nav className="font-mono text-[11px] uppercase tracking-[0.06em] text-dusk mb-12">
+          <Link href="/" className="hover:text-parchment transition-colors">Home</Link>
+          {" / "}
+          <span className="text-parchment">{cat}</span>
+        </nav>
+        <h1 className="font-display font-semibold text-[40px] max-md:text-[28px] tracking-[0.02em] mb-12">
+          {cat} Predictions
+        </h1>
+        <div className="masonry">
+          {quotes.map((q) => (
+            <MasonryCard key={q.slug} quote={q} />
+          ))}
+        </div>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

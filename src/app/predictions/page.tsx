@@ -1,26 +1,40 @@
 import { getAllQuotes } from "@/lib/quotes";
-import { QuoteCard } from "@/components/QuoteCard";
+import { MasonryCard } from "@/components/MasonryCard";
+import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "All Predictions — The Expected World",
+  title: "The Archive — The Expected World",
   description:
-    "Browse our full archive of historical predictions about the future. Filter by era, topic, or accuracy.",
+    "Browse our full archive of historical predictions about the future.",
 };
 
 export default function PredictionsPage() {
   const quotes = getAllQuotes();
 
   return (
-    <main className="max-w-[1200px] mx-auto px-12 max-md:px-4 py-16">
-      <h1 className="font-display font-semibold text-[40px] max-md:text-[28px] tracking-[0.02em] mb-12">
-        All Predictions
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {quotes.map((q) => (
-          <QuoteCard key={q.slug} quote={q} compact />
-        ))}
-      </div>
-    </main>
+    <>
+      <SiteHeader />
+      <main className="min-h-screen p-24 max-md:p-6 bg-ink">
+        <div className="text-center mb-16">
+          <div className="font-mono text-[11px] tracking-[0.15em] uppercase text-brass mb-3">
+            The Archive
+          </div>
+          <h1 className="font-display font-semibold text-[clamp(28px,4vw,48px)] tracking-[0.03em]">
+            Every Era Imagines What Comes Next
+          </h1>
+          <p className="font-body font-light text-base text-dusk mt-3">
+            {quotes.length} predictions and counting
+          </p>
+        </div>
+
+        <div className="masonry">
+          {quotes.map((q, i) => (
+            <MasonryCard key={q.slug} quote={q} featured={i === 0} />
+          ))}
+        </div>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

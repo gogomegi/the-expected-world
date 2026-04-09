@@ -1,0 +1,14 @@
+{
+  "slug": "clarke-teachers-computers-1980",
+  "text": "Any teacher that can be replaced by a machine should be.",
+  "author": "Arthur C. Clarke",
+  "authorSlug": "arthur-c-clarke",
+  "source": "Electronic Tutors, 1980",
+  "yearWritten": 1980,
+  "yearImagined": "2000s",
+  "categories": ["Technology", "Society", "AI & Robots"],
+  "didItHoldUp": {
+    "verdict": "partially-true",
+    "analysis": "Clarke wasn't predicting the end of teaching — he was arguing that rote instruction should be automated so human teachers could focus on inspiration, mentoring, and critical thinking. Khan Academy, Duolingo, and AI tutors have done exactly that for factual knowledge transfer. But the pandemic showed that screens can't replace the human presence that makes education transformative. Clarke's provocation remains sharp: the machine doesn't replace the great teacher. It exposes the ones who were just reading from the textbook."
+  }
+}
