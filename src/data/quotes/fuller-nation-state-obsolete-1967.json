@@ -6,9 +6,14 @@
   "source": "Various writings and lectures, 1960s",
   "yearWritten": 1967,
   "yearImagined": "2000",
-  "categories": ["War & Politics", "Society"],
+  "categories": [
+    "War & Politics",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Fuller — the geodesic dome inventor and systems thinker — imagined a world unified by technology and shared resources. The year 2000 arrived with intensified nationalism, the aftermath of the Yugoslav wars, and the early stirrings of the War on Terror. The internet did create a 'global village' of information, as Marshall McLuhan predicted, but not of governance. If anything, the 2020s have seen a resurgence of nation-state power and identity politics. The village exists, but its residents are arguing louder than ever."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

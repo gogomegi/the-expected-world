@@ -7,9 +7,15 @@
   "sourceUrl": "https://monoskop.org/images/e/e2/Arendt_Hannah_The_Human_Condition_2nd_1998.pdf",
   "yearWritten": 1958,
   "yearImagined": "1980s",
-  "categories": ["Technology", "Economy", "Society"],
+  "categories": [
+    "Technology",
+    "Economy",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Arendt's prediction about automation emptying factories has substantially come true — manufacturing employment in developed nations has plummeted as robots replaced assembly line workers. But her deeper philosophical point is the truly prescient one: she asked what happens to human meaning when labor disappears. The 'bondage to necessity' wasn't just a burden — it gave life structure and purpose. As AI and automation advance in the 2020s, Arendt's question has become urgent: if machines can do all our work, what are humans for? She recognized in 1958 that liberation from labor might be as threatening as labor itself. That's the question the 21st century is now trying to answer."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

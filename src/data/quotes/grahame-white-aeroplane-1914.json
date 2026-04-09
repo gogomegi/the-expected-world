@@ -7,9 +7,14 @@
   "sourceUrl": "https://archive.org/details/aeroplane00grahrich/page/278/mode/2up",
   "yearWritten": 1914,
   "yearImagined": "1934",
-  "categories": ["Transportation", "Society"],
+  "categories": [
+    "Transportation",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Grahame-White, writing just 11 years after the Wright brothers' first flight, predicted that within 20 years air travel would be as normal as rail travel. By 1934, commercial aviation was growing rapidly — Imperial Airways, Pan Am, and Lufthansa were connecting continents. By the jet age of the 1960s, his vision was fully realized. What makes this passage beautiful is the rhetorical move: he compares the incredulity of his readers to that of their grandparents facing trains. Each generation struggles to believe in the next revolution, even as they live comfortably with the last one. The pattern holds today — replace 'aeroplane' with 'autonomous vehicle' and the sentiment is identical."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

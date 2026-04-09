@@ -6,9 +6,14 @@
   "source": "Visit to the World's Fair of 2014, New York Times, 1964",
   "yearWritten": 1964,
   "yearImagined": "2014",
-  "categories": ["Communication", "Technology"],
+  "categories": [
+    "Communication",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Asimov described FaceTime, Zoom, and screen-sharing in 1964 — down to using the screen to review documents during a call. By 2014, video calling was commonplace. By 2020, it was essential. The pandemic made Asimov's vision mandatory for billions of workers, students, and grandparents. He even anticipated the multifunction screen: phone, document viewer, and book reader in one device. That's an iPhone. Written 43 years before Steve Jobs held one up on stage."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

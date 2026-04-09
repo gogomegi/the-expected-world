@@ -7,9 +7,14 @@
   "sourceUrl": "https://gutenberg.net.au/ebooks13/1303481h.htm",
   "yearWritten": 1924,
   "yearImagined": "1924-1974",
-  "categories": ["War & Politics", "Society"],
+  "categories": [
+    "War & Politics",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Wells gave Europe at least a generation before it could wage another world war. He was off by exactly one generation — World War II erupted just 15 years later, not 40 or 50. His reasoning was sound: Europe was devastated, bankrupt, and exhausted after WWI. But he underestimated how quickly industrial nations can rearm when driven by ideology, grievance, and totalitarian mobilization. Germany went from prostrate to the most powerful military in Europe in under a decade. Wells saw the exhaustion clearly but missed the fury that would fuel the recovery. The 'spirit and discipline' he thought were spent turned out to be renewable resources."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

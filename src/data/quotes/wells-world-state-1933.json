@@ -6,9 +6,14 @@
   "source": "The Shape of Things to Come, 1933",
   "yearWritten": 1933,
   "yearImagined": "2000s",
-  "categories": ["War & Politics", "Society"],
+  "categories": [
+    "War & Politics",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Wells believed that technology and economics would force humanity into a single world government. Instead, the number of independent nation-states has tripled since 1933. The United Nations exists but governs nothing. Brexit, rising nationalism, and great-power rivalry suggest we're moving further from Wells's world state, not closer. The prediction reflects a persistent intellectual hope — that rationality will triumph over tribalism. So far, tribalism is winning."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

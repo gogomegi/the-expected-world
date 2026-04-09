@@ -6,9 +6,14 @@
   "source": "Various attributed remarks after first telephone demonstration, 1876",
   "yearWritten": 1876,
   "yearImagined": "future",
-  "categories": ["Communication", "Technology"],
+  "categories": [
+    "Communication",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Bell's prediction was considered wildly ambitious in 1876, when his telephone could barely transmit a clear sentence across a room. But he undershot reality by orders of magnitude. Not just every major city — every pocket. Not just voice — video, text, images, and data. Not just men — everyone, including children who use the telephone network primarily to watch short videos of other people dancing. Bell imagined a connected world and got something far stranger and more wonderful than he could have conceived."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

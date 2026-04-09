@@ -6,9 +6,14 @@
   "source": "Popular Mechanics, 'What Life Will Be Like in 2000', c. 1950",
   "yearWritten": 1950,
   "yearImagined": "2000",
-  "categories": ["AI & Robots", "Technology"],
+  "categories": [
+    "AI & Robots",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Here's what's fascinating: they got the shape right. The Roomba, which arrived in 2002, is literally a box (well, a disc) that cleans by itself. Dishwashers became standard. Microwave ovens automated parts of cooking. But instead of one all-purpose robot maid, we got a dozen specialized appliances — each doing one job well. The future didn't arrive as a single helpful companion. It arrived as a kitchen full of gadgets, each with its own instruction manual nobody reads."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

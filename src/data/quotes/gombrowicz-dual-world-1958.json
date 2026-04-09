@@ -7,9 +7,14 @@
   "sourceUrl": "https://fluidself.org/books/biographies/diary",
   "yearWritten": 1958,
   "yearImagined": "1968",
-  "categories": ["Society", "Culture & Entertainment"],
+  "categories": [
+    "Society",
+    "Culture & Entertainment"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "The Polish novelist predicted the coexistence of rational and magical thinking with uncanny precision. Today's world is exactly dual: we carry devices that embody centuries of scientific progress while using them to read horoscopes, spread conspiracy theories, and consult wellness gurus. Secular rationalism and spiritual hunger coexist not just in society but within individuals. QAnon and quantum physics. Meditation apps and machine learning. Gombrowicz saw that the Enlightenment wouldn't eliminate the desire for mystery — it would sharpen it. Democracy and universality have indeed failed to satisfy, and the 'magic world' has found its place right alongside the rational one, often on the same screen."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

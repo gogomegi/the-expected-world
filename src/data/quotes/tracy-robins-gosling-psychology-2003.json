@@ -7,9 +7,14 @@
   "sourceUrl": "https://www.researchgate.net/publication/227177940_Tracking_Trends_in_Psychological_Science",
   "yearWritten": 2003,
   "yearImagined": "2010s",
-  "categories": ["Health & Medicine", "Technology"],
+  "categories": [
+    "Health & Medicine",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "By the 2010s, the competition between cognitive and neuroscientific approaches was exactly as predicted — and neuroscience was winning the funding wars. fMRI studies exploded, 'neuro' became a prefix attached to everything (neuroeconomics, neuromarketing, neurolaw), and the brain became the dominant metaphor for understanding human behavior. The prediction was precise and measured — rare in a field that often avoids forecasting — and it proved accurate. What the authors might not have foreseen is a third challenger emerging in the 2020s: AI and large language models, which model cognition without neurons, threatening to disrupt both schools simultaneously."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

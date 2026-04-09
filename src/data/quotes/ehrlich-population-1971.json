@@ -7,9 +7,14 @@
   "sourceUrl": "https://biotech.law.lsu.edu/blog/Ehrlich-Population-Bomb-Ch1.pdf",
   "yearWritten": 1971,
   "yearImagined": "1980s",
-  "categories": ["Population", "Food & Agriculture"],
+  "categories": [
+    "Population",
+    "Food & Agriculture"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Ehrlich declared the battle 'already lost' — not a warning, but a verdict. The Green Revolution proved him wrong within the very decade he predicted famine. Norman Borlaug's high-yield crops dramatically increased food production across Asia and Latin America. Global caloric availability per person has risen, not fallen, since 1971. What makes this passage particularly striking is the rhetorical urgency: nine years, not nine hundred. Ehrlich was so certain of imminent catastrophe that he staked his credibility on the shortest possible timeline. The world's population has more than doubled since, and while hunger persists, mass famine on the scale he predicted never materialized."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

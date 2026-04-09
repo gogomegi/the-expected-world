@@ -8,9 +8,14 @@
   "yearWritten": 1808,
   "yearImagined": "1858",
   "imageCaption": "André Salles, en avant de la porte de Langson, Public Domain, Wikimedia Commons",
-  "categories": ["War & Politics", "Society"],
+  "categories": [
+    "War & Politics",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Fourier's geopolitical vision was garbled — the Himalayas don't stretch from Bukhara to China, and the 'hordes' framing reveals deep European anxieties about Central Asian peoples. But his prediction about the Ottoman Empire was directionally correct: by 1858, the Ottoman state was in serious decline (the 'Sick Man of Europe'), and by 1922 it had collapsed entirely. The empire didn't return to 'nomadic life,' but it did fragment into dozens of successor states. Fourier's apocalyptic tone was wrong, but his instinct that Ottoman power was crumbling was sound — he just wrapped a reasonable observation in catastrophist fantasy."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

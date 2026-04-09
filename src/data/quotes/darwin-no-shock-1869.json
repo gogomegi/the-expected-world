@@ -7,9 +7,13 @@
   "sourceUrl": "https://archive.org/details/onoriginofspecie00darw",
   "yearWritten": 1869,
   "yearImagined": "future reception",
-  "categories": ["Society"],
+  "categories": [
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Over 150 years later, Darwin's theory of evolution remains one of the most contested ideas in human history. The Scopes 'Monkey Trial' of 1925. The intelligent design movement. Ongoing textbook battles across the American South. Creationism museums. Darwin thought his careful, evidence-based argument would be received rationally. He dramatically underestimated how threatening his theory would feel to people whose worldview depended on a different origin story. Science and belief, it turns out, aren't always ready to shake hands."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

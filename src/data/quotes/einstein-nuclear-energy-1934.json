@@ -6,9 +6,14 @@
   "source": "Pittsburgh Post-Gazette, 1934",
   "yearWritten": 1934,
   "yearImagined": "indefinite",
-  "categories": ["Energy", "Technology"],
+  "categories": [
+    "Energy",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Even the greatest physicist of the 20th century couldn't see what was coming — and it was coming fast. Five years after this statement, nuclear fission was discovered. By 1942, Enrico Fermi achieved a sustained chain reaction. By 1945, nuclear weapons existed. Einstein himself wrote the famous letter to FDR that helped launch the Manhattan Project. The atom was, in fact, shattered at will. It's a humbling reminder that being the smartest person alive doesn't grant you foresight, even in your own field."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

@@ -7,9 +7,13 @@
   "sourceUrl": "https://archive.org/details/profilesoffuture0000clar",
   "yearWritten": 1973,
   "yearImagined": "general principle",
-  "categories": ["Technology"],
+  "categories": [
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Clarke's Third Law hasn't just held up — it's become the unofficial motto of the 21st century. Show someone from the 1970s a smartphone and watch their face: a pocket-sized device that accesses all human knowledge, navigates by satellite, and video-calls anyone on Earth. That's magic by any prior century's definition. The law has become a cultural touchstone because it captures something true about the human experience of technological change — the gap between what we understand and what we use grows wider every year."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

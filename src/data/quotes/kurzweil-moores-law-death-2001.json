@@ -7,9 +7,13 @@
   "sourceUrl": "https://link.springer.com/chapter/10.1007/978-3-662-05642-4_16",
   "yearWritten": 2001,
   "yearImagined": "2019",
-  "categories": ["Technology"],
+  "categories": [
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Kurzweil was remarkably close. By 2019, traditional Moore's Law scaling had indeed slowed dramatically — transistor features were approaching atomic limits, and the classic strategy of shrinking everything was hitting physics walls. Intel struggled to move beyond 14nm for years. But Moore's Law didn't die so much as evolve: chipmakers found new tricks (3D stacking, chiplet architectures, new materials) that kept performance improving even as traditional scaling stalled. Kurzweil was right about the mechanism dying but underestimated the industry's ability to find workarounds. The dignified death he predicted turned out to be more of a dignified metamorphosis."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

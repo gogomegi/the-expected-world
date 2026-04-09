@@ -6,9 +6,15 @@
   "source": "The World Set Free, 1914",
   "yearWritten": 1914,
   "yearImagined": "1956",
-  "categories": ["War & Politics", "Technology", "Energy"],
+  "categories": [
+    "War & Politics",
+    "Technology",
+    "Energy"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "H.G. Wells coined the term 'atomic bomb' in a novel published 31 years before Hiroshima. He described weapons of unprecedented destructive power derived from atomic energy, used in a world war. Leo Szilard read this novel in 1932 and it directly influenced his thinking about nuclear chain reactions. Wells got the physics wrong (his bombs burned continuously rather than exploding), but the concept — and even the name — was prophetic. Fiction sometimes writes the blueprint that reality follows."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

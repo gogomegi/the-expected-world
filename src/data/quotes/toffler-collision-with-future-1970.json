@@ -8,9 +8,14 @@
   "yearWritten": 1970,
   "yearImagined": "1970-2000",
   "imageCaption": "Bombus fraternus, USGS Bee Inventory and Monitoring Lab, Wikimedia Commons",
-  "categories": ["Society", "Technology"],
+  "categories": [
+    "Society",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Toffler's opening salvo in Future Shock reads like a diagnosis of the 2020s written in 1970. 'Psychologically normal people' struggling to keep up with 'the incessant demand for change' — that's every overwhelmed parent trying to understand TikTok, every worker whose industry was disrupted by AI, every person who feels the world is moving too fast. He coined the condition before inventing the smartphone, social media, or the 24-hour news cycle that would cause it. The future didn't just arrive too soon. It arrived so fast that adapting to it became its own full-time job."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

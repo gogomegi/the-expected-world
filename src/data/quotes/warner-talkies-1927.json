@@ -6,9 +6,14 @@
   "source": "Attributed, c. 1927",
   "yearWritten": 1927,
   "yearImagined": "near future",
-  "categories": ["Culture & Entertainment", "Technology"],
+  "categories": [
+    "Culture & Entertainment",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "The co-founder of Warner Bros. doubted talking pictures — and then his own studio released 'The Jazz Singer' in 1927, launching the sound era and essentially killing silent film within three years. Warner Bros. became one of the most successful studios in Hollywood history, largely because of sound. It's a perfect irony: the man who doubted talkies ran the company that made them mainstream. Sometimes the best business strategy is ignoring your own instincts."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

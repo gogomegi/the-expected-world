@@ -8,9 +8,15 @@
   "yearWritten": 1931,
   "yearImagined": "1981",
   "imageCaption": "Breechpre, Public Domain, Wikimedia Commons",
-  "categories": ["AI & Robots", "Technology", "Society"],
+  "categories": [
+    "AI & Robots",
+    "Technology",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Churchill — writing as a politician, not a scientist — anticipated both artificial intelligence and genetic engineering in a single passage. The play he references, R.U.R., coined the word 'robot.' His prediction of beings 'grown under glass' uncannily anticipates in vitro fertilization (achieved 1978) and genetic engineering. The idea of beings 'specialized to thought or toil' with 'mental endowment stunted in particular directions' reads like a description of narrow AI — systems brilliant at one task, incapable of others. Churchill didn't foresee silicon minds, but his vision of manufactured intelligence, purpose-built and limited, is exactly what we've built."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

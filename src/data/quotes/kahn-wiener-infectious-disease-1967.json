@@ -7,9 +7,13 @@
   "sourceUrl": "https://archive.org/details/year2000framework0000kahn",
   "yearWritten": 1967,
   "yearImagined": "2000",
-  "categories": ["Health & Medicine"],
+  "categories": [
+    "Health & Medicine"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Vaccination did eliminate smallpox entirely and nearly eradicated polio — genuine miracles of medicine. Antibiotics transformed survival rates. Life expectancy soared. But then came HIV/AIDS, drug-resistant bacteria, SARS, and eventually COVID-19. The prediction captures a real trend — we made extraordinary progress — but 'virtually eliminated' was a bridge too far. Infectious disease isn't a static enemy; it evolves. The arms race between human medicine and microbial mutation has no finish line."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

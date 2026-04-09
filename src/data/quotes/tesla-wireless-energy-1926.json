@@ -6,9 +6,14 @@
   "source": "Collier's magazine interview",
   "yearWritten": 1926,
   "yearImagined": "2000s",
-  "categories": ["Technology", "Communication"],
+  "categories": [
+    "Technology",
+    "Communication"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Tesla essentially predicted the internet and global wireless connectivity. Today's world of smartphones, Wi-Fi, and IoT devices has made the earth into a connected 'brain' — remarkably close to his vision."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

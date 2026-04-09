@@ -8,9 +8,14 @@
   "yearWritten": 1968,
   "yearImagined": "2000",
   "imageCaption": "Bullet Points Dress — velvet bullets, mannequin, copper, 2011",
-  "categories": ["Fashion", "Culture & Entertainment"],
+  "categories": [
+    "Fashion",
+    "Culture & Entertainment"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Cardin's wry deflection hides a genuine prophecy. He didn't live to see 2000 (he died in 2020, actually — he was wrong about that), but the revolution he started in menswear did arrive. His bold experiments with unconventional shapes, materials, and unisex designs anticipated the collapse of formal dress codes that defines 21st-century fashion. The interview captures something fascinating: a man who knew he was reshaping the future of clothing, but who met the question about the year 2000 with mordant humor rather than grand predictions. Sometimes the most honest forecast is a shrug."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

@@ -1,4 +1,5 @@
 import { getAllQuotes } from "@/lib/quotes";
+import { getArchiveOrder } from "@/lib/ordering";
 import { MasonryCard } from "@/components/MasonryCard";
 import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
 import type { Metadata } from "next";
@@ -9,8 +10,26 @@ export const metadata: Metadata = {
     "Browse our full archive of historical predictions about the future.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function PredictionsPage() {
-  const quotes = getAllQuotes();
+  const allQuotes = getAllQuotes();
+  const archiveOrder = getArchiveOrder();
+
+  // Sort: ordered quotes first, then remaining by yearWritten
+  let quotes;
+  if (archiveOrder.length > 0) {
+    const ordered = archiveOrder
+      .map((slug) => allQuotes.find((q) => q.slug === slug))
+      .filter(Boolean) as typeof allQuotes;
+    const orderedSlugs = new Set(archiveOrder);
+    const rest = allQuotes
+      .filter((q) => !orderedSlugs.has(q.slug))
+      .sort((a, b) => a.yearWritten - b.yearWritten);
+    quotes = [...ordered, ...rest];
+  } else {
+    quotes = allQuotes;
+  }
 
   return (
     <>

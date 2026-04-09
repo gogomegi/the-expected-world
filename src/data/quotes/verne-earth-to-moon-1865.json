@@ -7,9 +7,14 @@
   "sourceUrl": "https://archive.org/details/fromEarthToMoon",
   "yearWritten": 1865,
   "yearImagined": "future",
-  "categories": ["Space", "Technology"],
+  "categories": [
+    "Space",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "The parallels are almost eerie. Verne's novel: three crew members, launched from Florida, travel ~97 hours, and splash down in the Pacific. Apollo 11: three crew members, launched from Cape Canaveral, Florida, reach lunar orbit in 73 hours, and splash down in the Pacific. Written 104 years before Apollo 11, this is one of the most stunningly accurate predictions in literary history. The only major thing Verne got wrong was the launch method — a cannon rather than a rocket. The passengers probably appreciated that change."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

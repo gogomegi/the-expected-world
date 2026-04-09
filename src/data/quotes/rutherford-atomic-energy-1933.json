@@ -6,9 +6,14 @@
   "source": "Various attributed remarks, c. 1933",
   "yearWritten": 1933,
   "yearImagined": "indefinite",
-  "categories": ["Energy", "Technology"],
+  "categories": [
+    "Energy",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "The father of nuclear physics — the man who first split the atom — called nuclear energy 'moonshine.' Within 12 years, nuclear weapons existed. By 1956, the first commercial nuclear power plant opened. Today, nuclear provides about 10% of the world's electricity. The best part? Leo Szilard reportedly read Rutherford's dismissal and was so annoyed that he went out and conceived the nuclear chain reaction. Sometimes the best way to inspire a breakthrough is to declare it impossible."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

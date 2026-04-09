@@ -8,9 +8,14 @@
   "yearWritten": 1808,
   "yearImagined": "1818",
   "imageCaption": "Crops Kansas, Public Domain, Wikimedia Commons",
-  "categories": ["Economy", "Society"],
+  "categories": [
+    "Economy",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Fourier believed civilization itself had perhaps ten years left — that unchecked commercial competition would collapse into anarchy. Two centuries later, civilization persists, and commerce has only accelerated. But his underlying anxiety isn't entirely wrong: the tension between free markets and regulated access to professions remains one of the defining debates in economics. Gig economy, licensing battles, antitrust regulation — these are modern versions of Fourier's 'middle way.' He was catastrophically wrong about the timeline but planted a seed of critique that still flowers in every debate about whether markets need guardrails."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

@@ -6,9 +6,13 @@
   "source": "New York Times, October 16, 1929",
   "yearWritten": 1929,
   "yearImagined": "near future",
-  "categories": ["Economy"],
+  "categories": [
+    "Economy"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Irving Fisher, one of the most respected economists of his era, made this declaration just days before the most catastrophic stock market crash in history. The Dow Jones lost 89% of its value over the next three years. The Great Depression followed. Fisher himself lost his personal fortune. The phrase 'permanently high plateau' became Wall Street shorthand for dangerous overconfidence, and it resurfaces every time someone declares that a boom has no end. It never does."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

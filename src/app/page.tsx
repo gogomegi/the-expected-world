@@ -1,55 +1,32 @@
 import { getAllQuotes, getQuoteBySlug } from "@/lib/quotes";
+import { getHomepageOrder } from "@/lib/ordering";
 import { ScrollContainer } from "@/components/ScrollContainer";
 import { QuoteSlide } from "@/components/QuoteSlide";
 import { SplitSlide } from "@/components/SplitSlide";
 import { MasonryCard } from "@/components/MasonryCard";
 
-// Curated homepage slides — hand-picked for impact
-const heroSlides = [
-  {
-    slug: "tesla-wireless-energy-1926",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/79/Tesla_circa_1890.jpeg",
-    highlight: "huge brain.",
-    layout: "full" as const,
-  },
-  {
-    slug: "ehrlich-england-famine-1971",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Central_London_aerial_2011.jpg",
-    highlight: "a small group of impoverished islands,",
-    duotoneColor: "#B05454",
-    layout: "split" as const,
-  },
-  {
-    slug: "clarke-year-2100-internet-1964",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Greater_Chicago_from_ISS.jpg",
-    highlight: "The city is abolished.",
-    layout: "full" as const,
-  },
-  {
-    slug: "edison-alternating-current-1889",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9d/Thomas_Edison2.jpg",
-    highlight: "alternating current",
-    layout: "full" as const,
-  },
-  {
-    slug: "einstein-nuclear-energy-1934",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg",
-    highlight: "not the slightest indication",
-    layout: "full" as const,
-  },
-];
+export const dynamic = "force-dynamic";
 
 export default function Home() {
   const allQuotes = getAllQuotes();
+  const heroConfig = getHomepageOrder();
 
-  // Get curated quotes for slides
-  const slides = heroSlides
+  // Get curated quotes for slides from config
+  const slides = heroConfig
     .map((s) => ({ ...s, quote: getQuoteBySlug(s.slug) }))
     .filter((s) => s.quote);
 
-  // Gallery quotes (exclude hero quotes)
-  const heroSlugs = new Set(heroSlides.map((s) => s.slug));
-  const galleryQuotes = allQuotes.filter((q) => !heroSlugs.has(q.slug));
+  // Gallery quotes: exclude hero quotes, prioritize originals
+  const heroSlugs = new Set(heroConfig.map((s) => s.slug));
+  const galleryQuotes = allQuotes
+    .filter((q) => !heroSlugs.has(q.slug))
+    .sort((a, b) => {
+      // Originals first, then by yearWritten
+      const aOrig = a.quoteSource === "original" ? 0 : 1;
+      const bOrig = b.quoteSource === "original" ? 0 : 1;
+      if (aOrig !== bOrig) return aOrig - bOrig;
+      return a.yearWritten - b.yearWritten;
+    });
 
   return (
     <ScrollContainer>
@@ -87,13 +64,13 @@ export default function Home() {
               quote={s.quote!}
               imageUrl={s.imageUrl}
               duotoneColor={s.duotoneColor}
-              highlightPhrase={s.highlight}
+              highlightPhrase={s.highlightPhrase}
             />
           ) : (
             <QuoteSlide
               quote={s.quote!}
-              imageUrl={s.imageUrl}
-              highlightPhrase={s.highlight}
+              imageUrl={s.imageUrl || undefined}
+              highlightPhrase={s.highlightPhrase}
             />
           )}
 

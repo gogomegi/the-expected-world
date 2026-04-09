@@ -7,9 +7,14 @@
   "sourceUrl": "https://web.archive.org/web/20160310000549/https:/graphics.bondara.com/Future_sex_report.pdf",
   "yearWritten": 2015,
   "yearImagined": "2025",
-  "categories": ["AI & Robots", "Society"],
+  "categories": [
+    "AI & Robots",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "By 2025, humanoid companion robots remain rudimentary and niche — nowhere near 'commonplace,' even among the wealthy. AI chatbots have created new forms of digital intimacy, but physical robots capable of meaningful interaction are still firmly in the uncanny valley. The prediction overestimated robotics and underestimated the social barriers: even if the technology existed, adoption would face enormous stigma. What actually happened is stranger than Pearson imagined — people formed emotional bonds with text-based AI instead, no robot body required."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

@@ -6,9 +6,15 @@
   "source": "Future Shock, 1970",
   "yearWritten": 1970,
   "yearImagined": "1990s-2000s",
-  "categories": ["Society", "Culture & Entertainment", "Economy"],
+  "categories": [
+    "Society",
+    "Culture & Entertainment",
+    "Economy"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Toffler wrote this before fast fashion, before dating apps, before the gig economy. Disposable products? Fast fashion generates 92 million tons of textile waste annually. Disposable relationships? Swipe right. Disposable ideas? The average news cycle is measured in hours. Disposable workers? The gig economy has created a class of on-demand labor with no benefits or security. Toffler saw the throwaway culture extending beyond objects to people themselves — and that's precisely what happened."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

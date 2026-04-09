@@ -6,9 +6,14 @@
   "source": "A Short History of the Future, 1936",
   "yearWritten": 1936,
   "yearImagined": "1950",
-  "categories": ["War & Politics", "Society"],
+  "categories": [
+    "War & Politics",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "In 1936, this wasn't as wild as it sounds. Fascism had swept Italy, Germany, and Spain. The Soviet Union was expanding. Democracy seemed like a 19th-century experiment that was failing in real time. Then World War II happened. By 1950, fascism was defeated, West Germany and Japan were rebuilding as democracies, and the democratic world was expanding. The number of democracies has grown from about 12 in 1936 to over 90 today. Democracy proved more resilient than its obituary writers expected."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

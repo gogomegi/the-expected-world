@@ -6,9 +6,14 @@
   "source": "Passages from the Life of a Philosopher, 1864",
   "yearWritten": 1864,
   "yearImagined": "future",
-  "categories": ["Technology", "AI & Robots"],
+  "categories": [
+    "Technology",
+    "AI & Robots"
+  ],
   "didItHoldUp": {
     "verdict": "came-true",
     "analysis": "Babbage designed but never completed his Analytical Engine — a mechanical general-purpose computer. His claim that machines could execute all mathematical analysis was dismissed as fantasy. It took 80 years for electronic computers to prove him right. Today, machines don't just perform analysis — they discover new mathematics, prove theorems, and optimize systems too complex for human minds. Babbage saw the destination clearly. He just couldn't build the vehicle to get there."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

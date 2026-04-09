@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "churchill-artificial-beings-1931",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Sir_Winston_Churchill_-_19086236948.jpg",
+    "highlightPhrase": "robots",
+    "layout": "full"
+  },
+  {
+    "slug": "dostoevsky-weapons-lightning-1873",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/78/Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg",
+    "highlightPhrase": "lightning",
+    "layout": "split",
+    "duotoneColor": "#B05454"
+  },
+  {
+    "slug": "toffler-collision-with-future-1970",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Alvin_Toffler_02.jpg",
+    "highlightPhrase": "collision with the future",
+    "layout": "full"
+  },
+  {
+    "slug": "wells-energy-for-war-1924",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4b/H.G._Wells_by_Beresford.jpg",
+    "highlightPhrase": "energy",
+    "layout": "full"
+  },
+  {
+    "slug": "baudrillard-year-2000-1992",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ef/WikipediaBaudrillard20040612-cropped.png",
+    "highlightPhrase": "year 2000",
+    "layout": "split",
+    "duotoneColor": "#6B8CCE"
+  }
+]

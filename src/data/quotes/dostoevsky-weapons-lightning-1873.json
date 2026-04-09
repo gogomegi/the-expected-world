@@ -7,9 +7,14 @@
   "sourceUrl": "https://archive.org/stream/the-diary-of-a-writer/The-Diary-Of-A-Writer_djvu.txt",
   "yearWritten": 1873,
   "yearImagined": "1888",
-  "categories": ["War & Politics", "Technology"],
+  "categories": [
+    "War & Politics",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Dostoevsky — a novelist, not a scientist — predicted directed energy weapons and the secret arms race 70 years before the Manhattan Project. His 'holocaustal electrical stream' isn't far from a description of nuclear weapons or, more precisely, modern directed energy weapons. His deeper insight was about the arms race itself: great powers secretly stockpiling decisive weapons, and Russia's dependence on imported science. That geopolitical anxiety proved prophetic throughout the 20th century. The novelist saw the pattern that the generals missed: the next war would be won not by soldiers, but by scientists."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

@@ -4,7 +4,15 @@ import { useState, useEffect, useCallback } from "react";
 import type { Quote, QuoteStatus, QuoteSource } from "@/types/quote";
 import type { Submission } from "@/types/quote";
 
-type Tab = "quotes" | "submissions";
+type Tab = "quotes" | "submissions" | "homepage" | "archive";
+
+interface HeroSlideConfig {
+  slug: string;
+  imageUrl: string;
+  highlightPhrase: string;
+  layout: "full" | "split";
+  duotoneColor?: string;
+}
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
@@ -21,6 +29,21 @@ export default function AdminPage() {
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [editing, setEditing] = useState<Quote | null>(null);
+
+  // Ordering state
+  const [homepageOrder, setHomepageOrder] = useState<HeroSlideConfig[]>([]);
+  const [archiveOrder, setArchiveOrder] = useState<string[]>([]);
+  const [newHeroSlug, setNewHeroSlug] = useState("");
+
+  const fetchHomepageOrder = useCallback(async () => {
+    const res = await fetch("/api/admin/homepage-order");
+    if (res.ok) setHomepageOrder(await res.json());
+  }, []);
+
+  const fetchArchiveOrder = useCallback(async () => {
+    const res = await fetch("/api/admin/archive-order");
+    if (res.ok) setArchiveOrder(await res.json());
+  }, []);
 
   const fetchQuotes = useCallback(async () => {
     const res = await fetch("/api/admin/quotes");
@@ -40,7 +63,9 @@ export default function AdminPage() {
   useEffect(() => {
     fetchQuotes();
     fetchSubmissions();
-  }, [fetchQuotes, fetchSubmissions]);
+    fetchHomepageOrder();
+    fetchArchiveOrder();
+  }, [fetchQuotes, fetchSubmissions, fetchHomepageOrder, fetchArchiveOrder]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -220,6 +245,18 @@ export default function AdminPage() {
         >
           Submissions ({submissions.filter((s) => s.status === "pending").length})
         </button>
+        <button
+          onClick={() => setTab("homepage")}
+          className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "homepage" ? "border-brass text-brass" : "border-transparent text-dusk hover:text-parchment"}`}
+        >
+          Homepage Order
+        </button>
+        <button
+          onClick={() => setTab("archive")}
+          className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "archive" ? "border-brass text-brass" : "border-transparent text-dusk hover:text-parchment"}`}
+        >
+          Archive Order
+        </button>
       </div>
 
       {tab === "quotes" ? (
@@ -366,7 +403,7 @@ export default function AdminPage() {
             Showing {filtered.length} of {quotes.length} quotes
           </p>
         </div>
-      ) : (
+      ) : tab === "submissions" ? (
         /* Submissions tab */
         <div className="p-6">
           {submissions.length === 0 ? (
@@ -424,7 +461,257 @@ export default function AdminPage() {
             </div>
           )}
         </div>
-      )}
+      ) : tab === "homepage" ? (
+        /* Homepage Order tab */
+        <div className="p-6">
+          <p className="text-dusk text-sm mb-6">
+            Configure which quotes appear as hero slides on the homepage. Use arrows to reorder.
+          </p>
+
+          {/* Current hero slides */}
+          <div className="space-y-3 mb-8">
+            {homepageOrder.map((slide, idx) => {
+              const quote = quotes.find((q) => q.slug === slide.slug);
+              return (
+                <div
+                  key={slide.slug}
+                  className="bg-surface border border-divider rounded-lg p-4 flex items-center gap-4"
+                >
+                  <div className="flex flex-col gap-1">
+                    <button
+                      disabled={idx === 0}
+                      onClick={() => {
+                        const next = [...homepageOrder];
+                        [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+                        setHomepageOrder(next);
+                      }}
+                      className="text-dusk hover:text-parchment disabled:opacity-20 text-xs"
+                    >
+                      ▲
+                    </button>
+                    <button
+                      disabled={idx === homepageOrder.length - 1}
+                      onClick={() => {
+                        const next = [...homepageOrder];
+                        [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+                        setHomepageOrder(next);
+                      }}
+                      className="text-dusk hover:text-parchment disabled:opacity-20 text-xs"
+                    >
+                      ▼
+                    </button>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">
+                      {quote?.text.slice(0, 60)}...
+                    </p>
+                    <p className="text-brass text-xs">{quote?.author} · {quote?.yearWritten}</p>
+                    <div className="flex gap-3 mt-2">
+                      <label className="text-[10px] text-dusk uppercase">
+                        Layout:
+                        <select
+                          value={slide.layout}
+                          onChange={(e) => {
+                            const next = [...homepageOrder];
+                            next[idx] = { ...next[idx], layout: e.target.value as "full" | "split" };
+                            setHomepageOrder(next);
+                          }}
+                          className="ml-1 bg-elevated border border-divider rounded px-1 py-0.5 text-parchment text-[10px]"
+                        >
+                          <option value="full">Full</option>
+                          <option value="split">Split</option>
+                        </select>
+                      </label>
+                      <input
+                        value={slide.highlightPhrase}
+                        onChange={(e) => {
+                          const next = [...homepageOrder];
+                          next[idx] = { ...next[idx], highlightPhrase: e.target.value };
+                          setHomepageOrder(next);
+                        }}
+                        placeholder="Highlight phrase"
+                        className="bg-elevated border border-divider rounded px-2 py-0.5 text-[10px] text-parchment w-40"
+                      />
+                      <input
+                        value={slide.imageUrl}
+                        onChange={(e) => {
+                          const next = [...homepageOrder];
+                          next[idx] = { ...next[idx], imageUrl: e.target.value };
+                          setHomepageOrder(next);
+                        }}
+                        placeholder="Image URL"
+                        className="bg-elevated border border-divider rounded px-2 py-0.5 text-[10px] text-parchment flex-1"
+                      />
+                    </div>
+                    {slide.layout === "split" && (
+                      <input
+                        value={slide.duotoneColor || ""}
+                        onChange={(e) => {
+                          const next = [...homepageOrder];
+                          next[idx] = { ...next[idx], duotoneColor: e.target.value || undefined };
+                          setHomepageOrder(next);
+                        }}
+                        placeholder="Duotone color (e.g. #B05454)"
+                        className="mt-1 bg-elevated border border-divider rounded px-2 py-0.5 text-[10px] text-parchment w-48"
+                      />
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setHomepageOrder(homepageOrder.filter((_, i) => i !== idx))}
+                    className="text-crimson text-xs hover:text-crimson/80 shrink-0"
+                  >
+                    Remove
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Add new slide */}
+          <div className="flex gap-3 mb-6">
+            <select
+              value={newHeroSlug}
+              onChange={(e) => setNewHeroSlug(e.target.value)}
+              className="flex-1 h-9 bg-elevated border border-divider rounded px-3 text-sm text-parchment"
+            >
+              <option value="">Add a quote to homepage...</option>
+              {quotes
+                .filter((q) => !homepageOrder.some((h) => h.slug === q.slug))
+                .map((q) => (
+                  <option key={q.slug} value={q.slug}>
+                    {q.author} — {q.text.slice(0, 50)}...
+                  </option>
+                ))}
+            </select>
+            <button
+              disabled={!newHeroSlug}
+              onClick={() => {
+                if (!newHeroSlug) return;
+                setHomepageOrder([
+                  ...homepageOrder,
+                  { slug: newHeroSlug, imageUrl: "", highlightPhrase: "", layout: "full" },
+                ]);
+                setNewHeroSlug("");
+              }}
+              className="px-4 h-9 bg-brass text-ink rounded text-sm font-medium hover:bg-brass-bright disabled:opacity-50"
+            >
+              Add
+            </button>
+          </div>
+
+          <button
+            onClick={async () => {
+              await fetch("/api/admin/homepage-order", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(homepageOrder),
+              });
+              fetchHomepageOrder();
+            }}
+            className="px-6 py-2 bg-brass text-ink rounded text-sm font-medium hover:bg-brass-bright"
+          >
+            Save Homepage Order
+          </button>
+        </div>
+      ) : tab === "archive" ? (
+        /* Archive Order tab */
+        <div className="p-6">
+          <p className="text-dusk text-sm mb-6">
+            Set the display order for the archive page. Quotes not listed here appear at the end sorted by year.
+          </p>
+
+          <div className="space-y-2 mb-6 max-h-[60vh] overflow-y-auto">
+            {archiveOrder.map((slug, idx) => {
+              const quote = quotes.find((q) => q.slug === slug);
+              if (!quote) return null;
+              return (
+                <div
+                  key={slug}
+                  className="bg-surface border border-divider rounded p-3 flex items-center gap-3"
+                >
+                  <div className="flex flex-col gap-0.5">
+                    <button
+                      disabled={idx === 0}
+                      onClick={() => {
+                        const next = [...archiveOrder];
+                        [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+                        setArchiveOrder(next);
+                      }}
+                      className="text-dusk hover:text-parchment disabled:opacity-20 text-xs"
+                    >
+                      ▲
+                    </button>
+                    <button
+                      disabled={idx === archiveOrder.length - 1}
+                      onClick={() => {
+                        const next = [...archiveOrder];
+                        [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+                        setArchiveOrder(next);
+                      }}
+                      className="text-dusk hover:text-parchment disabled:opacity-20 text-xs"
+                    >
+                      ▼
+                    </button>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm truncate">{quote.text.slice(0, 60)}...</p>
+                    <p className="text-brass text-xs">{quote.author}</p>
+                  </div>
+                  <button
+                    onClick={() => setArchiveOrder(archiveOrder.filter((_, i) => i !== idx))}
+                    className="text-crimson text-xs shrink-0"
+                  >
+                    ✕
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex gap-3 mb-6">
+            <select
+              onChange={(e) => {
+                if (e.target.value && !archiveOrder.includes(e.target.value)) {
+                  setArchiveOrder([...archiveOrder, e.target.value]);
+                }
+                e.target.value = "";
+              }}
+              className="flex-1 h-9 bg-elevated border border-divider rounded px-3 text-sm text-parchment"
+            >
+              <option value="">Add quote to archive order...</option>
+              {quotes
+                .filter((q) => !archiveOrder.includes(q.slug))
+                .map((q) => (
+                  <option key={q.slug} value={q.slug}>
+                    {q.author} — {q.text.slice(0, 50)}...
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={async () => {
+                await fetch("/api/admin/archive-order", {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(archiveOrder),
+                });
+                fetchArchiveOrder();
+              }}
+              className="px-6 py-2 bg-brass text-ink rounded text-sm font-medium hover:bg-brass-bright"
+            >
+              Save Archive Order
+            </button>
+            <button
+              onClick={() => setArchiveOrder([])}
+              className="px-4 py-2 text-dusk text-sm hover:text-parchment border border-divider rounded"
+            >
+              Clear (use default)
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

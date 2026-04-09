@@ -6,9 +6,14 @@
   "source": "Ladies' Home Journal, 'What May Happen in the Next Hundred Years', 1900",
   "yearWritten": 1900,
   "yearImagined": "2000",
-  "categories": ["Food & Agriculture", "Technology"],
+  "categories": [
+    "Food & Agriculture",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Strawberries haven't reached apple size, but selective breeding and agricultural technology have dramatically increased their average size — modern strawberries are roughly three times larger than their 1900 counterparts. Genetic modification has expanded the possibilities further. And you can absolutely eat strawberries at Christmas now, thanks to global supply chains and greenhouse cultivation. Watkins got the spirit right: we did engineer our food to be bigger, better, and available year-round. Just not quite apple-sized."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }

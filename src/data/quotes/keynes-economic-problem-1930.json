@@ -7,9 +7,14 @@
   "sourceUrl": "http://www.econ.yale.edu/smith/econ116a/keynes1.pdf",
   "yearWritten": 1930,
   "yearImagined": "1930-1970",
-  "categories": ["Economy", "Society"],
+  "categories": [
+    "Economy",
+    "Society"
+  ],
   "didItHoldUp": {
     "verdict": "partially-true",
     "analysis": "Keynes asked the deepest question in economics: what happens when we solve scarcity? His dread was prophetic. In wealthy nations, the economic problem is largely solved — most people have food, shelter, and material comfort their grandparents couldn't imagine. But the existential crisis Keynes feared has arrived differently than expected. Instead of leisure and philosophy, we got consumerism and anxiety. The 'readjustment' he worried about shows up as epidemic depression, addiction, and a crisis of meaning in the world's richest societies. We solved the economic problem. We didn't solve the human one."
-  }
+  },
+  "quoteSource": "original",
+  "status": "published"
 }

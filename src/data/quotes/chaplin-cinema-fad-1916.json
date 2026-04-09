@@ -6,9 +6,14 @@
   "source": "Attributed, c. 1916",
   "yearWritten": 1916,
   "yearImagined": "near future",
-  "categories": ["Culture & Entertainment", "Technology"],
+  "categories": [
+    "Culture & Entertainment",
+    "Technology"
+  ],
   "didItHoldUp": {
     "verdict": "did-not-come-true",
     "analysis": "Charlie Chaplin dismissed the medium that would make him one of the most famous people on Earth. Cinema became the dominant art form of the 20th century, and Chaplin became its greatest star. Theater survived, but as a niche. The irony is almost too perfect — the man who would prove cinema's staying power was the one who doubted it. Perhaps he was being modest. Perhaps he was being strategic. Either way, the prediction aged magnificently badly."
-  }
+  },
+  "quoteSource": "ai-generated",
+  "status": "published"
 }
