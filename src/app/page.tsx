@@ -1,182 +1,121 @@
-import { getAllQuotes, getQuoteBySlug } from "@/lib/quotes";
-import { getHomepageOrder } from "@/lib/ordering";
-import { ScrollContainer } from "@/components/ScrollContainer";
-import { QuoteSlide } from "@/components/QuoteSlide";
-import { SplitSlide } from "@/components/SplitSlide";
-import { MasonryCard } from "@/components/MasonryCard";
+import { getFeaturedEntry, getRecentEntries } from "@/lib/corpus";
+import Link from "next/link";
+import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "The Expected World — An archive of expired futures",
+};
 
-export default function Home() {
-  const allQuotes = getAllQuotes();
-  const heroConfig = getHomepageOrder();
+function todayLabel() {
+  return new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
 
-  // Get curated quotes for slides from config
-  const slides = heroConfig
-    .map((s) => ({ ...s, quote: getQuoteBySlug(s.slug) }))
-    .filter((s) => s.quote);
-
-  // Gallery quotes: exclude hero quotes, prioritize originals
-  const heroSlugs = new Set(heroConfig.map((s) => s.slug));
-  const galleryQuotes = allQuotes
-    .filter((q) => !heroSlugs.has(q.slug))
-    .sort((a, b) => {
-      // Originals first, then by yearWritten
-      const aOrig = a.quoteSource === "original" ? 0 : 1;
-      const bOrig = b.quoteSource === "original" ? 0 : 1;
-      if (aOrig !== bOrig) return aOrig - bOrig;
-      return a.yearWritten - b.yearWritten;
-    });
+export default function HomePage() {
+  const featured = getFeaturedEntry();
+  const recent = getRecentEntries(10);
 
   return (
-    <ScrollContainer>
-      {/* Opening */}
-      <section className="snap-section flex-col bg-ink" id="opening">
-        <div
-          className="font-display font-semibold text-[clamp(24px,5vw,56px)] tracking-[0.35em] uppercase text-parchment text-center opacity-0"
-          style={{ animation: "fadeUp 1.2s ease 0.3s forwards" }}
-        >
-          The Expected World
+    <div className="flex flex-col min-h-full">
+      {/* Header */}
+      <header>
+        <div style={{ maxWidth: "var(--max-width-wide)", margin: "0 auto", padding: "1.5rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <Link href="/" style={{ fontFamily: "var(--font-heading)", fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text)", letterSpacing: "0.08em" }}>
+            The Expected World
+          </Link>
+          <nav style={{ display: "flex", gap: "2rem" }}>
+            {[["/#archive", "browse"], ["/timeline", "timeline"], ["/about", "about"]].map(([href, label]) => (
+              <Link key={href} href={href} className="nav-link" style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", color: "var(--color-secondary)", letterSpacing: "0.04em", transition: "color 150ms ease" }}>{label}</Link>
+            ))}
+          </nav>
         </div>
-        <div
-          className="font-mono text-[clamp(10px,1.2vw,14px)] tracking-[0.2em] uppercase text-dusk mt-5 opacity-0"
-          style={{ animation: "fadeUp 1.2s ease 0.8s forwards" }}
-        >
-          The future, as they saw it
-        </div>
-        <div
-          className="w-px h-0 bg-brass-muted mt-12"
-          style={{ animation: "growLine 2s ease 1.4s forwards" }}
-        />
-        <div
-          className="font-mono text-[10px] tracking-[0.15em] uppercase text-graphite mt-8 opacity-0"
-          style={{ animation: "fadeUp 1s ease 2.2s forwards" }}
-        >
-          Scroll to begin
-        </div>
-      </section>
+      </header>
 
-      {/* Quote Slides with interstitials */}
-      {slides.map((s, i) => (
-        <div key={s.slug}>
-          {s.layout === "split" ? (
-            <SplitSlide
-              quote={s.quote!}
-              imageUrl={s.imageUrl}
-              duotoneColor={s.duotoneColor}
-              highlightPhrase={s.highlightPhrase}
-            />
-          ) : (
-            <QuoteSlide
-              quote={s.quote!}
-              imageUrl={s.imageUrl || undefined}
-              highlightPhrase={s.highlightPhrase}
-            />
-          )}
-
-          {/* Interstitials after first two slides */}
-          {i === 0 && (
-            <section className="snap-section flex-col gap-2 bg-ink min-h-[40vh]">
-              <div className="font-display font-semibold text-[clamp(20px,3vw,40px)] tracking-[0.04em] text-parchment text-center max-w-[600px] leading-[1.3]">
-                Every era imagines<br />what comes next.
-              </div>
-              <div className="font-mono text-[11px] tracking-[0.15em] uppercase text-brass mt-4">
-                Some get it right.
-              </div>
-            </section>
-          )}
-          {i === 1 && (
-            <section className="snap-section flex-col gap-2 bg-ink min-h-[40vh]">
-              <div className="font-display font-semibold text-[clamp(20px,3vw,40px)] tracking-[0.04em] text-parchment text-center max-w-[600px] leading-[1.3]">
-                Some don&apos;t.
-              </div>
-              <div className="font-mono text-[11px] tracking-[0.15em] uppercase text-brass mt-4">
-                But they all tell us something.
-              </div>
-            </section>
-          )}
-        </div>
-      ))}
-
-      {/* Gallery / Archive */}
-      <section
-        className="min-h-screen p-24 max-md:p-6 bg-ink block"
-        id="gallery"
-      >
-        <div className="text-center mb-16">
-          <div className="font-mono text-[11px] tracking-[0.15em] uppercase text-brass mb-3">
-            The Archive
-          </div>
-          <h2 className="font-display font-semibold text-[clamp(28px,4vw,48px)] tracking-[0.03em]">
-            Every Era Imagines What Comes Next
-          </h2>
-          <p className="font-body font-light text-base text-dusk mt-3">
-            {allQuotes.length} predictions and counting
+      <main className="flex-1">
+        {/* Masthead */}
+        <section style={{ maxWidth: "var(--max-width-body)", margin: "0 auto", padding: "5rem 1.5rem 3rem", textAlign: "center" }}>
+          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2.75rem, 8vw, 4.5rem)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.01em", color: "var(--color-text)", marginBottom: "1rem" }}>
+            The Expected World
+          </h1>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "1.125rem", fontStyle: "italic", color: "var(--color-secondary)", marginBottom: "3rem" }}>
+            An archive of expired futures.
           </p>
-        </div>
+          <hr style={{ border: "none", borderTop: "1px solid rgba(26,26,26,0.15)", width: "4rem", margin: "0 auto 3rem" }} />
 
-        <div className="masonry">
-          {galleryQuotes.slice(0, 12).map((q, i) => (
-            <MasonryCard key={q.slug} quote={q} featured={i === 0} />
-          ))}
-        </div>
-      </section>
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, color: "var(--color-accent)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "1.5rem" }}>
+            Today in the Expected Past — {todayLabel()}
+          </p>
 
-      {/* Newsletter */}
-      <section
-        className="min-h-[60vh] flex flex-col items-center justify-center p-24 max-md:p-6 text-center bg-gradient-to-b from-ink to-surface"
-        id="newsletter"
-      >
-        <div className="font-mono text-[11px] tracking-[0.15em] uppercase text-brass mb-6">
-          Tomorrow, Yesterday
-        </div>
-        <h2 className="font-display font-semibold text-[clamp(28px,4vw,48px)] mb-2">
-          A prediction from the past,<br />delivered to your inbox.
-        </h2>
-        <div className="font-body font-light text-lg text-dusk mb-10 max-w-[480px]">
-          One extraordinary prediction every morning. Free forever.
-        </div>
-        <form className="flex gap-2 max-w-[440px] w-full max-md:flex-col">
-          <input
-            type="email"
-            placeholder="your@email.com"
-            className="flex-1 h-[52px] bg-elevated border border-divider rounded px-5 font-body text-[15px] text-parchment placeholder:text-graphite focus:outline-none focus:border-brass transition-colors"
-          />
-          <button
-            type="submit"
-            className="h-[52px] px-7 bg-brass text-ink border-none rounded font-body font-medium text-sm uppercase tracking-[0.06em] cursor-pointer hover:bg-brass-bright transition-colors whitespace-nowrap"
-          >
-            Subscribe
-          </button>
-        </form>
-        <p className="text-xs text-graphite mt-4">
-          Join 1,200 time-travelers. No spam, ever.
-        </p>
-      </section>
+          <div style={{ maxWidth: "48rem", margin: "0 auto" }}>
+            <Link href={`/entry/${featured.id}`} style={{ display: "block" }}>
+              <div className="quote-block" style={{ paddingLeft: "1.5rem", marginBottom: "1.5rem" }}>
+                <p className="featured-quote" style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.375rem, 3vw, 2rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.5, color: "var(--color-text)", display: "-webkit-box", WebkitLineClamp: 5, WebkitBoxOrient: "vertical", overflow: "hidden", transition: "color 150ms ease" }}>
+                  {featured.quote}
+                </p>
+              </div>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-secondary)", marginBottom: "1rem", textAlign: "left" }}>
+                — {featured.author}, <em>{featured.source.split(",")[0]}</em>{featured.dateWritten ? `, ${featured.dateWritten.slice(0, 4)}` : ""}
+              </p>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--color-accent)", textAlign: "left", marginBottom: "2rem" }}>
+                Written: <time dateTime={featured.dateWritten}>{featured.dateWritten}</time>
+                <span style={{ color: "var(--color-secondary)", margin: "0 0.75rem" }}>·</span>
+                Predicted: <time dateTime={featured.predictedDateNormalized}>{featured.predictedDateNormalized}</time>
+              </div>
+              <div style={{ textAlign: "left" }}>
+                <span style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-accent)", textDecoration: "underline", textUnderlineOffset: "3px" }}>Read entry</span>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* Entry list */}
+        <section id="archive" style={{ maxWidth: "var(--max-width-body)", margin: "0 auto", padding: "0 1.5rem 5rem" }}>
+          <div style={{ borderTop: "1px solid rgba(26,26,26,0.12)", paddingTop: "4rem", marginBottom: "2rem" }}>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, color: "var(--color-secondary)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Recent &amp; Notable</p>
+          </div>
+          <div>
+            {recent.filter(e => e.id !== featured.id).slice(0, 9).map((entry, idx, arr) => (
+              <Link key={entry.id} href={`/entry/${entry.id}`} style={{ display: "block" }} className="entry-row-link">
+                <article style={{ padding: "2rem 0", borderBottom: idx < arr.length - 1 ? "1px solid rgba(26,26,26,0.1)" : "none" }} className="entry-row">
+                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", fontWeight: 500, color: "var(--color-accent)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "0.75rem" }}>{entry.category}</p>
+                  <p className="entry-quote" style={{ fontFamily: "var(--font-heading)", fontSize: "1.375rem", fontWeight: 400, fontStyle: "italic", lineHeight: 1.55, color: "var(--color-text)", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", marginBottom: "0.75rem", transition: "color 150ms ease" }}>
+                    {entry.quote}
+                  </p>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-secondary)", marginBottom: "0.5rem" }}>— {entry.author}</p>
+                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--color-accent)" }}>
+                    Predicted: {entry.predictedDateNormalized}{"   "}Written: {entry.dateWritten}
+                  </p>
+                </article>
+              </Link>
+            ))}
+          </div>
+          <div style={{ textAlign: "right", paddingTop: "2rem" }}>
+            <Link href="/category/technology" style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-accent)", textDecoration: "underline", textUnderlineOffset: "3px" }}>Browse all entries</Link>
+          </div>
+        </section>
+
+        <section style={{ maxWidth: "var(--max-width-body)", margin: "0 auto", padding: "3rem 1.5rem", textAlign: "center" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "1rem", color: "var(--color-secondary)" }}>
+            <Link href="/category/technology" className="browse-prompt-link">Browse by category →</Link>
+            {"  ·  "}
+            <Link href="/timeline" className="browse-prompt-link">Browse by era →</Link>
+          </p>
+        </section>
+      </main>
 
       {/* Footer */}
-      <footer className="p-12 text-center border-t border-divider">
-        <div className="font-display font-semibold text-sm tracking-[0.25em] uppercase text-dusk mb-6">
-          The Expected World
-        </div>
-        <nav className="flex gap-6 justify-center mb-6">
-          <a href="/predictions" className="font-body text-[13px] text-graphite hover:text-parchment transition-colors">
-            Archive
-          </a>
-          <a href="/about" className="font-body text-[13px] text-graphite hover:text-parchment transition-colors">
-            About
-          </a>
-          <a href="/submit" className="font-body text-[13px] text-graphite hover:text-parchment transition-colors">
-            Submit
-          </a>
-          <a href="/newsletter" className="font-body text-[13px] text-graphite hover:text-parchment transition-colors">
-            Newsletter
-          </a>
-        </nav>
-        <div className="font-body text-[11px] text-graphite">
-          &copy; 2026 The Expected World. A project by Expected Worlds.
+      <footer style={{ borderTop: "1px solid rgba(26,26,26,0.12)", marginTop: "auto" }}>
+        <div style={{ maxWidth: "var(--max-width-wide)", margin: "0 auto", padding: "5rem 2rem 3rem", display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "var(--font-body)", fontSize: "0.875rem", color: "var(--color-secondary)" }}>
+          <span>© The Expected World</span>
+          <span>Submissions &amp; Contact</span>
         </div>
       </footer>
-    </ScrollContainer>
+
+      <style>{`
+        .nav-link:hover { color: var(--color-text) !important; text-decoration: underline; text-underline-offset: 3px; }
+        .entry-row-link:hover .entry-quote { color: var(--color-accent) !important; }
+        .browse-prompt-link { color: var(--color-secondary); transition: color 150ms ease; }
+        .browse-prompt-link:hover { color: var(--color-text) !important; }
+      `}</style>
+    </div>
   );
 }

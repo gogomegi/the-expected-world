@@ -1,130 +1,73 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "The Expected World collects historical predictions about the future and asks one question: did it hold up?",
+  description: "The Expected World is an archival publication that surfaces texts originally written about the future.",
 };
 
 export default function AboutPage() {
   return (
-    <>
-      <SiteHeader />
-      <main className="max-w-[720px] mx-auto px-12 max-md:px-4">
-      {/* Hero statement */}
-      <h1 className="font-display font-semibold text-[40px] max-md:text-[28px] tracking-[0.02em] text-center mt-24 mb-12">
-        Every era imagines what comes next.
-      </h1>
+    <div className="flex flex-col min-h-full">
+      <header>
+        <div style={{ maxWidth: "var(--max-width-wide)", margin: "0 auto", padding: "1.5rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <Link href="/" style={{ fontFamily: "var(--font-heading)", fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text)", letterSpacing: "0.08em" }}>The Expected World</Link>
+          <nav style={{ display: "flex", gap: "2rem" }}>
+            {[["/", "browse"], ["/timeline", "timeline"], ["/about", "about"]].map(([href, label]) => (
+              <Link key={href} href={href} className="nav-link" style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", color: "var(--color-secondary)", letterSpacing: "0.04em", transition: "color 150ms ease" }}>{label}</Link>
+            ))}
+          </nav>
+        </div>
+      </header>
 
-      <div className="space-y-6 text-parchment leading-[1.7]">
-        <p>
-          In 1900, a civil engineer named John Elfreth Watkins Jr. sat down with
-          a pen and made a list. He called it &ldquo;What May Happen in the Next
-          Hundred Years.&rdquo; He predicted photographs sent instantly across
-          the world. Pre-made meals. High-speed trains. Pocket telephones. He
-          wrote this in the Ladies&apos; Home Journal, and almost nobody noticed.
-        </p>
-        <p>
-          A century later, he&apos;d nailed nearly everything.
-        </p>
-        <p>
-          That&apos;s what The Expected World is about: the gap between what
-          people imagined and what actually happened. The promises, the warnings,
-          the wild guesses, the stunning bullseyes.
-        </p>
-      </div>
+      <main className="flex-1">
+        <div style={{ maxWidth: "var(--max-width-body)", margin: "0 auto", padding: "0 1.5rem 6rem" }}>
+          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2.5rem", fontWeight: 400, color: "var(--color-text)", paddingTop: "3rem", marginBottom: "3rem" }}>About</h1>
 
-      {/* Divider */}
-      <div className="w-16 h-px bg-divider mx-auto my-12" />
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", fontWeight: 500, letterSpacing: "0.1em", color: "var(--color-secondary)", textTransform: "uppercase", paddingTop: "0", marginBottom: "1rem" }}>What This Is</p>
+          <div style={{ fontFamily: "var(--font-body)", fontSize: "1.125rem", lineHeight: 1.7, color: "var(--color-text)" }}>
+            <p style={{ marginBottom: "1.25rem" }}>
+              The Expected World is an archival publication that surfaces texts originally written about the future — predictions, forecasts, policy projections, fictional imaginings — each anchored to a specific date or period that has now elapsed.
+            </p>
+            <p style={{ marginBottom: "1.25rem" }}>
+              The site exists to create a particular kind of encounter: a reader meets a mind from the past speaking confidently, or anxiously, or hopefully, about a moment the reader has already lived through. The gap between expectation and outcome is the editorial territory.
+            </p>
+            <p style={{ marginBottom: "1.25rem" }}>
+              This is not a retro-futurism blog. We do not present the past as quaint or its predictions as fodder for amusement. A prediction is not interesting merely because it was wrong. It is interesting when the texture of the expectation — what was assumed, what was feared, what was considered obvious — reveals something about the mind that produced it, the era it emerged from, or the world we actually built.
+            </p>
+          </div>
 
-      <h2 className="font-display font-semibold text-[28px] tracking-[0.02em] text-center mb-6">
-        Why Predictions Matter
-      </h2>
-      <div className="space-y-6 text-parchment leading-[1.7]">
-        <p>
-          Every prediction is a window into the hopes and fears of its era. When
-          a 1950s vacuum company president predicted nuclear-powered cleaners, he
-          wasn&apos;t being foolish — he was expressing the atomic age&apos;s
-          intoxicating belief that nuclear energy would solve everything.
-        </p>
-        <p>
-          Predictions reveal what people valued, what they feared, and what they
-          couldn&apos;t see. They&apos;re historical documents as revealing as
-          any diary or government report — except funnier, and often more honest.
-        </p>
-      </div>
+          <hr style={{ border: "none", borderTop: "1px solid rgba(26,26,26,0.12)", margin: "2.5rem 0 0" }} />
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", fontWeight: 500, letterSpacing: "0.1em", color: "var(--color-secondary)", textTransform: "uppercase", paddingTop: "2.5rem", marginBottom: "1rem" }}>How Entries Are Selected</p>
+          <div style={{ fontFamily: "var(--font-body)", fontSize: "1.125rem", lineHeight: 1.7, color: "var(--color-text)" }}>
+            <p style={{ marginBottom: "1.25rem" }}>Every entry must satisfy four criteria. The source text must reference a specific future date, year, or bounded period. The predicted date must be in the past. The source must be verifiable. And the pairing of prediction and elapsed reality must reward attention.</p>
+            <p style={{ marginBottom: "1.25rem" }}>The fourth criterion is the most important and the most subjective. Ask: does this entry surface a genuine surprise, a buried assumption, a forgotten anxiety, an uncanny accuracy, or a telling blind spot? If yes, it belongs. If it merely demonstrates that people in the past did not have perfect foresight, it does not.</p>
+          </div>
 
-      {/* Divider */}
-      <div className="w-16 h-px bg-divider mx-auto my-12" />
+          <hr style={{ border: "none", borderTop: "1px solid rgba(26,26,26,0.12)", margin: "2.5rem 0 0" }} />
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", fontWeight: 500, letterSpacing: "0.1em", color: "var(--color-secondary)", textTransform: "uppercase", paddingTop: "2.5rem", marginBottom: "1rem" }}>Editorial Standards</p>
+          <div style={{ fontFamily: "var(--font-body)", fontSize: "1.125rem", lineHeight: 1.7, color: "var(--color-text)" }}>
+            <p style={{ marginBottom: "1.25rem" }}>The voice of The Expected World is intellectual but not academic, concise but not glib. We write for readers who are curious, literate, and impatient with padding. Annotations provide context; they do not editorialize, moralize, or gloat. The governing question is always: would a thoughtful reader feel this was worth their attention?</p>
+          </div>
 
-      <h2 className="font-display font-semibold text-[28px] tracking-[0.02em] text-center mb-6">
-        What We Do
-      </h2>
-      <div className="space-y-6 text-parchment leading-[1.7]">
-        <p>
-          We collect historical predictions about the future — from scientists,
-          politicians, inventors, journalists, dreamers, and crackpots — and ask
-          one simple question: <strong>Did it hold up?</strong>
-        </p>
-        <p>
-          We&apos;re not here to mock anyone. Predicting the future is
-          extraordinarily hard. We&apos;re here to marvel at the ones who got it
-          right, learn from the ones who got it wrong, and appreciate the
-          magnificent human compulsion to imagine what&apos;s coming next.
-        </p>
-      </div>
+          <div style={{ borderTop: "1px solid rgba(26,26,26,0.12)", padding: "3rem 0 0", marginTop: "2.5rem" }}>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", fontWeight: 500, letterSpacing: "0.1em", color: "var(--color-secondary)", textTransform: "uppercase", marginBottom: "1rem" }}>Contact &amp; Submissions</p>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: "1rem", color: "var(--color-secondary)", lineHeight: 1.7, marginBottom: "1rem" }}>
+              The archive grows through editorial judgment. If you have found a passage that meets our criteria, we would like to hear about it.
+            </p>
+            <a href="mailto:submissions@theexpectedworld.com" style={{ fontFamily: "var(--font-mono)", fontSize: "0.9375rem", color: "var(--color-accent)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+              submissions@theexpectedworld.com
+            </a>
+          </div>
+        </div>
+      </main>
 
-      {/* Divider */}
-      <div className="w-16 h-px bg-divider mx-auto my-12" />
-
-      <h2 className="font-display font-semibold text-[28px] tracking-[0.02em] text-center mb-6">
-        The Rules
-      </h2>
-      <div className="space-y-6 text-parchment leading-[1.7]">
-        <p>
-          Every prediction in our archive is real, sourced, and attributed. We
-          don&apos;t fabricate quotes. We don&apos;t strip context. We present
-          each prediction with the respect it deserves — and then we hold it up
-          against what actually happened.
-        </p>
-        <p>
-          Our verdicts are honest but fair. &ldquo;Came true&rdquo; means the
-          prediction substantially matched reality. &ldquo;Partially true&rdquo;
-          means the spirit was right even if the details weren&apos;t.
-          &ldquo;Did not come true&rdquo; means... well, nuclear vacuum cleaners.
-        </p>
-      </div>
-
-      {/* Divider */}
-      <div className="w-16 h-px bg-divider mx-auto my-12" />
-
-      <h2 className="font-display font-semibold text-[28px] tracking-[0.02em] text-center mb-4">
-        The Invitation
-      </h2>
-      <div className="space-y-6 text-parchment leading-[1.7] mb-8">
-        <p>
-          The future is being predicted right now — by you, by us, by everyone
-          who&apos;s ever said &ldquo;in ten years, we&apos;ll all be...&rdquo;
-        </p>
-        <p className="text-dusk italic text-center">
-          Because the most interesting thing about the future isn&apos;t whether
-          we get it right. It&apos;s what our guesses say about who we are.
-        </p>
-      </div>
-
-      <div className="text-center mb-24">
-        <Link
-          href="/submit"
-          className="inline-flex items-center gap-2 text-brass font-medium text-sm hover:text-brass-bright hover:underline transition-colors"
-        >
-          Submit a prediction <ArrowRight size={16} />
-        </Link>
-      </div>
-    </main>
-      <SiteFooter />
-    </>
+      <footer style={{ borderTop: "1px solid rgba(26,26,26,0.12)", marginTop: "auto" }}>
+        <div style={{ maxWidth: "var(--max-width-wide)", margin: "0 auto", padding: "5rem 2rem 3rem", display: "flex", justifyContent: "space-between", fontFamily: "var(--font-body)", fontSize: "0.875rem", color: "var(--color-secondary)" }}>
+          <span>© The Expected World</span><span>Submissions &amp; Contact</span>
+        </div>
+      </footer>
+      <style>{`.nav-link:hover{color:var(--color-text)!important;text-decoration:underline;text-underline-offset:3px}`}</style>
+    </div>
   );
 }

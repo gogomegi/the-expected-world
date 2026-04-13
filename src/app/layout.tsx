@@ -1,40 +1,55 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Cormorant_Garamond, Source_Serif_4, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const ibmMono = IBM_Plex_Mono({
+  variable: "--font-ibm-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
-    default: "The Expected World — Historical Visions of Tomorrow",
+    default: "The Expected World",
     template: "%s | The Expected World",
   },
   description:
-    "A curated archive of historical predictions about the future. Did they get it right?",
+    "An archive of expired futures. Passages, predictions, and forecasts addressed to dates that have since passed.",
   openGraph: {
+    title: "The Expected World",
+    description: "An archive of expired futures. Passages, predictions, and forecasts addressed to dates that have since passed.",
     siteName: "The Expected World",
+    locale: "en_US",
     type: "website",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Mono:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="min-h-full bg-ink text-parchment">{children}</body>
+    <html
+      lang="en"
+      className={`${cormorant.variable} ${sourceSerif.variable} ${ibmMono.variable} h-full`}
+    >
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
