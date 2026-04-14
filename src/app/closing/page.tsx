@@ -8,8 +8,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/closing" },
 };
 
-function extractYear(dateStr: string): string {
-  return dateStr.slice(0, 4);
+const BG_COLORS = ["var(--vivid-amber)", "var(--vivid-green)"] as const;
+
+function bgForIndex(i: number) {
+  return BG_COLORS[i % BG_COLORS.length];
 }
 
 export default function ClosingPage() {
@@ -17,170 +19,177 @@ export default function ClosingPage() {
 
   return (
     <div>
-      {/* Title section */}
+      {/* ═══ HERO ═══ */}
       <section
+        className="grid-bg"
         style={{
-          paddingTop: "var(--space-8)",
-          paddingBottom: "var(--space-7)",
+          background: "var(--black)",
+          padding: "160px 48px 80px",
           textAlign: "center",
         }}
       >
         <h1
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem, 5vw, var(--text-masthead))",
-            fontWeight: 300,
-            lineHeight: 1.05,
-            letterSpacing: "0.02em",
-            color: "var(--color-text)",
-            margin: 0,
+            fontFamily: "var(--font-heading)",
+            fontSize: "clamp(2.75rem, 5vw, 4rem)",
+            fontWeight: 900,
+            lineHeight: 0.95,
+            letterSpacing: "-0.02em",
+            textTransform: "uppercase",
+            color: "var(--text-on-dark)",
+            margin: "0 0 20px",
           }}
         >
           Gate is Closing
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
+            fontFamily: "var(--font-quote)",
             fontStyle: "italic",
-            color: "var(--color-secondary)",
-            marginTop: "var(--space-2)",
-            marginBottom: "var(--space-6)",
+            fontSize: "1.25rem",
+            color: "var(--muted-dark)",
+            maxWidth: "540px",
+            margin: "0 auto",
+            lineHeight: 1.5,
           }}
         >
           Predictions addressed to dates that have not yet arrived.
         </p>
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.4)",
-            maxWidth: "var(--max-width-layout)",
-            margin: "0 auto",
-          }}
-        />
       </section>
 
-      {/* Entry list */}
+      {/* ═══ CLOSING CARDS ═══ */}
       <section
+        className="grid-bg"
         style={{
-          maxWidth: "var(--max-width-layout)",
-          margin: "0 auto",
-          padding: "0 var(--space-6) var(--space-7)",
+          background: "var(--black)",
+          padding: "80px 48px 120px",
         }}
       >
-        {entries.length === 0 ? (
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--text-body)",
-              color: "var(--color-secondary)",
-            }}
-          >
-            No predictions with future dates in the confirmed corpus yet.
-          </p>
-        ) : (
-          <div>
-            {entries.map((entry) => (
-              <Link
-                key={entry.id}
-                href={`/entry/${entry.id}`}
-                style={{ display: "block", textDecoration: "none" }}
-              >
-                <div
-                  style={{
-                    padding: "var(--space-4) 0",
-                    borderBottom: "1px solid rgba(120, 113, 103, 0.15)",
-                  }}
+        <div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
+          {entries.length === 0 ? (
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "1rem",
+                color: "var(--muted-dark)",
+              }}
+            >
+              No predictions with future dates in the confirmed corpus yet.
+            </p>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "4px",
+              }}
+            >
+              {entries.map((entry, i) => (
+                <Link
+                  key={entry.id}
+                  href={`/entry/${entry.id}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  {/* CLOSING date + time remaining */}
                   <div
                     style={{
+                      background: bgForIndex(i),
+                      padding: "40px",
                       display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "baseline",
-                      marginBottom: "var(--space-2)",
+                      flexDirection: "column",
+                      minHeight: "300px",
+                      cursor: "pointer",
+                      transition: "opacity 0.25s",
                     }}
                   >
-                    <p
+                    <span
+                      className="section-label"
                       style={{
-                        fontFamily: "var(--font-chrome)",
-                        fontSize: "1.5rem",
-                        fontWeight: 500,
-                        letterSpacing: "-0.02em",
-                        color: "var(--color-accent)",
-                        margin: 0,
+                        color: "rgba(255,255,255,0.6)",
+                        marginBottom: "8px",
                       }}
                     >
-                      CLOSING: {displayYear(entry)}
-                    </p>
+                      closing
+                    </span>
                     <span
                       style={{
-                        fontFamily: "var(--font-chrome)",
-                        fontSize: "var(--text-ui)",
-                        fontWeight: 500,
+                        fontFamily: "var(--font-heading)",
+                        fontSize: "3.5rem",
+                        fontWeight: 900,
+                        color: "var(--white)",
+                        lineHeight: 1,
+                        marginBottom: "12px",
+                      }}
+                    >
+                      {displayYear(entry)}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.6875rem",
                         letterSpacing: "0.04em",
-                        color: "var(--color-accent)",
-                        opacity: 0.7,
+                        color: "rgba(255,255,255,0.6)",
+                        marginBottom: "20px",
                       }}
                     >
                       {timeRemaining(entry.predictedDateNormalized)}
                     </span>
-                  </div>
-
-                  {/* Quote excerpt */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "1.25rem",
-                      fontWeight: 300,
-                      fontStyle: "italic",
-                      lineHeight: 1.4,
-                      color: "var(--color-text)",
-                      margin: 0,
-                      marginBottom: "var(--space-1)",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {entry.quote}
-                  </p>
-
-                  {/* Attribution */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-mono)",
-                      letterSpacing: "0.04em",
-                      color: "var(--color-secondary)",
-                      margin: 0,
-                    }}
-                  >
-                    {entry.author} · {entry.source.split(",")[0]}, {extractYear(entry.dateWritten)}
-                    {entry.is_fiction && (
+                    <p
+                      style={{
+                        fontFamily: "var(--font-quote)",
+                        fontStyle: "italic",
+                        fontSize: "1.0625rem",
+                        lineHeight: 1.45,
+                        color: "rgba(255,255,255,0.85)",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        marginBottom: "20px",
+                        flex: 1,
+                      }}
+                    >
+                      {entry.quote}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <span
                         style={{
-                          fontFamily: "var(--font-chrome)",
-                          fontSize: "0.5625rem",
-                          fontWeight: 500,
-                          letterSpacing: "0.08em",
-                          color: "var(--color-secondary)",
-                          border: "1px solid rgba(120, 113, 103, 0.3)",
-                          padding: "1px 6px",
-                          borderRadius: "1px",
-                          marginLeft: "8px",
+                          fontFamily: "var(--font-body)",
+                          fontSize: "0.8125rem",
+                          fontWeight: 600,
+                          color: "rgba(255,255,255,0.7)",
                         }}
                       >
-                        FICTION
+                        {entry.author}
                       </span>
-                    )}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+                      {entry.is_fiction && (
+                        <span
+                          style={{
+                            display: "inline-block",
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "0.5rem",
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            border: "1px solid rgba(255,255,255,0.4)",
+                            color: "var(--white)",
+                            padding: "2px 6px",
+                          }}
+                        >
+                          fiction
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </section>
     </div>
   );

@@ -20,6 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const ACCENTS = ["accent-orange", "accent-blue", "accent-green", ""] as const;
+
+function accentForIndex(i: number) {
+  return ACCENTS[i % ACCENTS.length];
+}
+
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
   const category = getCategoryBySlug(slug);
@@ -28,158 +34,181 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <div>
-      {/* Title section */}
+      {/* ═══ HERO ═══ */}
       <section
+        className="grid-bg"
         style={{
-          paddingTop: "var(--space-8)",
-          paddingBottom: "var(--space-7)",
+          background: "var(--black)",
+          padding: "160px 48px 80px",
           textAlign: "center",
         }}
       >
         <h1
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem, 5vw, var(--text-masthead))",
-            fontWeight: 300,
-            lineHeight: 1.05,
-            letterSpacing: "0.02em",
-            color: "var(--color-text)",
-            margin: 0,
+            fontFamily: "var(--font-heading)",
+            fontSize: "clamp(2.75rem, 5vw, 4rem)",
+            fontWeight: 900,
+            lineHeight: 0.95,
+            letterSpacing: "-0.02em",
+            textTransform: "uppercase",
+            color: "var(--text-on-dark)",
+            margin: "0 0 20px",
           }}
         >
           {category.name}
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1.125rem",
+            fontFamily: "var(--font-quote)",
             fontStyle: "italic",
-            fontWeight: 300,
-            color: "var(--color-secondary)",
-            marginTop: "var(--space-2)",
-            marginBottom: "var(--space-1)",
+            fontSize: "1.25rem",
+            color: "var(--muted-dark)",
+            maxWidth: "540px",
+            margin: "0 auto 16px",
+            lineHeight: 1.5,
           }}
         >
           {category.description}
         </p>
-        <p
+        <span
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "var(--text-mono)",
-            color: "var(--color-secondary)",
-            letterSpacing: "0.04em",
-            marginBottom: "var(--space-6)",
+            fontSize: "0.6875rem",
+            letterSpacing: "0.06em",
+            color: "var(--muted-dark)",
           }}
         >
           {entries.length} entries
-        </p>
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.4)",
-            maxWidth: "var(--max-width-layout)",
-            margin: "0 auto",
-          }}
-        />
+        </span>
       </section>
 
+      {/* ═══ ENTRIES — cream section ═══ */}
       <section
         style={{
-          maxWidth: "var(--max-width-layout)",
-          margin: "0 auto",
-          padding: "0 var(--space-6) var(--space-7)",
+          background: "var(--cream)",
+          color: "var(--text-on-light)",
+          padding: "80px 48px 120px",
         }}
       >
-        {entries.length === 0 ? (
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--text-body)",
-              color: "var(--color-secondary)",
-            }}
-          >
-            No passages indexed for this category yet. Submissions are open.
-          </p>
-        ) : (
-          <div>
-            {entries.map((entry) => (
-              <Link
-                key={entry.id}
-                href={`/entry/${entry.id}`}
-                style={{ display: "block", textDecoration: "none" }}
-              >
-                <div className="ledger-row">
-                  <span
-                    style={{
-                      fontFamily: "var(--font-chrome)",
-                      fontSize: "1rem",
-                      fontWeight: 500,
-                      color: "var(--color-accent)",
-                    }}
+        <div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
+          {entries.length === 0 ? (
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "1rem",
+                color: "var(--muted-light)",
+              }}
+            >
+              No passages indexed for this category yet. Submissions are open.
+            </p>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "4px",
+              }}
+            >
+              {entries.map((entry, i) => {
+                const accent = accentForIndex(i);
+                const expired = isExpired(entry.predictedDateNormalized);
+                return (
+                  <Link
+                    key={entry.id}
+                    href={`/entry/${entry.id}`}
+                    style={{ textDecoration: "none" }}
                   >
-                    {entry.predictedDateNormalized.slice(0, 4)}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.875rem",
-                      lineHeight: 1.5,
-                      color: "var(--color-text)",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {entry.quote.length > 90 ? entry.quote.slice(0, 90) + "…" : entry.quote}
-                    {entry.is_fiction && (
-                      <span
+                    <div className={`card-light ${accent}`}>
+                      <div
                         style={{
-                          fontFamily: "var(--font-chrome)",
-                          fontSize: "0.5625rem",
-                          fontWeight: 500,
-                          letterSpacing: "0.08em",
-                          color: "var(--color-secondary)",
-                          border: "1px solid rgba(120, 113, 103, 0.3)",
-                          padding: "1px 6px",
-                          borderRadius: "1px",
-                          marginLeft: "8px",
+                          display: "flex",
+                          alignItems: "baseline",
+                          justifyContent: "space-between",
+                          marginBottom: "20px",
                         }}
                       >
-                        FICTION
-                      </span>
-                    )}
-                  </span>
-                  <span
-                    className="ledger-meta"
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-mono)",
-                      letterSpacing: "0.04em",
-                      color: "var(--color-secondary)",
-                      textAlign: "right",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {entry.author.split(" ").slice(-1)[0]},{" "}
-                    {entry.dateWritten.slice(0, 4)}
-                  </span>
-                  <span
-                    className="ledger-category"
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-mono)",
-                      letterSpacing: "0.04em",
-                      color: "var(--color-secondary)",
-                      textAlign: "right",
-                    }}
-                  >
-                    {isExpired(entry.predictedDateNormalized) ? "expired" : "closing"}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "12px" }}>
+                          <span
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: "0.5625rem",
+                              letterSpacing: "0.1em",
+                              textTransform: "uppercase",
+                              color: "var(--muted-light)",
+                            }}
+                          >
+                            {expired ? "expires" : "closing"}
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "var(--font-heading)",
+                              fontSize: "1.75rem",
+                              fontWeight: 900,
+                              color: "var(--text-on-light)",
+                              lineHeight: 1,
+                            }}
+                          >
+                            {entry.predictedDateNormalized.slice(0, 4)}
+                          </span>
+                        </div>
+                        {entry.is_fiction && <span className="fiction-badge">fiction</span>}
+                      </div>
+                      <p
+                        style={{
+                          fontFamily: "var(--font-quote)",
+                          fontStyle: "italic",
+                          fontSize: "1rem",
+                          lineHeight: 1.45,
+                          color: "var(--text-on-light)",
+                          opacity: 0.8,
+                          flex: 1,
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        {entry.quote}
+                      </p>
+                      <div
+                        style={{
+                          paddingTop: "16px",
+                          borderTop: "1px solid var(--rule-light)",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "baseline",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: "var(--font-body)",
+                            fontSize: "0.8125rem",
+                            fontWeight: 600,
+                            color: "var(--text-on-light)",
+                          }}
+                        >
+                          {entry.author}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "0.5625rem",
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            color: "var(--muted-light)",
+                          }}
+                        >
+                          {entry.category}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </section>
     </div>
   );

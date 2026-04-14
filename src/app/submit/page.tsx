@@ -3,67 +3,74 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Submit a Passage",
-  description:
-    "Know a historical prediction we should feature? Submit it here.",
+  description: "Know a historical prediction we should feature? Submit it here.",
+  alternates: { canonical: "/submit" },
 };
 
 export default function SubmitPage() {
   return (
     <div>
+      {/* Dark hero */}
       <section
+        className="grid-bg"
         style={{
-          paddingTop: "var(--space-8)",
-          paddingBottom: "var(--space-7)",
+          padding: "160px 48px 80px",
+          background: "var(--black)",
           textAlign: "center",
         }}
       >
+        <span className="section-label" style={{ marginBottom: "16px", display: "block" }}>
+          contribute to the archive
+        </span>
         <h1
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem, 5vw, var(--text-masthead))",
-            fontWeight: 300,
-            lineHeight: 1.05,
+            fontFamily: "var(--font-heading)",
+            fontSize: "clamp(2.5rem, 5vw, 4rem)",
+            fontWeight: 900,
             letterSpacing: "0.02em",
-            color: "var(--color-text)",
-            margin: 0,
+            textTransform: "uppercase",
+            color: "var(--text-on-dark)",
+            marginBottom: "16px",
           }}
         >
           Submit a Passage
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
+            fontFamily: "var(--font-quote)",
             fontStyle: "italic",
-            color: "var(--color-secondary)",
-            marginTop: "var(--space-2)",
+            fontSize: "1.125rem",
+            color: "var(--muted-dark)",
           }}
         >
           Know a prediction we are missing? Help us build the archive.
         </p>
       </section>
 
-      <div
+      {/* Cream form section */}
+      <section
         style={{
-          maxWidth: "var(--max-width-prose)",
-          margin: "0 auto",
-          padding: "0 var(--space-6) var(--space-7)",
+          background: "var(--cream)",
+          color: "var(--text-on-light)",
+          padding: "80px 48px",
         }}
       >
-        <SubmitForm />
-        <p
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "var(--text-mono)",
-            color: "var(--color-secondary)",
-            letterSpacing: "0.04em",
-            textAlign: "center",
-            marginTop: "var(--space-3)",
-          }}
-        >
-          All submissions are reviewed before publishing.
-        </p>
-      </div>
+        <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+          <SubmitForm />
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.6875rem",
+              color: "var(--muted-light)",
+              letterSpacing: "0.04em",
+              textAlign: "center",
+              marginTop: "24px",
+            }}
+          >
+            All submissions are reviewed before publishing.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

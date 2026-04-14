@@ -1,37 +1,28 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Source_Serif_4, Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Inter, Lora, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
-import ThemeToggle from "@/components/ThemeToggle";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["400", "500", "600", "800", "900"],
+  display: "swap",
+});
+
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  weight: ["400", "600"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const sourceSerif = Source_Serif_4({
-  variable: "--font-source-serif",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
   weight: ["400", "500"],
-  display: "swap",
-});
-
-const ibmMono = IBM_Plex_Mono({
-  variable: "--font-ibm-mono",
-  subsets: ["latin"],
-  weight: ["400"],
   display: "swap",
 });
 
@@ -58,7 +49,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "The Expected World",
-    description: "An archive of expired futures — and a watch on the ones still closing.",
+    description:
+      "An archive of expired futures — and a watch on the ones still closing.",
     siteName: "The Expected World",
     locale: "en_US",
     type: "website",
@@ -72,99 +64,148 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning={true}
-      className={`${cormorant.variable} ${sourceSerif.variable} ${spaceGrotesk.variable} ${ibmMono.variable}`}
+      className={`${inter.variable} ${lora.variable} ${jetbrains.variable}`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t){document.documentElement.setAttribute('data-theme',t)}}catch(e){}})()`,
-          }}
-        />
-      </head>
-      <body className="min-h-screen flex flex-col">
+      <body
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* Fixed header with gradient fade */}
         <header
           style={{
-            position: "sticky",
+            position: "fixed",
             top: 0,
-            zIndex: 50,
-            background: "var(--color-bg)",
-            maxWidth: "var(--max-width-layout)",
-            margin: "0 auto",
-            width: "100%",
-            padding: "var(--space-3) var(--space-6)",
+            left: 0,
+            right: 0,
+            zIndex: 100,
+            padding: "20px 48px",
             display: "flex",
+            alignItems: "center",
             justifyContent: "space-between",
-            alignItems: "baseline",
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%)",
           }}
         >
           <Link
             href="/"
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "1.125rem",
-              fontWeight: 300,
-              color: "var(--color-text)",
-              letterSpacing: "0.02em",
               display: "flex",
               alignItems: "center",
-              gap: "10px",
+              gap: "14px",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo-sealed-e.svg"
-              alt=""
-              width={24}
-              height={24}
-              className="header-logo"
-              style={{ display: "block" }}
-            />
-            The Expected World
+            <span
+              style={{
+                width: "36px",
+                height: "36px",
+                border: "1.5px solid var(--text-on-dark)",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: "var(--font-quote)",
+                fontSize: "1rem",
+                color: "var(--text-on-dark)",
+              }}
+            >
+              E
+            </span>
+            <span
+              className="hide-mobile"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "0.8125rem",
+                fontWeight: 600,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                color: "var(--text-on-dark)",
+              }}
+            >
+              The Expected World
+            </span>
           </Link>
-          <nav style={{ display: "flex", alignItems: "baseline", gap: "var(--space-4)" }}>
+          <nav style={{ display: "flex", gap: "32px", listStyle: "none" }}>
             {[
-              ["/", "archive"],
-              ["/timeline", "by era"],
+              ["/timeline", "archive"],
+              ["/closing", "closing"],
               ["/about", "about"],
-              ["/submit", "submit a passage"],
+              ["/submit", "submit"],
             ].map(([href, label]) => (
-              <Link key={href} href={href} className="nav-link">
+              <Link key={href} href={href} className="nav-link-v3">
                 {label}
               </Link>
             ))}
-            <ThemeToggle />
           </nav>
         </header>
 
-        <main className="flex-1">{children}</main>
+        <main style={{ flex: 1 }}>{children}</main>
 
+        {/* Footer */}
         <footer
           style={{
-            borderTop: "1px solid rgba(120, 113, 103, 0.2)",
-            marginTop: "auto",
+            padding: "80px 48px",
+            background: "var(--black)",
+            borderTop: "1px solid var(--rule-dark)",
           }}
         >
           <div
             style={{
-              maxWidth: "var(--max-width-layout)",
+              maxWidth: "var(--max-width)",
               margin: "0 auto",
-              padding: "var(--space-6) var(--space-6) var(--space-5)",
-              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--text-sidebar)",
-                fontStyle: "italic",
-                color: "var(--color-secondary)",
-                maxWidth: "var(--max-width-prose)",
-                margin: "0 auto",
-              }}
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <span
+                style={{
+                  width: "28px",
+                  height: "28px",
+                  border: "1.5px solid var(--text-on-dark)",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: "var(--font-quote)",
+                  fontSize: "0.8125rem",
+                  color: "var(--text-on-dark)",
+                }}
+              >
+                E
+              </span>
+              <p
+                style={{
+                  fontFamily: "var(--font-quote)",
+                  fontStyle: "italic",
+                  fontSize: "0.8125rem",
+                  color: "var(--muted-dark)",
+                  maxWidth: "360px",
+                  margin: 0,
+                }}
+              >
+                An archive of expired futures — and a watch on the ones still
+                closing.
+              </p>
+            </div>
+            <nav
+              className="hide-mobile"
+              style={{ display: "flex", gap: "24px", listStyle: "none" }}
             >
-              The Expected World is an archive of expired futures — and a watch
-              on the ones still closing.
-            </p>
+              {[
+                ["/timeline", "archive"],
+                ["/closing", "closing"],
+                ["/about", "about"],
+                ["/submit", "submit"],
+              ].map(([href, label]) => (
+                <Link key={href} href={href} className="nav-link-v3">
+                  {label}
+                </Link>
+              ))}
+            </nav>
           </div>
         </footer>
         <Analytics />
