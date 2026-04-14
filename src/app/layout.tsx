@@ -81,7 +81,7 @@ export default function RootLayout({
             left: 0,
             right: 0,
             zIndex: 100,
-            padding: "20px 48px",
+            padding: "20px 48px 20px 32px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
