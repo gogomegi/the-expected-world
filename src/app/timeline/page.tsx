@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Timeline",
   description: "All entries in The Expected World arranged by the date they predicted.",
+  alternates: { canonical: "/timeline" },
 };
 
 export default function TimelinePage() {
