@@ -34,13 +34,19 @@ const ibmMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const BASE_URL = "https://theexpectedworld.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: {
     default: "The Expected World",
     template: "%s | The Expected World",
   },
   description:
     "An archive of expired futures — and a watch on the ones still closing.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

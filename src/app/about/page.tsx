@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About",
   description: "The Expected World is an archival publication that surfaces texts originally written about the future.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

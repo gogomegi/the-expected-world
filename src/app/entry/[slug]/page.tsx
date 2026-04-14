@@ -22,9 +22,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const entry = getEntryById(slug);
   if (!entry) return {};
+  const label = isExpired(entry.predictedDateNormalized) ? "Expires" : "Closing";
+  const title = `${entry.author} — ${label}: ${entry.predictedDate}`;
+  const description = entry.annotation.length > 160
+    ? entry.annotation.slice(0, 157) + "…"
+    : entry.annotation;
   return {
-    title: `${entry.author} — Expires: ${entry.predictedDate}`,
-    description: entry.annotation,
+    title,
+    description,
+    alternates: {
+      canonical: `/entry/${entry.id}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      authors: [entry.author],
+    },
   };
 }
 
@@ -39,14 +53,33 @@ export default async function EntryPage({ params }: Props) {
   const related = getRelatedEntries(entry, 3);
   const catSlug = categoryToSlug(entry.category);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: `${entry.author}: ${entry.quote.slice(0, 110)}`,
+    author: { "@type": "Person", name: entry.author },
+    datePublished: entry.dateWritten,
+    description: entry.annotation,
+    publisher: {
+      "@type": "Organization",
+      name: "The Expected World",
+      url: "https://theexpectedworld.com",
+    },
+    mainEntityOfPage: `https://theexpectedworld.com/entry/${entry.id}`,
+  };
+
   return (
     <div style={{ paddingBottom: "var(--space-7)" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Two-column entry layout */}
       <div className="entry-grid" style={{ paddingTop: "var(--space-8)" }}>
         {/* LEFT COLUMN: Quote */}
         <div className="entry-grid-left">
-          {/* EXPIRES date — large, Vermillion */}
-          <p
+          {/* EXPIRES date — large, Vermillion, semantic H1 */}
+          <h1
             style={{
               fontFamily: "var(--font-chrome)",
               fontSize: "clamp(3rem, 5vw, var(--text-date-display))",
@@ -58,7 +91,7 @@ export default async function EntryPage({ params }: Props) {
             }}
           >
             {isExpired(entry.predictedDateNormalized) ? "EXPIRES" : "CLOSING"}: {displayYear(entry)}
-          </p>
+          </h1>
 
           {/* WRITTEN date — small, faded */}
           <p

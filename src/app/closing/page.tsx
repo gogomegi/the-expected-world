@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Gate is Closing",
   description: "Predictions addressed to dates that have not yet arrived.",
+  alternates: { canonical: "/closing" },
 };
 
 function extractYear(dateStr: string): string {
