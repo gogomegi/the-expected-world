@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { VerdictBadge } from "@/components/VerdictBadge";
 import { TopicPill } from "@/components/TopicPill";
 import { MasonryCard } from "@/components/MasonryCard";
-import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
+
 import { ExternalLink } from "lucide-react";
 
 export async function generateStaticParams() {
@@ -66,9 +66,7 @@ export default async function PredictionPage({
     .toUpperCase();
 
   return (
-    <>
-      <SiteHeader />
-      <main className="min-h-screen bg-ink">
+    <main className="min-h-screen bg-ink">
         {/* Hero area */}
         <div className="h-[50vh] relative flex items-end p-12 max-md:p-6 overflow-hidden">
           {quote.imageUrl && (
@@ -191,8 +189,6 @@ export default async function PredictionPage({
             }),
           }}
         />
-      </main>
-      <SiteFooter />
-    </>
+    </main>
   );
 }

@@ -1,6 +1,6 @@
 import { getQuotesByVerdict } from "@/lib/quotes";
 import { MasonryCard } from "@/components/MasonryCard";
-import { SiteHeader, SiteFooter } from "@/components/SiteLayout";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -42,32 +42,28 @@ export default async function VerdictPage({
   const quotes = getQuotesByVerdict(info.filter);
 
   return (
-    <>
-      <SiteHeader />
-      <main className="max-w-[1200px] mx-auto px-12 max-md:px-4 py-16">
-        <nav className="font-mono text-[11px] uppercase tracking-[0.06em] text-dusk mb-12">
-          <Link href="/" className="hover:text-parchment transition-colors">Home</Link>
-          {" / "}
-          <Link href="/verdicts" className="hover:text-parchment transition-colors">Verdicts</Link>
-          {" / "}
-          <span className="text-parchment">{info.label}</span>
-        </nav>
+    <main className="max-w-[1200px] mx-auto px-12 max-md:px-4 py-16">
+      <nav className="font-mono text-[11px] uppercase tracking-[0.06em] text-dusk mb-12">
+        <Link href="/" className="hover:text-parchment transition-colors">Home</Link>
+        {" / "}
+        <Link href="/verdicts" className="hover:text-parchment transition-colors">Verdicts</Link>
+        {" / "}
+        <span className="text-parchment">{info.label}</span>
+      </nav>
 
-        <h1 className="font-display font-semibold text-[40px] max-md:text-[28px] tracking-[0.02em] mb-12">
-          {info.label} Predictions
-        </h1>
+      <h1 className="font-display font-semibold text-[40px] max-md:text-[28px] tracking-[0.02em] mb-12">
+        {info.label} Predictions
+      </h1>
 
-        {quotes.length === 0 ? (
-          <p className="text-dusk italic">No predictions matched. Perhaps they haven&apos;t been written yet.</p>
-        ) : (
-          <div className="masonry">
-            {quotes.map((q) => (
-              <MasonryCard key={q.slug} quote={q} />
-            ))}
-          </div>
-        )}
-      </main>
-      <SiteFooter />
-    </>
+      {quotes.length === 0 ? (
+        <p className="text-dusk italic">No predictions matched. Perhaps they haven&apos;t been written yet.</p>
+      ) : (
+        <div className="masonry">
+          {quotes.map((q) => (
+            <MasonryCard key={q.slug} quote={q} />
+          ))}
+        </div>
+      )}
+    </main>
   );
 }

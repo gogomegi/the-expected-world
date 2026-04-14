@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .ring { fill: none; stroke: #0D0D0B; }
+    .letter { fill: #0D0D0B; }
+    @media (prefers-color-scheme: dark) {
+      .ring { stroke: #EDE8DF; }
+      .letter { fill: #EDE8DF; }
+    }
+  </style>
+  <circle class="ring" cx="32" cy="32" r="30" stroke-width="2"/>
+  <text class="letter" x="13" y="48" font-family="Georgia, 'Times New Roman', serif" font-size="48" font-weight="700">E</text>
+</svg>

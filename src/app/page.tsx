@@ -1,4 +1,4 @@
-import { getFeaturedEntry, getRecentEntries } from "@/lib/corpus";
+import { getFeaturedEntry, getArchiveEntries, getClosingEntries, isExpired, timeRemaining } from "@/lib/corpus";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -6,116 +6,372 @@ export const metadata: Metadata = {
   title: "The Expected World — An archive of expired futures",
 };
 
-function todayLabel() {
-  return new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+function extractYear(dateStr: string): string {
+  return dateStr.slice(0, 4);
+}
+
+function truncate(text: string, maxLen: number): string {
+  if (text.length <= maxLen) return text;
+  return text.slice(0, maxLen).replace(/\s+\S*$/, "") + "…";
+}
+
+function FictionBadge() {
+  return (
+    <span
+      style={{
+        fontFamily: "var(--font-chrome)",
+        fontSize: "0.5625rem",
+        fontWeight: 500,
+        letterSpacing: "0.08em",
+        color: "var(--color-secondary)",
+        border: "1px solid rgba(120, 113, 103, 0.3)",
+        padding: "1px 6px",
+        borderRadius: "1px",
+        marginLeft: "8px",
+        verticalAlign: "middle",
+        position: "relative" as const,
+        top: "-1px",
+      }}
+    >
+      FICTION
+    </span>
+  );
 }
 
 export default function HomePage() {
   const featured = getFeaturedEntry();
-  const recent = getRecentEntries(10);
+  const archiveEntries = getArchiveEntries()
+    .filter((e) => e.id !== featured.id)
+    .sort((a, b) => b.predictedDateNormalized.localeCompare(a.predictedDateNormalized))
+    .slice(0, 10);
+  const closingEntries = getClosingEntries().slice(0, 6);
 
   return (
-    <div className="flex flex-col min-h-full">
-      {/* Header */}
-      <header>
-        <div style={{ maxWidth: "var(--max-width-wide)", margin: "0 auto", padding: "1.5rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-          <Link href="/" style={{ fontFamily: "var(--font-heading)", fontSize: "1.125rem", fontWeight: 600, color: "var(--color-text)", letterSpacing: "0.08em" }}>
-            The Expected World
-          </Link>
-          <nav style={{ display: "flex", gap: "2rem" }}>
-            {[["/#archive", "browse"], ["/timeline", "timeline"], ["/about", "about"]].map(([href, label]) => (
-              <Link key={href} href={href} className="nav-link" style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", color: "var(--color-secondary)", letterSpacing: "0.04em", transition: "color 150ms ease" }}>{label}</Link>
-            ))}
-          </nav>
-        </div>
-      </header>
+    <div>
+      {/* Zone 1: Title Section */}
+      <section
+        style={{
+          paddingTop: "var(--space-8)",
+          paddingBottom: "var(--space-7)",
+          textAlign: "center",
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(3rem, 6vw, var(--text-masthead))",
+            fontWeight: 300,
+            lineHeight: 1.05,
+            letterSpacing: "0.02em",
+            color: "var(--color-text)",
+            margin: 0,
+          }}
+        >
+          The Expected World
+        </h1>
+        <p
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "1.25rem",
+            fontStyle: "italic",
+            fontWeight: 300,
+            color: "var(--color-secondary)",
+            marginTop: "var(--space-2)",
+            marginBottom: 0,
+          }}
+        >
+          An archive of expired futures — and a watch on the ones still closing.
+        </p>
+      </section>
 
-      <main className="flex-1">
-        {/* Masthead */}
-        <section style={{ maxWidth: "var(--max-width-body)", margin: "0 auto", padding: "5rem 1.5rem 3rem", textAlign: "center" }}>
-          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2.75rem, 8vw, 4.5rem)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.01em", color: "var(--color-text)", marginBottom: "1rem" }}>
-            The Expected World
-          </h1>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "1.125rem", fontStyle: "italic", color: "var(--color-secondary)", marginBottom: "3rem" }}>
-            An archive of expired futures.
-          </p>
-          <hr style={{ border: "none", borderTop: "1px solid rgba(26,26,26,0.15)", width: "4rem", margin: "0 auto 3rem" }} />
+      {/* Zone 2: Featured Entry */}
+      <section
+        style={{
+          maxWidth: "var(--max-width-layout)",
+          margin: "0 auto",
+          padding: "0 var(--space-6) var(--space-6)",
+        }}
+      >
+        <Link href={`/entry/${featured.id}`} style={{ display: "block" }}>
+          <div
+            style={{
+              paddingTop: "var(--space-7)",
+              paddingBottom: "var(--space-6)",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-chrome)",
+                fontSize: "clamp(3rem, 6vw, 5rem)",
+                fontWeight: 500,
+                lineHeight: 1.0,
+                letterSpacing: "-0.02em",
+                color: "var(--color-accent)",
+                margin: 0,
+              }}
+            >
+              {isExpired(featured.predictedDateNormalized) ? "EXPIRES" : "CLOSING"}:{" "}
+              {extractYear(featured.predictedDateNormalized)}
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-chrome)",
+                fontSize: "0.875rem",
+                fontWeight: 400,
+                color: "var(--color-secondary)",
+                opacity: 0.4,
+                marginTop: "var(--space-1)",
+                marginBottom: "var(--space-5)",
+              }}
+            >
+              WRITTEN: {extractYear(featured.dateWritten)}
+            </p>
+            <blockquote
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.5rem, 3vw, var(--text-quote))",
+                fontWeight: 300,
+                fontStyle: "italic",
+                lineHeight: 1.4,
+                color: "var(--color-text)",
+                maxWidth: "var(--max-width-prose)",
+                margin: 0,
+                marginBottom: "var(--space-4)",
+                padding: 0,
+                border: "none",
+              }}
+            >
+              {featured.quote}
+            </blockquote>
+            <p
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-mono)",
+                letterSpacing: "0.04em",
+                color: "var(--color-secondary)",
+                margin: 0,
+              }}
+            >
+              {featured.author} · {featured.source.split(",")[0]}
+              {featured.dateWritten ? `, ${extractYear(featured.dateWritten)}` : ""}
+              {featured.is_fiction && <FictionBadge />}
+            </p>
+          </div>
+        </Link>
+      </section>
 
-          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, color: "var(--color-accent)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "1.5rem" }}>
-            Today in the Expected Past — {todayLabel()}
-          </p>
-
-          <div style={{ maxWidth: "48rem", margin: "0 auto" }}>
-            <Link href={`/entry/${featured.id}`} style={{ display: "block" }}>
-              <div className="quote-block" style={{ paddingLeft: "1.5rem", marginBottom: "1.5rem" }}>
-                <p className="featured-quote" style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.375rem, 3vw, 2rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.5, color: "var(--color-text)", display: "-webkit-box", WebkitLineClamp: 5, WebkitBoxOrient: "vertical", overflow: "hidden", transition: "color 150ms ease" }}>
-                  {featured.quote}
-                </p>
-              </div>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-secondary)", marginBottom: "1rem", textAlign: "left" }}>
-                — {featured.author}, <em>{featured.source.split(",")[0]}</em>{featured.dateWritten ? `, ${featured.dateWritten.slice(0, 4)}` : ""}
-              </p>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--color-accent)", textAlign: "left", marginBottom: "2rem" }}>
-                Written: <time dateTime={featured.dateWritten}>{featured.dateWritten}</time>
-                <span style={{ color: "var(--color-secondary)", margin: "0 0.75rem" }}>·</span>
-                Predicted: <time dateTime={featured.predictedDateNormalized}>{featured.predictedDateNormalized}</time>
-              </div>
-              <div style={{ textAlign: "left" }}>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-accent)", textDecoration: "underline", textUnderlineOffset: "3px" }}>Read entry</span>
+      {/* Zone 3: Archive Ledger */}
+      <section
+        style={{
+          maxWidth: "var(--max-width-layout)",
+          margin: "0 auto",
+          padding: "0 var(--space-6) var(--space-7)",
+        }}
+      >
+        <hr
+          style={{
+            border: "none",
+            borderTop: "1px solid rgba(120, 113, 103, 0.2)",
+            marginBottom: "var(--space-4)",
+          }}
+        />
+        <p
+          style={{
+            fontFamily: "var(--font-chrome)",
+            fontSize: "var(--text-ui)",
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            color: "var(--color-secondary)",
+            textTransform: "uppercase",
+            marginBottom: "var(--space-4)",
+          }}
+        >
+          From the Archive
+        </p>
+        <div>
+          {archiveEntries.map((entry) => (
+            <Link
+              key={entry.id}
+              href={`/entry/${entry.id}`}
+              style={{ display: "block", textDecoration: "none" }}
+            >
+              <div className="ledger-row">
+                <span
+                  style={{
+                    fontFamily: "var(--font-chrome)",
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    color: "var(--color-accent)",
+                  }}
+                >
+                  {extractYear(entry.predictedDateNormalized)}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.875rem",
+                    lineHeight: 1.5,
+                    color: "var(--color-text)",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {truncate(entry.quote, 90)}
+                  {entry.is_fiction && <FictionBadge />}
+                </span>
+                <span
+                  className="ledger-meta"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-mono)",
+                    letterSpacing: "0.04em",
+                    color: "var(--color-secondary)",
+                    textAlign: "right",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {entry.author.split(" ").slice(-1)[0]},{" "}
+                  {extractYear(entry.dateWritten)}
+                </span>
+                <span
+                  className="ledger-category"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-mono)",
+                    letterSpacing: "0.04em",
+                    color: "var(--color-secondary)",
+                    textAlign: "right",
+                  }}
+                >
+                  {entry.category}
+                </span>
               </div>
             </Link>
-          </div>
-        </section>
+          ))}
+        </div>
+        <div style={{ paddingTop: "var(--space-3)" }}>
+          <Link
+            href="/timeline"
+            style={{
+              fontFamily: "var(--font-chrome)",
+              fontSize: "var(--text-ui)",
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              color: "var(--color-accent)",
+            }}
+          >
+            view all expired →
+          </Link>
+        </div>
+      </section>
 
-        {/* Entry list */}
-        <section id="archive" style={{ maxWidth: "var(--max-width-body)", margin: "0 auto", padding: "0 1.5rem 5rem" }}>
-          <div style={{ borderTop: "1px solid rgba(26,26,26,0.12)", paddingTop: "4rem", marginBottom: "2rem" }}>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", fontWeight: 500, color: "var(--color-secondary)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Recent &amp; Notable</p>
-          </div>
+      {/* Zone 4: Gate is Closing */}
+      {closingEntries.length > 0 && (
+        <section
+          style={{
+            maxWidth: "var(--max-width-layout)",
+            margin: "0 auto",
+            padding: "0 var(--space-6) var(--space-7)",
+          }}
+        >
+          <hr
+            style={{
+              border: "none",
+              borderTop: "1px solid rgba(120, 113, 103, 0.2)",
+              marginBottom: "var(--space-4)",
+            }}
+          />
+          <p
+            style={{
+              fontFamily: "var(--font-chrome)",
+              fontSize: "var(--text-ui)",
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              color: "var(--color-accent)",
+              textTransform: "uppercase",
+              marginBottom: "var(--space-4)",
+            }}
+          >
+            Gate is Closing
+          </p>
           <div>
-            {recent.filter(e => e.id !== featured.id).slice(0, 9).map((entry, idx, arr) => (
-              <Link key={entry.id} href={`/entry/${entry.id}`} style={{ display: "block" }} className="entry-row-link">
-                <article style={{ padding: "2rem 0", borderBottom: idx < arr.length - 1 ? "1px solid rgba(26,26,26,0.1)" : "none" }} className="entry-row">
-                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", fontWeight: 500, color: "var(--color-accent)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "0.75rem" }}>{entry.category}</p>
-                  <p className="entry-quote" style={{ fontFamily: "var(--font-heading)", fontSize: "1.375rem", fontWeight: 400, fontStyle: "italic", lineHeight: 1.55, color: "var(--color-text)", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", marginBottom: "0.75rem", transition: "color 150ms ease" }}>
-                    {entry.quote}
-                  </p>
-                  <p style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-secondary)", marginBottom: "0.5rem" }}>— {entry.author}</p>
-                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--color-accent)" }}>
-                    Predicted: {entry.predictedDateNormalized}{"   "}Written: {entry.dateWritten}
-                  </p>
-                </article>
+            {closingEntries.map((entry) => (
+              <Link
+                key={entry.id}
+                href={`/entry/${entry.id}`}
+                style={{ display: "block", textDecoration: "none" }}
+              >
+                <div className="ledger-row">
+                  <span
+                    style={{
+                      fontFamily: "var(--font-chrome)",
+                      fontSize: "1rem",
+                      fontWeight: 500,
+                      color: "var(--color-accent)",
+                    }}
+                  >
+                    {extractYear(entry.predictedDateNormalized)}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "0.875rem",
+                      lineHeight: 1.5,
+                      color: "var(--color-text)",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {truncate(entry.quote, 80)}
+                    {entry.is_fiction && <FictionBadge />}
+                  </span>
+                  <span
+                    className="ledger-meta"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "var(--text-mono)",
+                      letterSpacing: "0.04em",
+                      color: "var(--color-accent)",
+                      textAlign: "right",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {timeRemaining(entry.predictedDateNormalized)}
+                  </span>
+                  <span
+                    className="ledger-category"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "var(--text-mono)",
+                      letterSpacing: "0.04em",
+                      color: "var(--color-secondary)",
+                      textAlign: "right",
+                    }}
+                  >
+                    {entry.author.split(" ").slice(-1)[0]}
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
-          <div style={{ textAlign: "right", paddingTop: "2rem" }}>
-            <Link href="/category/technology" style={{ fontFamily: "var(--font-body)", fontSize: "0.9375rem", color: "var(--color-accent)", textDecoration: "underline", textUnderlineOffset: "3px" }}>Browse all entries</Link>
+          <div style={{ paddingTop: "var(--space-3)" }}>
+            <Link
+              href="/closing"
+              style={{
+                fontFamily: "var(--font-chrome)",
+                fontSize: "var(--text-ui)",
+                fontWeight: 500,
+                letterSpacing: "0.08em",
+                color: "var(--color-accent)",
+              }}
+            >
+              view all closing →
+            </Link>
           </div>
         </section>
-
-        <section style={{ maxWidth: "var(--max-width-body)", margin: "0 auto", padding: "3rem 1.5rem", textAlign: "center" }}>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "1rem", color: "var(--color-secondary)" }}>
-            <Link href="/category/technology" className="browse-prompt-link">Browse by category →</Link>
-            {"  ·  "}
-            <Link href="/timeline" className="browse-prompt-link">Browse by era →</Link>
-          </p>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer style={{ borderTop: "1px solid rgba(26,26,26,0.12)", marginTop: "auto" }}>
-        <div style={{ maxWidth: "var(--max-width-wide)", margin: "0 auto", padding: "5rem 2rem 3rem", display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "var(--font-body)", fontSize: "0.875rem", color: "var(--color-secondary)" }}>
-          <span>© The Expected World</span>
-          <span>Submissions &amp; Contact</span>
-        </div>
-      </footer>
-
-      <style>{`
-        .nav-link:hover { color: var(--color-text) !important; text-decoration: underline; text-underline-offset: 3px; }
-        .entry-row-link:hover .entry-quote { color: var(--color-accent) !important; }
-        .browse-prompt-link { color: var(--color-secondary); transition: color 150ms ease; }
-        .browse-prompt-link:hover { color: var(--color-text) !important; }
-      `}</style>
+      )}
     </div>
   );
 }
