@@ -1,69 +1,76 @@
 import { SubmitForm } from "@/components/SubmitForm";
 import type { Metadata } from "next";
+import PaintCanvas from "@/components/PaintCanvas";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Submit a Passage",
-  description:
-    "Know a historical prediction we should feature? Submit it here.",
+  description: "Know a historical prediction we should feature? Submit it here.",
+  alternates: { canonical: "/submit" },
 };
 
 export default function SubmitPage() {
   return (
     <div>
+      {/* Dark hero */}
       <section
+        className="grid-bg hero-section"
         style={{
-          paddingTop: "var(--space-8)",
-          paddingBottom: "var(--space-7)",
+          padding: "180px 48px 80px",
+          position: "relative",
+          overflow: "hidden",
+          background: "var(--black)",
           textAlign: "center",
         }}
       >
-        <h1
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem, 5vw, var(--text-masthead))",
-            fontWeight: 300,
-            lineHeight: 1.05,
-            letterSpacing: "0.02em",
-            color: "var(--color-text)",
-            margin: 0,
-          }}
-        >
-          Submit a Passage
-        </h1>
-        <p
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
-            fontStyle: "italic",
-            color: "var(--color-secondary)",
-            marginTop: "var(--space-2)",
-          }}
-        >
-          Know a prediction we are missing? Help us build the archive.
-        </p>
+        <PaintCanvas />
+        <ScrollReveal delay={0}>
+          <h1
+            className="section-title"
+            style={{ fontSize: "4rem", color: "var(--text-d)", margin: 0 }}
+          >
+            SUBMIT A PASSAGE
+          </h1>
+        </ScrollReveal>
+        <ScrollReveal delay={0.08}>
+          <p
+            style={{
+              fontFamily: "var(--fq)",
+              fontStyle: "italic",
+              fontSize: "1.125rem",
+              color: "var(--muted-d)",
+              marginTop: "16px",
+            }}
+          >
+            Know a prediction we are missing? Help us build the archive.
+          </p>
+        </ScrollReveal>
       </section>
 
-      <div
+      {/* Cream form section */}
+      <section
+        className="cream-section"
         style={{
-          maxWidth: "var(--max-width-prose)",
-          margin: "0 auto",
-          padding: "0 var(--space-6) var(--space-7)",
+          padding: "80px 48px",
+          background: "var(--cream)",
         }}
       >
-        <SubmitForm />
-        <p
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "var(--text-mono)",
-            color: "var(--color-secondary)",
-            letterSpacing: "0.04em",
-            textAlign: "center",
-            marginTop: "var(--space-3)",
-          }}
-        >
-          All submissions are reviewed before publishing.
-        </p>
-      </div>
+        <div style={{ maxWidth: "640px", margin: "0 auto" }}>
+          <SubmitForm />
+          <p
+            style={{
+              fontFamily: "var(--fm)",
+              fontSize: "0.6875rem",
+              color: "var(--muted-l)",
+              letterSpacing: "0.04em",
+              textAlign: "center",
+              marginTop: "24px",
+            }}
+          >
+            All submissions are reviewed before publishing.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

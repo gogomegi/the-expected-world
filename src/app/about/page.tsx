@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import PaintCanvas from "@/components/PaintCanvas";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "About",
@@ -10,92 +12,77 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div>
-      {/* Title section */}
+      {/* Dark hero */}
       <section
+        className="grid-bg hero-section"
         style={{
-          paddingTop: "var(--space-8)",
-          paddingBottom: "var(--space-7)",
+          padding: "180px 48px 80px",
+          position: "relative",
+          overflow: "hidden",
+          background: "var(--black)",
           textAlign: "center",
         }}
       >
-        <h1
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem, 5vw, var(--text-masthead))",
-            fontWeight: 300,
-            lineHeight: 1.05,
-            letterSpacing: "0.02em",
-            color: "var(--color-text)",
-            margin: 0,
-          }}
-        >
-          About This Archive
-        </h1>
-        <p
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1.125rem",
-            fontStyle: "italic",
-            fontWeight: 300,
-            color: "var(--color-secondary)",
-            marginTop: "var(--space-2)",
-            marginBottom: "var(--space-6)",
-          }}
-        >
-          What it is, how entries are selected, and how to contribute.
-        </p>
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.4)",
-            maxWidth: "var(--max-width-prose)",
-            margin: "0 auto",
-          }}
-        />
+        <PaintCanvas />
+        <ScrollReveal delay={0}>
+          <h1
+            className="section-title"
+            style={{ fontSize: "4rem", color: "var(--text-d)", margin: 0 }}
+          >
+            ABOUT THIS ARCHIVE
+          </h1>
+        </ScrollReveal>
+        <ScrollReveal delay={0.08}>
+          <p
+            style={{
+              fontFamily: "var(--fq)",
+              fontStyle: "italic",
+              fontSize: "1.125rem",
+              color: "var(--muted-d)",
+              marginTop: "16px",
+            }}
+          >
+            What it is, how entries are selected, and how to contribute.
+          </p>
+        </ScrollReveal>
       </section>
 
-      {/* Content */}
-      <div
+      {/* Cream body */}
+      <section
+        className="cream-section"
         style={{
-          maxWidth: "var(--max-width-prose)",
-          margin: "0 auto",
-          padding: "0 var(--space-6) var(--space-7)",
+          padding: "80px 48px",
+          background: "var(--cream)",
         }}
       >
-        <p
-          style={{
-            fontFamily: "var(--font-chrome)",
-            fontSize: "var(--text-ui)",
-            fontWeight: 500,
-            letterSpacing: "0.08em",
-            color: "var(--color-secondary)",
-            textTransform: "uppercase",
-            marginBottom: "var(--space-2)",
-          }}
-        >
-          What This Is
-        </p>
-        <div
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
-            lineHeight: 1.72,
-            color: "var(--color-text)",
-          }}
-        >
-          <p style={{ marginBottom: "1.25rem" }}>
+        <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+          {/* What This Is */}
+          <h2
+            style={{
+              fontFamily: "var(--fh)",
+              fontSize: "0.75rem",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "var(--text-l)",
+              marginBottom: "24px",
+            }}
+          >
+            What This Is
+          </h2>
+          <p style={bodyStyle}>
             The Expected World is an archival publication that surfaces texts
             originally written about the future — predictions, forecasts, policy
             projections, fictional imaginings — each anchored to a specific date
             or period that has now elapsed.
           </p>
-          <p style={{ marginBottom: "1.25rem" }}>
+          <p style={bodyStyle}>
             The site exists to create a particular kind of encounter: a reader
             meets a mind from the past speaking confidently, or anxiously, or
             hopefully, about a moment the reader has already lived through. The
             gap between expectation and outcome is the editorial territory.
           </p>
-          <p style={{ marginBottom: "1.25rem" }}>
+          <p style={bodyStyle}>
             This is not a retro-futurism blog. We do not present the past as
             quaint or its predictions as fodder for amusement. A prediction is
             not interesting merely because it was wrong. It is interesting when
@@ -103,127 +90,85 @@ export default function AboutPage() {
             what was considered obvious — reveals something about the mind that
             produced it, the era it emerged from, or the world we actually built.
           </p>
-        </div>
 
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.2)",
-            margin: "var(--space-5) 0",
-          }}
-        />
+          <hr style={hrStyle} />
 
-        <p
-          style={{
-            fontFamily: "var(--font-chrome)",
-            fontSize: "var(--text-ui)",
-            fontWeight: 500,
-            letterSpacing: "0.08em",
-            color: "var(--color-secondary)",
-            textTransform: "uppercase",
-            marginBottom: "var(--space-2)",
-          }}
-        >
-          How Entries Are Selected
-        </p>
-        <div
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
-            lineHeight: 1.72,
-            color: "var(--color-text)",
-          }}
-        >
-          <p style={{ marginBottom: "1.25rem" }}>
+          {/* How Entries Are Selected */}
+          <h2
+            style={{
+              fontFamily: "var(--fh)",
+              fontSize: "0.75rem",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "var(--text-l)",
+              marginBottom: "24px",
+            }}
+          >
+            How Entries Are Selected
+          </h2>
+          <p style={bodyStyle}>
             Every entry must satisfy four criteria. The source text must
             reference a specific future date, year, or bounded period. The
             predicted date must be in the past. The source must be verifiable.
             And the pairing of prediction and elapsed reality must reward
             attention.
           </p>
-          <p style={{ marginBottom: "1.25rem" }}>
+          <p style={bodyStyle}>
             The fourth criterion is the most important and the most subjective.
             Ask: does this entry surface a genuine surprise, a buried
             assumption, a forgotten anxiety, an uncanny accuracy, or a telling
             blind spot? If yes, it belongs. If it merely demonstrates that
             people in the past did not have perfect foresight, it does not.
           </p>
-        </div>
 
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.2)",
-            margin: "var(--space-5) 0",
-          }}
-        />
+          <hr style={hrStyle} />
 
-        <p
-          style={{
-            fontFamily: "var(--font-chrome)",
-            fontSize: "var(--text-ui)",
-            fontWeight: 500,
-            letterSpacing: "0.08em",
-            color: "var(--color-secondary)",
-            textTransform: "uppercase",
-            marginBottom: "var(--space-2)",
-          }}
-        >
-          Editorial Standards
-        </p>
-        <div
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
-            lineHeight: 1.72,
-            color: "var(--color-text)",
-          }}
-        >
-          <p style={{ marginBottom: "1.25rem" }}>
+          {/* Editorial Standards */}
+          <h2
+            style={{
+              fontFamily: "var(--fh)",
+              fontSize: "0.75rem",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "var(--text-l)",
+              marginBottom: "24px",
+            }}
+          >
+            Editorial Standards
+          </h2>
+          <p style={bodyStyle}>
             The voice of The Expected World is intellectual but not academic,
             concise but not glib. We write for readers who are curious, literate,
             and impatient with padding. Annotations provide context; they do not
             editorialize, moralize, or gloat. The governing question is always:
             would a thoughtful reader feel this was worth their attention?
           </p>
-        </div>
 
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.2)",
-            margin: "var(--space-5) 0",
-          }}
-        />
+          <hr style={hrStyle} />
 
-        <p
-          style={{
-            fontFamily: "var(--font-chrome)",
-            fontSize: "var(--text-ui)",
-            fontWeight: 500,
-            letterSpacing: "0.08em",
-            color: "var(--color-secondary)",
-            textTransform: "uppercase",
-            marginBottom: "var(--space-2)",
-          }}
-        >
-          Contact & Submissions
-        </p>
-        <div
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
-            lineHeight: 1.72,
-            color: "var(--color-text)",
-          }}
-        >
-          <p style={{ marginBottom: "1.25rem" }}>
+          {/* Contact & Submissions */}
+          <h2
+            style={{
+              fontFamily: "var(--fh)",
+              fontSize: "0.75rem",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "var(--text-l)",
+              marginBottom: "24px",
+            }}
+          >
+            Contact & Submissions
+          </h2>
+          <p style={bodyStyle}>
             If you have found a passage that meets our criteria, we would like
             to hear about it.{" "}
             <Link
               href="/submit"
               style={{
-                color: "var(--color-accent)",
+                color: "var(--orange)",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
               }}
@@ -232,14 +177,14 @@ export default function AboutPage() {
             </Link>
             .
           </p>
-          <p style={{ marginBottom: 0 }}>
+          <p style={{ ...bodyStyle, marginBottom: 0 }}>
             For other inquiries:{" "}
             <a
               href="mailto:contact@theexpectedworld.com"
               style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-sidebar)",
-                color: "var(--color-accent)",
+                fontFamily: "var(--fm)",
+                fontSize: "0.875rem",
+                color: "var(--orange)",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
               }}
@@ -248,7 +193,21 @@ export default function AboutPage() {
             </a>
           </p>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
+
+const bodyStyle: React.CSSProperties = {
+  fontFamily: "var(--fh)",
+  fontSize: "1rem",
+  lineHeight: 1.75,
+  color: "var(--text-l)",
+  marginBottom: "24px",
+};
+
+const hrStyle: React.CSSProperties = {
+  border: "none",
+  borderTop: "1px solid var(--rule-l)",
+  margin: "40px 0",
+};

@@ -1,220 +1,194 @@
-import { getEntriesByDecade, getConfirmedEntries } from "@/lib/corpus";
-import Link from "next/link";
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Timeline",
-  description: "All entries in The Expected World arranged by the date they predicted.",
-  alternates: { canonical: "/timeline" },
-};
+import { useState, useEffect, useMemo } from "react";
+import { getEntriesByDecade, getConfirmedEntries, isExpired } from "@/lib/corpus";
+import type { Entry } from "@/lib/corpus";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const PaintCanvas = dynamic(() => import("@/components/PaintCanvas"), { ssr: false });
+const TimelineSlider = dynamic(() => import("@/components/TimelineSlider"), { ssr: false });
+
+const STRIPE_CLASSES = ["so", "sb", "sg", "sa"] as const;
 
 export default function TimelinePage() {
-  const byDecade = getEntriesByDecade();
-  const total = getConfirmedEntries().length;
-  const decades = Object.keys(byDecade);
+  const allEntries = useMemo(() => getConfirmedEntries(), []);
+  const total = allEntries.length;
+
+  const [minYear, maxYear] = useMemo(() => {
+    let min = 9999, max = 0;
+    for (const e of allEntries) {
+      const y = parseInt(e.predictedDateNormalized.slice(0, 4));
+      if (y < min) min = y;
+      if (y > max) max = y;
+    }
+    return [min, max];
+  }, [allEntries]);
+
+  const [filterYear, setFilterYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    document.title = "Archive — The Expected World";
+  }, []);
+
+  const visibleEntries = useMemo(() => {
+    if (filterYear === null) return allEntries;
+    return allEntries
+      .map((e) => {
+        const y = parseInt(e.predictedDateNormalized.slice(0, 4));
+        const dist = Math.abs(y - filterYear);
+        if (dist > 15) return null;
+        return { entry: e, opacity: Math.max(0.15, 1 - dist / 15) };
+      })
+      .filter(Boolean) as { entry: Entry; opacity: number }[];
+  }, [allEntries, filterYear]);
 
   return (
     <div>
-      {/* Title section */}
+      {/* Dark hero */}
       <section
+        className="grid-bg hero-section"
         style={{
-          paddingTop: "var(--space-8)",
-          paddingBottom: "var(--space-7)",
+          padding: "160px 48px 80px",
           textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+          background: "var(--black)",
         }}
       >
+        <PaintCanvas />
+        <p className="section-label" style={{ marginBottom: "12px" }}>
+          The Complete Archive
+        </p>
         <h1
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem, 5vw, var(--text-masthead))",
-            fontWeight: 300,
-            lineHeight: 1.05,
-            letterSpacing: "0.02em",
-            color: "var(--color-text)",
-            margin: 0,
-          }}
+          className="section-title"
+          style={{ fontSize: "4rem", color: "var(--text-d)", margin: "0 0 16px" }}
         >
-          Timeline
+          ARCHIVE
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1.125rem",
+            fontFamily: "var(--fq)",
             fontStyle: "italic",
-            fontWeight: 300,
-            color: "var(--color-secondary)",
-            marginTop: "var(--space-2)",
-            marginBottom: "var(--space-6)",
+            fontSize: "1.125rem",
+            color: "var(--muted-d)",
+            marginBottom: "40px",
           }}
         >
-          {total} entries arranged by the date they predicted.
+          {total} entries spanning {maxYear - minYear} years of imagined futures.
         </p>
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.4)",
-            maxWidth: "var(--max-width-layout)",
-            margin: "0 auto",
-          }}
-        />
+        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+          <TimelineSlider minYear={minYear} maxYear={maxYear} onChange={setFilterYear} />
+        </div>
       </section>
 
-      <div
+      {/* Dark card grid */}
+      <section
+        className="dark-section"
         style={{
-          maxWidth: "var(--max-width-layout)",
-          margin: "0 auto",
-          padding: "0 var(--space-6) var(--space-7)",
+          padding: "64px 48px 120px",
+          background: "var(--black)",
         }}
       >
-        {/* Decade nav */}
+        <div className="archive-grid">
+          {filterYear === null
+            ? allEntries.map((entry, i) => (
+                <ArchiveCard key={entry.id} entry={entry} index={i} opacity={1} />
+              ))
+            : (visibleEntries as { entry: Entry; opacity: number }[]).map(({ entry, opacity }, i) => (
+                <ArchiveCard key={entry.id} entry={entry} index={i} opacity={opacity} />
+              ))}
+        </div>
+        {filterYear !== null && visibleEntries.length === 0 && (
+          <p
+            style={{
+              fontFamily: "var(--fq)",
+              fontStyle: "italic",
+              fontSize: "1rem",
+              color: "var(--muted-d)",
+              textAlign: "center",
+              marginTop: "48px",
+            }}
+          >
+            No entries near {filterYear}.
+          </p>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; opacity: number }) {
+  const stripe = STRIPE_CLASSES[index % 4];
+  const year = entry.predictedDateNormalized.slice(0, 4);
+
+  return (
+    <Link href={`/entry/${entry.id}`} style={{ display: "block", textDecoration: "none", opacity, transition: "opacity 0.3s" }}>
+      <div className={`acd ${stripe}`}>
+        <span className="acd-ghost">{year}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+          <span
+            style={{
+              fontFamily: "var(--fh)",
+              fontSize: "1.25rem",
+              fontWeight: 900,
+              color: "var(--text-d)",
+            }}
+          >
+            {year}
+          </span>
+          {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
+        </div>
+        <p
+          style={{
+            fontFamily: "var(--fq)",
+            fontStyle: "italic",
+            fontSize: "0.875rem",
+            lineHeight: 1.5,
+            color: "rgba(245,242,235,0.7)",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            flex: 1,
+            marginBottom: "16px",
+          }}
+        >
+          {entry.quote}
+        </p>
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
-            gap: "var(--space-3)",
-            marginBottom: "var(--space-5)",
-            borderBottom: "1px solid rgba(120, 113, 103, 0.2)",
-            paddingBottom: "var(--space-3)",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderTop: "1px solid var(--rule-d)",
+            paddingTop: "12px",
+            marginTop: "auto",
           }}
         >
-          {decades.map((decade) => (
-            <a
-              key={decade}
-              href={`#${decade}`}
-              style={{
-                fontFamily: "var(--font-chrome)",
-                fontSize: "var(--text-ui)",
-                fontWeight: 500,
-                color: "var(--color-secondary)",
-                letterSpacing: "0.06em",
-              }}
-            >
-              {decade}
-            </a>
-          ))}
+          <span
+            style={{
+              fontFamily: "var(--fm)",
+              fontSize: "0.6875rem",
+              letterSpacing: "0.04em",
+              color: "var(--muted-d)",
+            }}
+          >
+            {entry.author.split(" ").slice(-1)[0]}
+          </span>
+          <span
+            style={{
+              fontFamily: "var(--fm)",
+              fontSize: "0.625rem",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: "var(--muted-d)",
+            }}
+          >
+            {entry.category}
+          </span>
         </div>
-
-        {/* Entries by decade */}
-        {decades.map((decade) => (
-          <section key={decade} id={decade} style={{ marginBottom: "var(--space-6)" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                gap: "var(--space-2)",
-                marginBottom: "var(--space-3)",
-              }}
-            >
-              <h2
-                style={{
-                  fontFamily: "var(--font-chrome)",
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  color: "var(--color-accent)",
-                  letterSpacing: "0.05em",
-                  margin: 0,
-                }}
-              >
-                {decade}
-              </h2>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-mono)",
-                  color: "var(--color-secondary)",
-                }}
-              >
-                {byDecade[decade].length} entries
-              </span>
-              <div
-                style={{
-                  flex: 1,
-                  borderTop: "1px solid rgba(120, 113, 103, 0.15)",
-                }}
-              />
-            </div>
-
-            {byDecade[decade].map((entry) => (
-              <Link
-                key={entry.id}
-                href={`/entry/${entry.id}`}
-                style={{ display: "block", textDecoration: "none" }}
-              >
-                <div className="ledger-row">
-                  <span
-                    style={{
-                      fontFamily: "var(--font-chrome)",
-                      fontSize: "1rem",
-                      fontWeight: 500,
-                      color: "var(--color-accent)",
-                    }}
-                  >
-                    {entry.predictedDateNormalized.slice(0, 4)}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: "0.875rem",
-                      lineHeight: 1.5,
-                      color: "var(--color-text)",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {entry.quote.length > 90
-                      ? entry.quote.slice(0, 90) + "…"
-                      : entry.quote}
-                    {entry.is_fiction && (
-                      <span
-                        style={{
-                          fontFamily: "var(--font-chrome)",
-                          fontSize: "0.5625rem",
-                          fontWeight: 500,
-                          letterSpacing: "0.08em",
-                          color: "var(--color-secondary)",
-                          border: "1px solid rgba(120, 113, 103, 0.3)",
-                          padding: "1px 6px",
-                          borderRadius: "1px",
-                          marginLeft: "8px",
-                        }}
-                      >
-                        FICTION
-                      </span>
-                    )}
-                  </span>
-                  <span
-                    className="ledger-meta"
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-mono)",
-                      letterSpacing: "0.04em",
-                      color: "var(--color-secondary)",
-                      textAlign: "right",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {entry.author.split(" ").slice(-1)[0]},{" "}
-                    {entry.dateWritten.slice(0, 4)}
-                  </span>
-                  <span
-                    className="ledger-category"
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-mono)",
-                      letterSpacing: "0.04em",
-                      color: "var(--color-secondary)",
-                      textAlign: "right",
-                    }}
-                  >
-                    {entry.category}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </section>
-        ))}
       </div>
-    </div>
+    </Link>
   );
 }

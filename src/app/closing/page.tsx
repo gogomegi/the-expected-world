@@ -1,6 +1,10 @@
 import { getClosingEntries, timeRemaining, displayYear } from "@/lib/corpus";
 import Link from "next/link";
 import type { Metadata } from "next";
+import PaintCanvas from "@/components/PaintCanvas";
+import ScrollReveal from "@/components/ScrollReveal";
+import CounterYear from "@/components/CounterYear";
+import CountdownTimer from "@/components/CountdownTimer";
 
 export const metadata: Metadata = {
   title: "Gate is Closing",
@@ -8,177 +12,152 @@ export const metadata: Metadata = {
   alternates: { canonical: "/closing" },
 };
 
-function extractYear(dateStr: string): string {
-  return dateStr.slice(0, 4);
-}
+const CARD_COLORS = ["amber", "green", "blue", "orange"] as const;
 
 export default function ClosingPage() {
   const entries = getClosingEntries();
 
   return (
     <div>
-      {/* Title section */}
+      {/* Dark hero */}
       <section
+        className="grid-bg"
         style={{
-          paddingTop: "var(--space-8)",
-          paddingBottom: "var(--space-7)",
+          padding: "180px 48px 80px",
+          position: "relative",
+          overflow: "hidden",
+          background: "var(--black)",
           textAlign: "center",
         }}
       >
-        <h1
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem, 5vw, var(--text-masthead))",
-            fontWeight: 300,
-            lineHeight: 1.05,
-            letterSpacing: "0.02em",
-            color: "var(--color-text)",
-            margin: 0,
-          }}
-        >
-          Gate is Closing
-        </h1>
-        <p
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "var(--text-body)",
-            fontStyle: "italic",
-            color: "var(--color-secondary)",
-            marginTop: "var(--space-2)",
-            marginBottom: "var(--space-6)",
-          }}
-        >
-          Predictions addressed to dates that have not yet arrived.
-        </p>
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid rgba(120, 113, 103, 0.4)",
-            maxWidth: "var(--max-width-layout)",
-            margin: "0 auto",
-          }}
-        />
+        <PaintCanvas />
+        <ScrollReveal delay={0}>
+          <h1
+            className="section-title"
+            style={{ fontSize: "4rem", color: "var(--text-d)", margin: 0 }}
+          >
+            GATE IS CLOSING
+          </h1>
+        </ScrollReveal>
+        <ScrollReveal delay={0.08}>
+          <p
+            style={{
+              fontFamily: "var(--fq)",
+              fontStyle: "italic",
+              fontSize: "1.125rem",
+              color: "var(--muted-d)",
+              marginTop: "16px",
+            }}
+          >
+            Predictions addressed to dates that have not yet arrived.
+          </p>
+        </ScrollReveal>
+        <ScrollReveal delay={0.16}>
+          <p
+            style={{
+              fontFamily: "var(--fh)",
+              fontSize: "0.875rem",
+              color: "var(--muted-d)",
+              maxWidth: "520px",
+              margin: "16px auto 0",
+              lineHeight: 1.65,
+            }}
+          >
+            These passages speak to a future that has not yet closed. The clock is still running.
+          </p>
+        </ScrollReveal>
       </section>
 
-      {/* Entry list */}
+      {/* Dark entries section */}
       <section
         style={{
-          maxWidth: "var(--max-width-layout)",
-          margin: "0 auto",
-          padding: "0 var(--space-6) var(--space-7)",
+          padding: "80px 48px",
+          background: "var(--black)",
         }}
       >
         {entries.length === 0 ? (
           <p
             style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--text-body)",
-              color: "var(--color-secondary)",
+              fontFamily: "var(--fq)",
+              fontStyle: "italic",
+              fontSize: "1rem",
+              color: "var(--muted-d)",
+              textAlign: "center",
             }}
           >
             No predictions with future dates in the confirmed corpus yet.
           </p>
         ) : (
-          <div>
-            {entries.map((entry) => (
-              <Link
-                key={entry.id}
-                href={`/entry/${entry.id}`}
-                style={{ display: "block", textDecoration: "none" }}
-              >
-                <div
-                  style={{
-                    padding: "var(--space-4) 0",
-                    borderBottom: "1px solid rgba(120, 113, 103, 0.15)",
-                  }}
+          <div
+            className="closing-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "4px",
+              maxWidth: "var(--max-width)",
+              margin: "0 auto",
+            }}
+          >
+            {entries.map((entry, i) => {
+              const colorKey = CARD_COLORS[i % 4];
+              const year = parseInt(entry.predictedDateNormalized.slice(0, 4));
+              return (
+                <Link
+                  key={entry.id}
+                  href={`/entry/${entry.id}`}
+                  style={{ display: "block", textDecoration: "none" }}
                 >
-                  {/* CLOSING date + time remaining */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "baseline",
-                      marginBottom: "var(--space-2)",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontFamily: "var(--font-chrome)",
-                        fontSize: "1.5rem",
-                        fontWeight: 500,
-                        letterSpacing: "-0.02em",
-                        color: "var(--color-accent)",
-                        margin: 0,
-                      }}
-                    >
-                      CLOSING: {displayYear(entry)}
-                    </p>
+                  <div className={`gate-card gate-card--${colorKey}`}>
                     <span
                       style={{
-                        fontFamily: "var(--font-chrome)",
-                        fontSize: "var(--text-ui)",
+                        fontFamily: "var(--fm)",
+                        fontSize: "0.625rem",
                         fontWeight: 500,
-                        letterSpacing: "0.04em",
-                        color: "var(--color-accent)",
-                        opacity: 0.7,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: "rgba(255,255,255,0.6)",
+                        marginBottom: "8px",
                       }}
                     >
-                      {timeRemaining(entry.predictedDateNormalized)}
+                      closing
                     </span>
+                    <div style={{ marginBottom: "8px" }}>
+                      <CounterYear year={year} style={{ fontFamily: "var(--fh)", fontSize: "4rem", fontWeight: 900, color: "var(--white)", lineHeight: 1 }} />
+                    </div>
+                    <div style={{ marginBottom: "16px" }}>
+                      <CountdownTimer targetDate={entry.predictedDateNormalized} />
+                    </div>
+                    <p
+                      style={{
+                        fontFamily: "var(--fq)",
+                        fontStyle: "italic",
+                        fontSize: "0.9375rem",
+                        lineHeight: 1.5,
+                        color: "rgba(255,255,255,0.9)",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        marginBottom: "16px",
+                        flex: 1,
+                      }}
+                    >
+                      {entry.quote}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "var(--fm)",
+                        fontSize: "0.6875rem",
+                        letterSpacing: "0.04em",
+                        color: "rgba(255,255,255,0.6)",
+                      }}
+                    >
+                      {entry.author} · {entry.source.split(",")[0]}
+                    </p>
                   </div>
-
-                  {/* Quote excerpt */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "1.25rem",
-                      fontWeight: 300,
-                      fontStyle: "italic",
-                      lineHeight: 1.4,
-                      color: "var(--color-text)",
-                      margin: 0,
-                      marginBottom: "var(--space-1)",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {entry.quote}
-                  </p>
-
-                  {/* Attribution */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-mono)",
-                      letterSpacing: "0.04em",
-                      color: "var(--color-secondary)",
-                      margin: 0,
-                    }}
-                  >
-                    {entry.author} · {entry.source.split(",")[0]}, {extractYear(entry.dateWritten)}
-                    {entry.is_fiction && (
-                      <span
-                        style={{
-                          fontFamily: "var(--font-chrome)",
-                          fontSize: "0.5625rem",
-                          fontWeight: 500,
-                          letterSpacing: "0.08em",
-                          color: "var(--color-secondary)",
-                          border: "1px solid rgba(120, 113, 103, 0.3)",
-                          padding: "1px 6px",
-                          borderRadius: "1px",
-                          marginLeft: "8px",
-                        }}
-                      >
-                        FICTION
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>
