@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Lora, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
+import ShowcaseNav from "@/components/ShowcaseNav";
 import "./globals.css";
 
 const inter = Inter({
@@ -126,6 +127,7 @@ export default function RootLayout({
           </div>
         </footer>
 
+        <ShowcaseNav />
         <Analytics />
       </body>
     </html>
