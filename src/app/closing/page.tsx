@@ -94,8 +94,8 @@ export default function ClosingPage() {
               const year = parseInt(entry.predictedDateNormalized.slice(0, 4));
               return (
                 <Link
-                  key={entry.id}
-                  href={`/entry/${entry.id}`}
+                  key={entry.slug}
+                  href={`/entry/${entry.slug}`}
                   style={{ display: "block", textDecoration: "none" }}
                 >
                   <div className={`gate-card gate-card--${colorKey}`}>
@@ -133,7 +133,7 @@ export default function ClosingPage() {
                         flex: 1,
                       }}
                     >
-                      {entry.quote}
+                      {entry.text}
                     </p>
                     <p
                       style={{

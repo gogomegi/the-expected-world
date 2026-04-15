@@ -19,7 +19,7 @@ export async function GET() {
 export async function PUT(request: Request) {
   const updated = await request.json();
   const corpus = readCorpus();
-  const idx = corpus.findIndex((e: { id: string }) => e.id === updated.id);
+  const idx = corpus.findIndex((e: { slug: string }) => e.slug === updated.slug);
   if (idx === -1) {
     return Response.json({ error: "Entry not found" }, { status: 404 });
   }
@@ -29,9 +29,9 @@ export async function PUT(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const { id, status } = await request.json();
+  const { slug, status } = await request.json();
   const corpus = readCorpus();
-  const idx = corpus.findIndex((e: { id: string }) => e.id === id);
+  const idx = corpus.findIndex((e: { slug: string }) => e.slug === slug);
   if (idx === -1) {
     return Response.json({ error: "Entry not found" }, { status: 404 });
   }

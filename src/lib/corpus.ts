@@ -1,24 +1,8 @@
 import corpusData from '@/data/corpus.json';
+import type { Entry, Verdict, EntryStatus, VerificationStatus } from '@/types/quote';
 
-export interface Entry {
-  id: string;
-  quote: string;
-  author: string;
-  source: string;
-  dateWritten: string;
-  predictedDate: string;
-  predictedDateNormalized: string;
-  category: string;
-  annotation: string;
-  actualOutcome?: string;
-  tags: string[];
-  source_type?: 'ai' | 'human';
-  status?: 'pending' | 'confirmed' | 'rejected';
-  verification_status?: 'verified' | 'paraphrased' | 'unverified' | 'fabricated';
-  source_url?: string;
-  verification_note?: string;
-  is_fiction?: boolean;
-}
+// Re-export the unified type so existing imports still work
+export type { Entry, Verdict, EntryStatus, VerificationStatus };
 
 export interface Category {
   slug: string;
@@ -28,19 +12,21 @@ export interface Category {
 
 const allEntries: Entry[] = corpusData as Entry[];
 
-/** Only confirmed entries appear on the public site */
-const confirmedEntries: Entry[] = allEntries.filter(e => e.status === 'confirmed');
+/** Only published entries appear on the public site */
+const publishedEntries: Entry[] = allEntries.filter(e => e.status === 'published');
 
 const TODAY = new Date().toISOString().slice(0, 10);
 
-/** Past-dated confirmed entries (the archive — gate closed) */
+// ── Archive / Timeline queries ──
+
+/** Past-dated published entries (the archive — gate closed) */
 export function getArchiveEntries(): Entry[] {
-  return confirmedEntries.filter(e => e.predictedDateNormalized <= TODAY);
+  return publishedEntries.filter(e => e.predictedDateNormalized <= TODAY);
 }
 
-/** Future-dated confirmed entries (gate still closing) */
+/** Future-dated published entries (gate still closing) */
 export function getClosingEntries(): Entry[] {
-  return confirmedEntries
+  return publishedEntries
     .filter(e => e.predictedDateNormalized > TODAY)
     .sort((a, b) => a.predictedDateNormalized.localeCompare(b.predictedDateNormalized));
 }
@@ -50,20 +36,8 @@ export function isExpired(predictedDateNormalized: string): boolean {
   return predictedDateNormalized <= TODAY;
 }
 
-/** Display year for EXPIRES/CLOSING labels — uses predictedDate for approximate entries */
+/** Display year for EXPIRES/CLOSING labels */
 export function displayYear(entry: Entry): string {
-  const pd = entry.predictedDate.toLowerCase();
-  // If the predicted date is approximate/vague, show a friendly label
-  if (pd.includes('distant future') || pd.includes('approx')) {
-    // Extract century or description
-    const centuryMatch = entry.predictedDate.match(/(\d+)(?:st|nd|rd|th)\s+century/i);
-    if (centuryMatch) {
-      const n = parseInt(centuryMatch[1]);
-      const suffix = n === 21 ? 'st' : n === 22 ? 'nd' : n === 23 ? 'rd' : 'th';
-      return `~${n}${suffix} century`;
-    }
-    return entry.predictedDateNormalized.slice(0, 4);
-  }
   return entry.predictedDateNormalized.slice(0, 4);
 }
 
@@ -82,6 +56,8 @@ export function timeRemaining(predictedDateNormalized: string): string {
   return `${years} year${years !== 1 ? 's' : ''} remaining`;
 }
 
+// ── Categories ──
+
 const categories: Category[] = [
   { slug: "technology", name: "Technology", description: "Computing, communications, transportation, energy, manufacturing, automation, artificial intelligence, consumer devices." },
   { slug: "governance", name: "Governance & Power", description: "Political systems, elections, international relations, law, regulation, surveillance, institutional design, diplomacy, empire." },
@@ -92,6 +68,13 @@ const categories: Category[] = [
   { slug: "war-conflict", name: "War & Conflict", description: "Military technology, nuclear weapons, arms races, insurgency, civil war, defense planning, strategic doctrine, peace projections." },
   { slug: "culture", name: "Culture & Society", description: "Art, religion, language, demographics, migration, cities, race, class, gender, morality, media, the shape of public life." },
 ];
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
 
 export function categoryToSlug(category: string): string {
   const map: Record<string, string> = {
@@ -108,27 +91,129 @@ export function categoryToSlug(category: string): string {
     "War & Conflict": "war-conflict",
     Culture: "culture",
     "Culture & Society": "culture",
+    // Quote-system categories
+    "AI & Robots": "technology",
+    "Economy": "daily-life",
+    "Society": "culture",
   };
-  return map[category] || category.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  return map[category] || slugify(category);
 }
+
+// ── Core accessors ──
 
 /** All entries (for admin, static params, etc.) */
 export function getAllEntries(): Entry[] { return allEntries; }
 
-/** Confirmed entries only (public site) */
-export function getConfirmedEntries(): Entry[] { return confirmedEntries; }
+/** Published entries only (public site) */
+export function getConfirmedEntries(): Entry[] { return publishedEntries; }
 
-export function getEntryById(id: string): Entry | undefined { return allEntries.find(e => e.id === id); }
+/** Alias — matches the old quotes.ts API */
+export function getAllQuotes(): Entry[] { return publishedEntries; }
+
+export function getEntryById(id: string): Entry | undefined {
+  return allEntries.find(e => e.slug === id);
+}
+
+export function getEntryBySlug(slug: string): Entry | undefined {
+  return allEntries.find(e => e.slug === slug);
+}
+
+/** Alias for old quotes.ts consumers */
+export function getQuoteBySlug(slug: string): Entry | undefined {
+  return getEntryBySlug(slug);
+}
+
 export function getAllCategories(): Category[] { return categories; }
 export function getCategoryBySlug(slug: string): Category | undefined { return categories.find(c => c.slug === slug); }
 
+// ── Filtered queries ──
+
 export function getEntriesByCategory(slug: string): Entry[] {
-  return confirmedEntries.filter(e => categoryToSlug(e.category) === slug);
+  return publishedEntries.filter(e =>
+    e.categories.some(c => categoryToSlug(c) === slug)
+  );
 }
+
+export function getEntriesByDecade(): Record<string, Entry[]> {
+  const decades: Record<string, Entry[]> = {};
+  for (const e of publishedEntries) {
+    const year = parseInt(e.predictedDateNormalized.slice(0, 4));
+    const decade = `${Math.floor(year / 10) * 10}s`;
+    if (!decades[decade]) decades[decade] = [];
+    decades[decade].push(e);
+  }
+  const out: Record<string, Entry[]> = {};
+  for (const k of Object.keys(decades).sort()) {
+    out[k] = decades[k].sort((a, b) => a.predictedDateNormalized.localeCompare(b.predictedDateNormalized));
+  }
+  return out;
+}
+
+export function getEntriesByVerdict(verdict: string): Entry[] {
+  return publishedEntries.filter(
+    e => e.didItHoldUp && e.didItHoldUp.verdict === verdict
+  );
+}
+
+export function getEntriesByAuthorSlug(authorSlug: string): Entry[] {
+  return publishedEntries.filter(e => e.authorSlug === authorSlug);
+}
+
+// ── Queries from old quotes.ts ──
+
+export function getAllQuoteCategories(): string[] {
+  const cats = new Set<string>();
+  publishedEntries.forEach(e => e.categories.forEach(c => cats.add(c)));
+  return Array.from(cats).sort();
+}
+
+export function getAllDecades(): string[] {
+  const decades = new Set<string>();
+  publishedEntries.forEach(e => {
+    const year = parseInt(e.predictedDateNormalized.slice(0, 4));
+    decades.add(`${Math.floor(year / 10) * 10}s`);
+  });
+  return Array.from(decades).sort();
+}
+
+export function getQuotesByDecade(decade: string): Entry[] {
+  return publishedEntries.filter(e => {
+    const year = parseInt(e.predictedDateNormalized.slice(0, 4));
+    return `${Math.floor(year / 10) * 10}s` === decade;
+  });
+}
+
+export function getQuotesByCategory(category: string): Entry[] {
+  return publishedEntries.filter(e =>
+    e.categories.some(c => slugify(c) === category)
+  );
+}
+
+export function getQuotesByAuthorSlug(authorSlug: string): Entry[] {
+  return getEntriesByAuthorSlug(authorSlug);
+}
+
+export function getQuotesByVerdict(verdict: string): Entry[] {
+  return getEntriesByVerdict(verdict);
+}
+
+export function getAllAuthors(): { name: string; slug: string }[] {
+  const authors = new Map<string, string>();
+  publishedEntries.forEach(e => {
+    if (!authors.has(e.authorSlug)) {
+      authors.set(e.authorSlug, e.author);
+    }
+  });
+  return Array.from(authors.entries())
+    .map(([slug, name]) => ({ slug, name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ── Featured / Recent / Related ──
 
 export function getFeaturedEntry(): Entry {
   const archive = getArchiveEntries();
-  if (archive.length === 0) return confirmedEntries[0];
+  if (archive.length === 0) return publishedEntries[0];
   const today = new Date();
   const tm = today.getMonth(), td = today.getDate();
   let best = archive[0], bestDiff = Infinity;
@@ -142,25 +227,23 @@ export function getFeaturedEntry(): Entry {
 }
 
 export function getRecentEntries(n = 10): Entry[] {
-  return [...getArchiveEntries()].sort((a, b) => b.predictedDateNormalized.localeCompare(a.predictedDateNormalized)).slice(0, n);
+  return [...getArchiveEntries()]
+    .sort((a, b) => b.predictedDateNormalized.localeCompare(a.predictedDateNormalized))
+    .slice(0, n);
 }
 
 export function getRelatedEntries(entry: Entry, n = 3): Entry[] {
-  const slug = categoryToSlug(entry.category);
-  return confirmedEntries.filter(e => e.id !== entry.id && categoryToSlug(e.category) === slug).slice(0, n);
+  return publishedEntries
+    .filter(e => e.slug !== entry.slug && e.categories.some(c =>
+      entry.categories.some(ec => categoryToSlug(ec) === categoryToSlug(c))
+    ))
+    .slice(0, n);
 }
 
-export function getEntriesByDecade(): Record<string, Entry[]> {
-  const decades: Record<string, Entry[]> = {};
-  for (const e of confirmedEntries) {
-    const year = parseInt(e.predictedDateNormalized.slice(0, 4));
-    const decade = `${Math.floor(year / 10) * 10}s`;
-    if (!decades[decade]) decades[decade] = [];
-    decades[decade].push(e);
-  }
-  const out: Record<string, Entry[]> = {};
-  for (const k of Object.keys(decades).sort()) {
-    out[k] = decades[k].sort((a, b) => a.predictedDateNormalized.localeCompare(b.predictedDateNormalized));
-  }
-  return out;
+export function getDailyQuote(): Entry {
+  const today = new Date();
+  const dayOfYear = Math.floor(
+    (today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000
+  );
+  return publishedEntries[dayOfYear % publishedEntries.length];
 }

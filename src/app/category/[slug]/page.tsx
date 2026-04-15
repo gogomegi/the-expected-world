@@ -104,8 +104,8 @@ export default async function CategoryPage({ params }: Props) {
           <div>
             {entries.map((entry) => (
               <Link
-                key={entry.id}
-                href={`/entry/${entry.id}`}
+                key={entry.slug}
+                href={`/entry/${entry.slug}`}
                 style={{ display: "block", textDecoration: "none" }}
               >
                 <div className="ledger-row">
@@ -130,8 +130,8 @@ export default async function CategoryPage({ params }: Props) {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {entry.quote.length > 90 ? entry.quote.slice(0, 90) + "…" : entry.quote}
-                    {entry.is_fiction && (
+                    {entry.text.length > 90 ? entry.text.slice(0, 90) + "…" : entry.text}
+                    {entry.isFiction && (
                       <span
                         style={{
                           fontFamily: "var(--font-chrome)",
@@ -161,7 +161,7 @@ export default async function CategoryPage({ params }: Props) {
                     }}
                   >
                     {entry.author.split(" ").slice(-1)[0]},{" "}
-                    {entry.dateWritten.slice(0, 4)}
+                    {entry.yearWritten}
                   </span>
                   <span
                     className="ledger-category"

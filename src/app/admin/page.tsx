@@ -1,25 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-
-interface Entry {
-  id: string;
-  quote: string;
-  author: string;
-  source: string;
-  dateWritten: string;
-  predictedDate: string;
-  predictedDateNormalized: string;
-  category: string;
-  annotation: string;
-  actualOutcome?: string;
-  tags: string[];
-  source_type?: "ai" | "human";
-  status?: "pending" | "confirmed" | "rejected";
-  verification_status?: "verified" | "paraphrased" | "unverified" | "fabricated";
-  source_url?: string;
-  verification_note?: string;
-}
+import type { Entry } from "@/types/quote";
 
 const CATEGORIES = [
   "Technology",
@@ -61,21 +43,21 @@ export default function AdminPanel() {
   }, [fetchEntries]);
 
   const filtered = entries.filter((e) => {
-    if (filterStatus !== "all" && (e.status || "pending") !== filterStatus)
+    if (filterStatus !== "all" && (e.status || "pending-review") !== filterStatus)
       return false;
-    if (filterSource !== "all" && (e.source_type || "ai") !== filterSource)
+    if (filterSource !== "all" && (e.quoteSource || "ai") !== filterSource)
       return false;
     if (
       filterCategory !== "all" &&
-      e.category.toLowerCase() !== filterCategory.toLowerCase()
+      (e.categories[0] || "").toLowerCase() !== filterCategory.toLowerCase()
     )
       return false;
-    if (filterVerification !== "all" && (e.verification_status || "unverified") !== filterVerification)
+    if (filterVerification !== "all" && (e.verificationStatus || "unverified") !== filterVerification)
       return false;
     if (search) {
       const q = search.toLowerCase();
       if (
-        !e.quote.toLowerCase().includes(q) &&
+        !e.text.toLowerCase().includes(q) &&
         !e.author.toLowerCase().includes(q)
       )
         return false;
@@ -97,14 +79,14 @@ export default function AdminPanel() {
     setSaving(false);
   };
 
-  const handleStatus = async (id: string, status: string) => {
+  const handleStatus = async (slug: string, status: string) => {
     await fetch("/api/corpus", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ slug, status }),
     });
     await fetchEntries();
-    if (selected?.id === id) {
+    if (selected?.slug === slug) {
       setSelected((prev) =>
         prev ? { ...prev, status: status as Entry["status"] } : null
       );
@@ -113,9 +95,9 @@ export default function AdminPanel() {
 
   const statusColor = (status: string | undefined) => {
     switch (status) {
-      case "confirmed":
+      case "published":
         return "#2d6a30";
-      case "rejected":
+      case "draft":
         return "#C03A1E";
       default:
         return "#787167";
@@ -137,18 +119,18 @@ export default function AdminPanel() {
 
   const statusCounts = {
     all: entries.length,
-    pending: entries.filter((e) => (e.status || "pending") === "pending")
+    "pending-review": entries.filter((e) => (e.status || "pending-review") === "pending-review")
       .length,
-    confirmed: entries.filter((e) => e.status === "confirmed").length,
-    rejected: entries.filter((e) => e.status === "rejected").length,
+    published: entries.filter((e) => e.status === "published").length,
+    draft: entries.filter((e) => e.status === "draft").length,
   };
 
   const verificationCounts = {
     all: entries.length,
-    verified: entries.filter((e) => e.verification_status === "verified").length,
-    paraphrased: entries.filter((e) => e.verification_status === "paraphrased").length,
-    unverified: entries.filter((e) => (e.verification_status || "unverified") === "unverified").length,
-    fabricated: entries.filter((e) => e.verification_status === "fabricated").length,
+    verified: entries.filter((e) => e.verificationStatus === "verified").length,
+    paraphrased: entries.filter((e) => e.verificationStatus === "paraphrased").length,
+    unverified: entries.filter((e) => (e.verificationStatus || "unverified") === "unverified").length,
+    fabricated: entries.filter((e) => e.verificationStatus === "fabricated").length,
   };
 
   if (loading) {
@@ -213,46 +195,46 @@ export default function AdminPanel() {
               color: statusColor(entry.status),
             }}
           >
-            {(entry.status || "pending").toUpperCase()}
+            {(entry.status || "pending-review").toUpperCase()}
           </span>
           <span
             style={{
               ...styles.verificationBadge,
-              color: verificationColor(entry.verification_status),
-              borderColor: verificationColor(entry.verification_status),
+              color: verificationColor(entry.verificationStatus),
+              borderColor: verificationColor(entry.verificationStatus),
             }}
           >
-            {(entry.verification_status || "unverified").toUpperCase()}
+            {(entry.verificationStatus || "unverified").toUpperCase()}
           </span>
           <span style={styles.mono}>
-            {entry.source_type || "ai"} · {entry.category}
+            {entry.quoteSource || "ai"} · {entry.categories[0]}
           </span>
           {!isEditing && (
             <div
               style={{ marginLeft: "auto", display: "flex", gap: "8px" }}
             >
               <button
-                onClick={() => handleStatus(entry.id, "confirmed")}
+                onClick={() => handleStatus(entry.slug, "published")}
                 style={{
                   ...styles.smallBtn,
                   borderColor: "#2d6a30",
                   color: "#2d6a30",
                 }}
               >
-                confirm
+                publish
               </button>
               <button
-                onClick={() => handleStatus(entry.id, "rejected")}
+                onClick={() => handleStatus(entry.slug, "draft")}
                 style={{
                   ...styles.smallBtn,
                   borderColor: "#C03A1E",
                   color: "#C03A1E",
                 }}
               >
-                reject
+                draft
               </button>
               <button
-                onClick={() => handleStatus(entry.id, "pending")}
+                onClick={() => handleStatus(entry.slug, "pending-review")}
                 style={styles.smallBtn}
               >
                 reset
@@ -263,13 +245,13 @@ export default function AdminPanel() {
 
         {/* Fields */}
         <div style={styles.fieldGrid}>
-          <Field label="ID" value={entry.id} />
+          <Field label="Slug" value={entry.slug} />
           <Field
             label="Quote"
-            value={isEditing ? editing!.quote : entry.quote}
+            value={isEditing ? editing!.text : entry.text}
             multiline
             editable={isEditing}
-            onChange={(v) => setEditing((e) => e && { ...e, quote: v })}
+            onChange={(v) => setEditing((e) => e && { ...e, text: v })}
           />
           <Field
             label="Author"
@@ -292,20 +274,20 @@ export default function AdminPanel() {
           >
             <Field
               label="Date Written"
-              value={isEditing ? editing!.dateWritten : entry.dateWritten}
+              value={isEditing ? String(editing!.yearWritten) : String(entry.yearWritten)}
               editable={isEditing}
               onChange={(v) =>
-                setEditing((e) => e && { ...e, dateWritten: v })
+                setEditing((e) => e && { ...e, yearWritten: parseInt(v) || 0 })
               }
             />
             <Field
               label="Predicted Date"
               value={
-                isEditing ? editing!.predictedDate : entry.predictedDate
+                isEditing ? editing!.yearImagined : entry.yearImagined
               }
               editable={isEditing}
               onChange={(v) =>
-                setEditing((e) => e && { ...e, predictedDate: v })
+                setEditing((e) => e && { ...e, yearImagined: v })
               }
             />
             <Field
@@ -325,10 +307,10 @@ export default function AdminPanel() {
             <div>
               <label style={styles.fieldLabel}>Category</label>
               <select
-                value={editing!.category}
+                value={editing!.categories[0] || ""}
                 onChange={(e) =>
                   setEditing(
-                    (prev) => prev && { ...prev, category: e.target.value }
+                    (prev) => prev && { ...prev, categories: [e.target.value] }
                   )
                 }
                 style={styles.select}
@@ -341,11 +323,11 @@ export default function AdminPanel() {
               </select>
             </div>
           ) : (
-            <Field label="Category" value={entry.category} />
+            <Field label="Category" value={entry.categories.join(", ")} />
           )}
           <Field
             label="Annotation"
-            value={isEditing ? editing!.annotation : entry.annotation}
+            value={isEditing ? editing!.annotation || "" : entry.annotation || ""}
             multiline
             editable={isEditing}
             onChange={(v) =>
@@ -356,21 +338,24 @@ export default function AdminPanel() {
             label="What Actually Happened"
             value={
               isEditing
-                ? editing!.actualOutcome || ""
-                : entry.actualOutcome || ""
+                ? editing!.didItHoldUp?.analysis || ""
+                : entry.didItHoldUp?.analysis || ""
             }
             multiline
             editable={isEditing}
             onChange={(v) =>
-              setEditing((e) => e && { ...e, actualOutcome: v })
+              setEditing((e) => e && {
+                ...e,
+                didItHoldUp: { verdict: e.didItHoldUp?.verdict || "pending", analysis: v },
+              })
             }
           />
           <Field
             label="Tags (comma-separated)"
             value={
               isEditing
-                ? editing!.tags.join(", ")
-                : entry.tags.join(", ")
+                ? (editing!.tags || []).join(", ")
+                : (entry.tags || []).join(", ")
             }
             editable={isEditing}
             onChange={(v) =>
@@ -389,10 +374,10 @@ export default function AdminPanel() {
             <div>
               <label style={styles.fieldLabel}>Verification Status</label>
               <select
-                value={editing!.verification_status || "unverified"}
+                value={editing!.verificationStatus || "unverified"}
                 onChange={(e) =>
                   setEditing(
-                    (prev) => prev && { ...prev, verification_status: e.target.value as Entry["verification_status"] }
+                    (prev) => prev && { ...prev, verificationStatus: e.target.value as Entry["verificationStatus"] }
                   )
                 }
                 style={styles.select}
@@ -404,20 +389,20 @@ export default function AdminPanel() {
               </select>
             </div>
           ) : (
-            <Field label="Verification Status" value={entry.verification_status || "unverified"} />
+            <Field label="Verification Status" value={entry.verificationStatus || "unverified"} />
           )}
           <Field
             label="Source URL"
-            value={isEditing ? editing!.source_url || "" : entry.source_url || ""}
+            value={isEditing ? editing!.sourceUrl || "" : entry.sourceUrl || ""}
             editable={isEditing}
-            onChange={(v) => setEditing((e) => e && { ...e, source_url: v })}
+            onChange={(v) => setEditing((e) => e && { ...e, sourceUrl: v })}
           />
           <Field
             label="Verification Note"
-            value={isEditing ? editing!.verification_note || "" : entry.verification_note || ""}
+            value={isEditing ? editing!.verificationNote || "" : entry.verificationNote || ""}
             multiline
             editable={isEditing}
-            onChange={(v) => setEditing((e) => e && { ...e, verification_note: v })}
+            onChange={(v) => setEditing((e) => e && { ...e, verificationNote: v })}
           />
         </div>
       </div>
@@ -440,7 +425,7 @@ export default function AdminPanel() {
           style={styles.searchInput}
         />
         <div style={styles.filterGroup}>
-          {(["all", "pending", "confirmed", "rejected"] as const).map(
+          {(["all", "pending-review", "published", "draft"] as const).map(
             (s) => (
               <button
                 key={s}
@@ -503,7 +488,7 @@ export default function AdminPanel() {
       <div>
         {filtered.map((entry) => (
           <div
-            key={entry.id}
+            key={entry.slug}
             onClick={() => setSelected(entry)}
             style={styles.row}
             onMouseEnter={(e) =>
@@ -525,18 +510,18 @@ export default function AdminPanel() {
                 {entry.predictedDateNormalized.slice(0, 4)}
               </span>
               <span style={styles.rowQuote}>
-                {entry.quote.length > 100
-                  ? entry.quote.slice(0, 100) + "…"
-                  : entry.quote}
+                {entry.text.length > 100
+                  ? entry.text.slice(0, 100) + "…"
+                  : entry.text}
               </span>
             </div>
             <div style={styles.rowRight}>
               <span style={styles.rowAuthor}>{entry.author}</span>
               <span style={styles.rowMeta}>
-                {entry.source_type || "ai"} ·{" "}
-                {entry.status || "pending"} ·{" "}
-                <span style={{ color: verificationColor(entry.verification_status) }}>
-                  {entry.verification_status || "unverified"}
+                {entry.quoteSource || "ai"} ·{" "}
+                {entry.status || "pending-review"} ·{" "}
+                <span style={{ color: verificationColor(entry.verificationStatus) }}>
+                  {entry.verificationStatus || "unverified"}
                 </span>
               </span>
             </div>
