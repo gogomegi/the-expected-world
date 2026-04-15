@@ -20,6 +20,9 @@ const CATEGORIES = [
 ];
 
 export default function AdminPanel() {
+  const [authed, setAuthed] = useState<boolean | null>(null); // null = checking
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Entry | null>(null);
@@ -31,16 +34,142 @@ export default function AdminPanel() {
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [filterVerification, setFilterVerification] = useState<string>("all");
 
+  // Check if already authenticated
+  useEffect(() => {
+    fetch("/api/admin/auth").then((res) => {
+      setAuthed(res.ok);
+    });
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError("");
+    const res = await fetch("/api/admin/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (res.ok) {
+      setAuthed(true);
+      setPassword("");
+    } else {
+      setAuthError("Invalid password");
+    }
+  };
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/auth", { method: "DELETE" });
+    setAuthed(false);
+    setEntries([]);
+    setSelected(null);
+    setEditing(null);
+  };
+
   const fetchEntries = useCallback(async () => {
     const res = await fetch("/api/corpus");
+    if (!res.ok) {
+      setAuthed(false);
+      return;
+    }
     const data = await res.json();
     setEntries(data);
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchEntries();
-  }, [fetchEntries]);
+    if (authed) fetchEntries();
+  }, [authed, fetchEntries]);
+
+  // Auth check in progress
+  if (authed === null) {
+    return (
+      <div style={styles.container}>
+        <p style={styles.mono}>Checking authentication…</p>
+      </div>
+    );
+  }
+
+  // Login screen
+  if (!authed) {
+    return (
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        padding: "24px",
+      }}>
+        <form onSubmit={handleLogin} style={{
+          width: "100%",
+          maxWidth: "320px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+        }}>
+          <h1 style={{
+            fontFamily: "var(--fh), system-ui, sans-serif",
+            fontSize: "1.125rem",
+            fontWeight: 600,
+            letterSpacing: "-0.01em",
+            color: "#1a1a1a",
+            margin: 0,
+          }}>
+            Admin
+          </h1>
+          <p style={{
+            fontFamily: "var(--fm), monospace",
+            fontSize: "0.6875rem",
+            color: "#6b6560",
+            letterSpacing: "0.04em",
+            margin: 0,
+          }}>
+            The Expected World
+          </p>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="password"
+            autoFocus
+            style={{
+              fontFamily: "var(--fm), monospace",
+              fontSize: "0.8125rem",
+              padding: "10px 14px",
+              border: "1px solid rgba(0,0,0,0.15)",
+              borderRadius: "3px",
+              background: "#fff",
+              color: "#1a1a1a",
+              outline: "none",
+            }}
+          />
+          {authError && (
+            <p style={{
+              fontFamily: "var(--fm), monospace",
+              fontSize: "0.6875rem",
+              color: "#C03A1E",
+              margin: 0,
+            }}>
+              {authError}
+            </p>
+          )}
+          <button type="submit" style={{
+            fontFamily: "var(--fh), system-ui, sans-serif",
+            fontSize: "0.75rem",
+            fontWeight: 500,
+            letterSpacing: "0.04em",
+            padding: "8px 16px",
+            border: "1px solid #1a1a1a",
+            borderRadius: "3px",
+            background: "#1a1a1a",
+            color: "#FAF6F0",
+            cursor: "pointer",
+          }}>
+            sign in
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   const filtered = entries.filter((e) => {
     if (filterStatus !== "all" && (e.status || "pending-review") !== filterStatus)
@@ -412,7 +541,16 @@ export default function AdminPanel() {
   // List view
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Admin Panel</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px" }}>
+        <h1 style={styles.title}>Admin Panel</h1>
+        <button onClick={handleLogout} style={{
+          ...styles.smallBtn,
+          color: "#6b6560",
+          borderColor: "rgba(0,0,0,0.15)",
+        }}>
+          sign out
+        </button>
+      </div>
       <p style={styles.subtitle}>{entries.length} entries in corpus</p>
 
       {/* Filters */}
@@ -493,7 +631,7 @@ export default function AdminPanel() {
             style={styles.row}
             onMouseEnter={(e) =>
               (e.currentTarget.style.background =
-                "rgba(240,234,224,0.4)")
+                "rgba(0,0,0,0.04)")
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.background = "transparent")
@@ -573,6 +711,17 @@ function Field({
   );
 }
 
+// Light theme admin styles
+const BG = "#FAF6F0";
+const TEXT = "#1a1a1a";
+const SECONDARY = "#6b6560";
+const ACCENT = "#2B5CE6";
+const BORDER = "rgba(0,0,0,0.12)";
+const BORDER_MED = "rgba(0,0,0,0.18)";
+const FONT_H = "var(--fh, system-ui), system-ui, sans-serif";
+const FONT_M = "var(--fm, monospace), monospace";
+const FONT_Q = "var(--fq, Georgia), Georgia, serif";
+
 const styles: Record<string, React.CSSProperties> = {
   container: {
     maxWidth: "1040px",
@@ -580,17 +729,18 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "48px 64px 96px",
   },
   title: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "1.5rem",
     fontWeight: 500,
     letterSpacing: "-0.01em",
+    color: TEXT,
     margin: 0,
     marginBottom: "4px",
   },
   subtitle: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     margin: 0,
     marginBottom: "32px",
@@ -602,16 +752,16 @@ const styles: Record<string, React.CSSProperties> = {
     flexWrap: "wrap",
     marginBottom: "16px",
     paddingBottom: "16px",
-    borderBottom: "1px solid rgba(120,113,103,0.2)",
+    borderBottom: `1px solid ${BORDER}`,
   },
   searchInput: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.8125rem",
     padding: "6px 12px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     width: "240px",
     outline: "none",
   },
@@ -620,36 +770,36 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "4px",
   },
   filterBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.6875rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
     padding: "4px 10px",
-    border: "1px solid rgba(120,113,103,0.2)",
+    border: `1px solid ${BORDER}`,
     borderRadius: "2px",
     background: "transparent",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     cursor: "pointer",
   },
   filterBtnActive: {
-    background: "var(--color-text)",
-    color: "var(--color-bg)",
-    borderColor: "var(--color-text)",
+    background: TEXT,
+    color: BG,
+    borderColor: TEXT,
   },
   select: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.75rem",
     padding: "5px 8px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     cursor: "pointer",
   },
   resultCount: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     marginBottom: "8px",
   },
@@ -658,7 +808,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "baseline",
     padding: "12px 8px",
-    borderBottom: "1px solid rgba(120,113,103,0.12)",
+    borderBottom: `1px solid ${BORDER}`,
     cursor: "pointer",
     transition: "background 100ms ease",
     gap: "16px",
@@ -680,16 +830,16 @@ const styles: Record<string, React.CSSProperties> = {
     display: "inline-block",
   },
   rowYear: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.875rem",
     fontWeight: 500,
-    color: "var(--color-accent)",
+    color: ACCENT,
     flexShrink: 0,
   },
   rowQuote: {
-    fontFamily: "var(--font-body)",
+    fontFamily: FONT_Q,
     fontSize: "0.8125rem",
-    color: "var(--color-text)",
+    color: TEXT,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -702,23 +852,23 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "2px",
   },
   rowAuthor: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     whiteSpace: "nowrap",
   },
   rowMeta: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.625rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     opacity: 0.6,
   },
   mono: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
   },
   topBar: {
@@ -728,49 +878,49 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: "24px",
   },
   backBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.75rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     background: "none",
     border: "none",
     cursor: "pointer",
     padding: 0,
   },
   actionBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.6875rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
     padding: "5px 14px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
     background: "transparent",
-    color: "var(--color-text)",
+    color: TEXT,
     cursor: "pointer",
   },
   confirmBtn: {
-    background: "var(--color-text)",
-    color: "var(--color-bg)",
-    borderColor: "var(--color-text)",
+    background: TEXT,
+    color: BG,
+    borderColor: TEXT,
   },
   statusBar: {
     display: "flex",
     alignItems: "center",
     gap: "16px",
     paddingBottom: "16px",
-    borderBottom: "1px solid rgba(120,113,103,0.2)",
+    borderBottom: `1px solid ${BORDER}`,
     marginBottom: "32px",
   },
   statusBadge: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.6875rem",
     fontWeight: 500,
     letterSpacing: "0.08em",
   },
   verificationBadge: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.625rem",
     fontWeight: 500,
     letterSpacing: "0.06em",
@@ -779,15 +929,15 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "2px",
   },
   smallBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.625rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
     padding: "3px 10px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
     background: "transparent",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     cursor: "pointer",
   },
   fieldGrid: {
@@ -797,49 +947,49 @@ const styles: Record<string, React.CSSProperties> = {
   },
   fieldLabel: {
     display: "block",
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.625rem",
     fontWeight: 500,
     letterSpacing: "0.08em",
     textTransform: "uppercase" as const,
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     marginBottom: "6px",
   },
   fieldValue: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.8125rem",
-    color: "var(--color-text)",
+    color: TEXT,
     lineHeight: 1.5,
     margin: 0,
   },
   fieldValueMulti: {
-    fontFamily: "var(--font-body)",
+    fontFamily: FONT_Q,
     fontSize: "0.9375rem",
-    color: "var(--color-text)",
+    color: TEXT,
     lineHeight: 1.65,
     margin: 0,
   },
   input: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.8125rem",
     width: "100%",
     padding: "6px 10px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     boxSizing: "border-box" as const,
   },
   textarea: {
-    fontFamily: "var(--font-body)",
+    fontFamily: FONT_Q,
     fontSize: "0.9375rem",
     lineHeight: 1.65,
     width: "100%",
     padding: "8px 10px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     resize: "vertical" as const,
     boxSizing: "border-box" as const,
   },

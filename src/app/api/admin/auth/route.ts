@@ -1,5 +1,12 @@
-import { verifyPassword, ADMIN_COOKIE } from "@/lib/admin-auth";
+import { isAuthenticated, verifyPassword, ADMIN_COOKIE } from "@/lib/admin-auth";
 import { cookies } from "next/headers";
+
+export async function GET() {
+  if (!(await isAuthenticated())) {
+    return Response.json({ error: "Not authenticated" }, { status: 401 });
+  }
+  return Response.json({ ok: true });
+}
 
 export async function POST(request: Request) {
   const { password } = await request.json();
