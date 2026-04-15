@@ -19,6 +19,7 @@
   --color-blue: #2B5CE6;
   --color-green: #1A8C54;
   --color-amber: #D4952B;
+
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
