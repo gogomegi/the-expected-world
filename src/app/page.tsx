@@ -45,8 +45,28 @@ export default function HomePage() {
   const confirmed = getConfirmedEntries();
   const archiveCount = getArchiveEntries().length;
 
-  // Cube years from first 6 archive entries
-  const cubeYears = archiveEntries.slice(0, 6).map((e) => ({
+  // Cube years — spread across eras for variety
+  const cubeYearPicks: typeof archiveEntries = [];
+  const seenDecades = new Set<string>();
+  // Walk all entries sorted by predicted date, pick one per decade spread
+  const sorted = [...archiveEntries].sort((a, b) =>
+    a.predictedDateNormalized.localeCompare(b.predictedDateNormalized)
+  );
+  for (const e of sorted) {
+    if (cubeYearPicks.length >= 6) break;
+    const yr = parseInt(e.predictedDateNormalized.slice(0, 4));
+    const decade = `${Math.floor(yr / 50) * 50}`;
+    if (!seenDecades.has(decade)) {
+      seenDecades.add(decade);
+      cubeYearPicks.push(e);
+    }
+  }
+  // Fill remaining slots if needed
+  for (const e of sorted) {
+    if (cubeYearPicks.length >= 6) break;
+    if (!cubeYearPicks.includes(e)) cubeYearPicks.push(e);
+  }
+  const cubeYears = cubeYearPicks.map((e) => ({
     year: displayYear(e),
     label: isExpired(e.predictedDateNormalized) ? "Expires" : "Closing",
   }));

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useCallback } from "react";
 
 interface MagicCubeProps {
   years: { year: string; label: string }[];
@@ -12,18 +12,12 @@ export default function MagicCube({ years }: MagicCubeProps) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
+  const dragRef = useRef({ active: false, startX: 0, startY: 0, offsetX: 0, offsetY: 0, dragX: 0, dragY: 0 });
   const mouseRef = useRef({ x: 0, y: 0, active: false });
-  const [isTouch, setIsTouch] = useState(false);
-
-  useEffect(() => {
-    setIsTouch(
-      ("ontouchstart" in window) || (navigator.maxTouchPoints > 0)
-    );
-  }, []);
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (isTouch || !sceneRef.current) return;
+      if (!sceneRef.current) return;
       const rect = sceneRef.current.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
@@ -33,7 +27,7 @@ export default function MagicCube({ years }: MagicCubeProps) {
         active: true,
       };
     },
-    [isTouch]
+    []
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -41,14 +35,49 @@ export default function MagicCube({ years }: MagicCubeProps) {
   }, []);
 
   useEffect(() => {
-    if (isTouch) return;
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isTouch, handleMouseMove, handleMouseLeave]);
+  }, [handleMouseMove, handleMouseLeave]);
+
+  // Touch drag support
+  useEffect(() => {
+    const scene = sceneRef.current;
+    if (!scene) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.touches[0];
+      dragRef.current.active = true;
+      dragRef.current.startX = t.clientX;
+      dragRef.current.startY = t.clientY;
+      dragRef.current.offsetX = dragRef.current.dragX;
+      dragRef.current.offsetY = dragRef.current.dragY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragRef.current.active) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      dragRef.current.dragX = dragRef.current.offsetX + (t.clientX - dragRef.current.startX) * 0.5;
+      dragRef.current.dragY = dragRef.current.offsetY + (t.clientY - dragRef.current.startY) * -0.5;
+    };
+
+    const onTouchEnd = () => {
+      dragRef.current.active = false;
+    };
+
+    scene.addEventListener("touchstart", onTouchStart, { passive: true });
+    scene.addEventListener("touchmove", onTouchMove, { passive: false });
+    scene.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      scene.removeEventListener("touchstart", onTouchStart);
+      scene.removeEventListener("touchmove", onTouchMove);
+      scene.removeEventListener("touchend", onTouchEnd);
+    };
+  }, []);
 
   useEffect(() => {
     const start = performance.now();
@@ -66,8 +95,10 @@ export default function MagicCube({ years }: MagicCubeProps) {
       const mx = m.active ? m.x : 0;
       const my = m.active ? m.y : 0;
 
+      const d = dragRef.current;
+
       wrapRef.current.style.transform =
-        `rotateX(${rotX + my}deg) rotateY(${rotY + mx}deg) rotateZ(${rotZ}deg)`;
+        `rotateX(${rotX + my + d.dragY}deg) rotateY(${rotY + mx + d.dragX}deg) rotateZ(${rotZ}deg)`;
 
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -77,7 +108,7 @@ export default function MagicCube({ years }: MagicCubeProps) {
   }, []);
 
   return (
-    <div className="cube-scene" ref={sceneRef}>
+    <div className="cube-scene" ref={sceneRef} style={{ touchAction: "none" }}>
       <div className="cube-wrap" ref={wrapRef}>
         {faceNames.map((face, i) => {
           const item = years[i];

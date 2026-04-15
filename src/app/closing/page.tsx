@@ -88,16 +88,7 @@ export default function ClosingPage() {
             No predictions with future dates in the confirmed corpus yet.
           </p>
         ) : (
-          <div
-            className="closing-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              gap: "4px",
-              maxWidth: "var(--max-width)",
-              margin: "0 auto",
-            }}
-          >
+          <div className="closing-grid">
             {entries.map((entry, i) => {
               const colorKey = CARD_COLORS[i % 4];
               const year = parseInt(entry.predictedDateNormalized.slice(0, 4));
