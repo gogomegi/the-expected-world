@@ -80,16 +80,7 @@ export default function HomePage() {
         }}
       >
         <PaintCanvas />
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 48,
-            maxWidth: "var(--max-width)",
-            margin: "0 auto",
-            alignItems: "center",
-          }}
-        >
+        <div className="hp-hero-grid">
           {/* LEFT */}
           <div>
             <ScrollReveal delay={0}>
@@ -115,15 +106,6 @@ export default function HomePage() {
             <MagicCube years={cubeYears} />
           </div>
         </div>
-        {/* Responsive override */}
-        <style>{`
-          @media(max-width:1024px){
-            .hero-grid{grid-template-columns:1fr !important; text-align:center;}
-          }
-          @media(max-width:640px){
-            .hero-section{padding:120px 20px 80px !important;}
-          }
-        `}</style>
       </section>
 
       {/* ── FEATURED ENTRY ── */}
@@ -136,15 +118,7 @@ export default function HomePage() {
       >
         <ScrollReveal delay={0}>
           <Link href={`/entry/${featured.id}`} style={{ display: "block" }}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 4,
-                maxWidth: "var(--max-width)",
-                margin: "0 auto",
-              }}
-            >
+            <div className="hp-feat-grid">
               {/* LEFT: Expires panel */}
               <div className="feat-exp">
                 <span
@@ -177,6 +151,7 @@ export default function HomePage() {
               </div>
               {/* RIGHT: Quote panel */}
               <div
+                className="hp-feat-quote"
                 style={{
                   background: "#0A0A0A",
                   padding: "64px 48px",
@@ -225,6 +200,7 @@ export default function HomePage() {
             </div>
             {/* Annotation bar */}
             <div
+              className="hp-annotation"
               style={{
                 background: "#111",
                 maxWidth: "var(--max-width)",
@@ -294,13 +270,7 @@ export default function HomePage() {
                 View all →
               </Link>
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 4,
-              }}
-            >
+            <div className="hp-gate-grid">
               {closingEntries.map((entry, i) => {
                 const cardColor = i % 2 === 0 ? "--amber" : "--green";
                 const cardClass = i % 2 === 0 ? "gate-card gate-card--amber" : "gate-card gate-card--green";
@@ -395,13 +365,7 @@ export default function HomePage() {
               {archiveCount} entries →
             </Link>
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 4,
-            }}
-          >
+          <div className="hp-archive-grid">
             {displayArchive.map((entry, i) => {
               const ci = colorIndex(i);
               const hoverBg = COLOR_VARS[ci];
@@ -510,15 +474,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Responsive overrides for inline grids */}
-      <style>{`
-        @media(max-width:1024px){
-          section .hero-grid-inner{grid-template-columns:1fr !important;}
-        }
-        @media(max-width:640px){
-          section{padding-left:20px !important; padding-right:20px !important;}
-        }
-      `}</style>
     </div>
   );
 }

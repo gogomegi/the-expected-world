@@ -82,7 +82,7 @@ export default function SubmitPage() {
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div className="sf-grid-2">
               <div>
                 <label htmlFor="author" style={labelStyle}>
                   Who said it? <span style={{ color: "var(--orange)" }}>*</span>
@@ -109,7 +109,7 @@ export default function SubmitPage() {
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div className="sf-grid-2">
               <div>
                 <label htmlFor="yearImagined" style={labelStyle}>
                   Year they imagined

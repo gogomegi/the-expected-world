@@ -103,15 +103,7 @@ export default async function EntryPage({ params }: Props) {
       >
         <PaintCanvas />
         <ScrollReveal delay={0}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "380px 1fr",
-              gap: 4,
-              maxWidth: "var(--max-width)",
-              margin: "0 auto",
-            }}
-          >
+          <div className="entry-hero-grid">
             {/* LEFT: Expires column */}
             <div
               className="entry-exp-col"
@@ -245,15 +237,7 @@ export default async function EntryPage({ params }: Props) {
           background: "var(--cream)",
         }}
       >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 64,
-            maxWidth: "var(--max-width)",
-            margin: "0 auto",
-          }}
-        >
+        <div className="entry-anno-grid">
           {/* LEFT: Annotation */}
           <div>
             <h2
@@ -366,13 +350,7 @@ export default async function EntryPage({ params }: Props) {
             >
               Related Entries
             </h3>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: 4,
-              }}
-            >
+            <div className="entry-related-grid">
               {related.map((rel, i) => {
                 const relYear = displayYear(rel);
                 const relColor = hoverColorForIndex(i);
@@ -474,15 +452,6 @@ export default async function EntryPage({ params }: Props) {
         )}
       </section>
 
-      {/* Responsive overrides */}
-      <style>{`
-        @media(max-width:1024px){
-          .entry-hero-grid{grid-template-columns:1fr !important;}
-        }
-        @media(max-width:640px){
-          section{padding-left:20px !important; padding-right:20px !important;}
-        }
-      `}</style>
     </div>
   );
 }
