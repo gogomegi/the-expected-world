@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import {
-  getEntryById,
+  getEntryBySlug,
   getAllEntries,
   getRelatedEntries,
   categoryToSlug,
@@ -30,24 +30,25 @@ function hoverColorForIndex(i: number): string {
 }
 
 export async function generateStaticParams() {
-  return getAllEntries().map((e) => ({ slug: e.id }));
+  return getAllEntries().map((e) => ({ slug: e.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const entry = getEntryById(slug);
+  const entry = getEntryBySlug(slug);
   if (!entry) return {};
   const label = isExpired(entry.predictedDateNormalized) ? "Expires" : "Closing";
-  const title = `${entry.author} — ${label}: ${entry.predictedDate} | The Expected World`;
+  const title = `${entry.author} — ${label}: ${entry.yearImagined} | The Expected World`;
+  const annotation = entry.annotation || "";
   const description =
-    entry.annotation.length > 160
-      ? entry.annotation.slice(0, 157) + "…"
-      : entry.annotation;
+    annotation.length > 160
+      ? annotation.slice(0, 157) + "…"
+      : annotation;
   return {
     title,
     description,
     alternates: {
-      canonical: `/entry/${entry.id}`,
+      canonical: `/entry/${entry.slug}`,
     },
     openGraph: {
       title,
@@ -60,28 +61,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function EntryPage({ params }: Props) {
   const { slug } = await params;
-  const entry = getEntryById(slug);
+  const entry = getEntryBySlug(slug);
   if (!entry) notFound();
 
   const related = getRelatedEntries(entry, 3);
-  const catSlug = categoryToSlug(entry.category);
+  const catSlug = categoryToSlug(entry.categories[0] || "");
   const expired = isExpired(entry.predictedDateNormalized);
   const yearStr = displayYear(entry);
-  const vividColor = colorForEntry(entry.id);
+  const vividColor = colorForEntry(entry.slug);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: `${entry.author}: ${entry.quote.slice(0, 110)}`,
+    headline: `${entry.author}: ${entry.text.slice(0, 110)}`,
     author: { "@type": "Person", name: entry.author },
-    datePublished: entry.dateWritten,
+    datePublished: String(entry.yearWritten),
     description: entry.annotation,
     publisher: {
       "@type": "Organization",
       name: "The Expected World",
       url: "https://theexpectedworld.com",
     },
-    mainEntityOfPage: `https://theexpectedworld.com/entry/${entry.id}`,
+    mainEntityOfPage: `https://theexpectedworld.com/entry/${entry.slug}`,
   };
 
   return (
@@ -135,7 +136,7 @@ export default async function EntryPage({ params }: Props) {
                     </span>
                     <br />
                     <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>
-                      {entry.dateWritten}
+                      {entry.yearWritten}
                     </span>
                   </div>
                   <div style={{ marginTop: 8 }}>
@@ -144,7 +145,7 @@ export default async function EntryPage({ params }: Props) {
                     </span>
                     <br />
                     <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>
-                      {entry.predictedDate}
+                      {entry.yearImagined}
                     </span>
                   </div>
                   <div style={{ marginTop: 8 }}>
@@ -156,7 +157,7 @@ export default async function EntryPage({ params }: Props) {
                       href={`/category/${catSlug}`}
                       style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}
                     >
-                      {entry.category}
+                      {entry.categories[0]}
                     </Link>
                   </div>
                   <div style={{ marginTop: 8 }}>
@@ -169,7 +170,7 @@ export default async function EntryPage({ params }: Props) {
                     </span>
                   </div>
                 </div>
-                {entry.is_fiction && (
+                {entry.isFiction && (
                   <span
                     className="fiction-badge"
                     style={{ marginTop: 16, marginLeft: 0, borderColor: "rgba(255,255,255,0.4)", color: "rgba(255,255,255,0.7)" }}
@@ -201,7 +202,7 @@ export default async function EntryPage({ params }: Props) {
                   margin: 0,
                 }}
               >
-                &ldquo;{entry.quote}&rdquo;
+                &ldquo;{entry.text}&rdquo;
               </h1>
               <p
                 style={{
@@ -267,7 +268,7 @@ export default async function EntryPage({ params }: Props) {
           </div>
 
           {/* RIGHT: What Actually Happened */}
-          {entry.actualOutcome && (
+          {entry.didItHoldUp?.analysis && (
             <div>
               <h2
                 style={{
@@ -297,7 +298,7 @@ export default async function EntryPage({ params }: Props) {
                     opacity: 0.8,
                   }}
                 >
-                  {entry.actualOutcome}
+                  {entry.didItHoldUp?.analysis}
                 </p>
               </div>
             </div>
@@ -305,7 +306,7 @@ export default async function EntryPage({ params }: Props) {
         </div>
 
         {/* Tags */}
-        {entry.tags.length > 0 && (
+        {entry.tags && entry.tags.length > 0 && (
           <div
             style={{
               maxWidth: "var(--max-width)",
@@ -355,7 +356,7 @@ export default async function EntryPage({ params }: Props) {
                 const relYear = displayYear(rel);
                 const relColor = hoverColorForIndex(i);
                 return (
-                  <Link key={rel.id} href={`/entry/${rel.id}`}>
+                  <Link key={rel.slug} href={`/entry/${rel.slug}`}>
                     <div className="ac-light">
                       <div
                         className="ac-hover-bg"
@@ -406,7 +407,7 @@ export default async function EntryPage({ params }: Props) {
                           zIndex: 1,
                         }}
                       >
-                        &ldquo;{rel.quote}&rdquo;
+                        &ldquo;{rel.text}&rdquo;
                       </p>
                       <div
                         className="ac-bottom"
@@ -440,7 +441,7 @@ export default async function EntryPage({ params }: Props) {
                             color: "var(--muted-l)",
                           }}
                         >
-                          {rel.category}
+                          {rel.categories[0]}
                         </span>
                       </div>
                     </div>

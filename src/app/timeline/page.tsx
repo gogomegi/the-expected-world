@@ -93,10 +93,10 @@ export default function TimelinePage() {
         <div className="archive-grid">
           {filterYear === null
             ? allEntries.map((entry, i) => (
-                <ArchiveCard key={entry.id} entry={entry} index={i} opacity={1} />
+                <ArchiveCard key={entry.slug} entry={entry} index={i} opacity={1} />
               ))
             : (visibleEntries as { entry: Entry; opacity: number }[]).map(({ entry, opacity }, i) => (
-                <ArchiveCard key={entry.id} entry={entry} index={i} opacity={opacity} />
+                <ArchiveCard key={entry.slug} entry={entry} index={i} opacity={opacity} />
               ))}
         </div>
         {filterYear !== null && visibleEntries.length === 0 && (
@@ -123,7 +123,7 @@ function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; o
   const year = entry.predictedDateNormalized.slice(0, 4);
 
   return (
-    <Link href={`/entry/${entry.id}`} style={{ display: "block", textDecoration: "none", opacity, transition: "opacity 0.3s" }}>
+    <Link href={`/entry/${entry.slug}`} style={{ display: "block", textDecoration: "none", opacity, transition: "opacity 0.3s" }}>
       <div className={`acd ${stripe}`}>
         <span className="acd-ghost">{year}</span>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
@@ -137,7 +137,7 @@ function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; o
           >
             {year}
           </span>
-          {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
+          {entry.isFiction && <span className="fiction-badge">FICTION</span>}
         </div>
         <p
           style={{
@@ -154,7 +154,7 @@ function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; o
             marginBottom: "16px",
           }}
         >
-          {entry.quote}
+          {entry.text}
         </p>
         <div
           style={{
@@ -185,7 +185,7 @@ function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; o
               color: "var(--muted-d)",
             }}
           >
-            {entry.category}
+            {entry.categories[0]}
           </span>
         </div>
       </div>

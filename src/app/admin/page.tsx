@@ -1,25 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-
-interface Entry {
-  id: string;
-  quote: string;
-  author: string;
-  source: string;
-  dateWritten: string;
-  predictedDate: string;
-  predictedDateNormalized: string;
-  category: string;
-  annotation: string;
-  actualOutcome?: string;
-  tags: string[];
-  source_type?: "ai" | "human";
-  status?: "pending" | "confirmed" | "rejected";
-  verification_status?: "verified" | "paraphrased" | "unverified" | "fabricated";
-  source_url?: string;
-  verification_note?: string;
-}
+import type { Entry } from "@/types/quote";
 
 const CATEGORIES = [
   "Technology",
@@ -38,6 +20,9 @@ const CATEGORIES = [
 ];
 
 export default function AdminPanel() {
+  const [authed, setAuthed] = useState<boolean | null>(null); // null = checking
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Entry | null>(null);
@@ -49,33 +34,159 @@ export default function AdminPanel() {
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [filterVerification, setFilterVerification] = useState<string>("all");
 
+  // Check if already authenticated
+  useEffect(() => {
+    fetch("/api/admin/auth").then((res) => {
+      setAuthed(res.ok);
+    });
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError("");
+    const res = await fetch("/api/admin/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (res.ok) {
+      setAuthed(true);
+      setPassword("");
+    } else {
+      setAuthError("Invalid password");
+    }
+  };
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/auth", { method: "DELETE" });
+    setAuthed(false);
+    setEntries([]);
+    setSelected(null);
+    setEditing(null);
+  };
+
   const fetchEntries = useCallback(async () => {
     const res = await fetch("/api/corpus");
+    if (!res.ok) {
+      setAuthed(false);
+      return;
+    }
     const data = await res.json();
     setEntries(data);
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchEntries();
-  }, [fetchEntries]);
+    if (authed) fetchEntries();
+  }, [authed, fetchEntries]);
+
+  // Auth check in progress
+  if (authed === null) {
+    return (
+      <div style={styles.container}>
+        <p style={styles.mono}>Checking authentication…</p>
+      </div>
+    );
+  }
+
+  // Login screen
+  if (!authed) {
+    return (
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        padding: "24px",
+      }}>
+        <form onSubmit={handleLogin} style={{
+          width: "100%",
+          maxWidth: "320px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+        }}>
+          <h1 style={{
+            fontFamily: "var(--fh), system-ui, sans-serif",
+            fontSize: "1.125rem",
+            fontWeight: 600,
+            letterSpacing: "-0.01em",
+            color: "#1a1a1a",
+            margin: 0,
+          }}>
+            Admin
+          </h1>
+          <p style={{
+            fontFamily: "var(--fm), monospace",
+            fontSize: "0.6875rem",
+            color: "#6b6560",
+            letterSpacing: "0.04em",
+            margin: 0,
+          }}>
+            The Expected World
+          </p>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="password"
+            autoFocus
+            style={{
+              fontFamily: "var(--fm), monospace",
+              fontSize: "0.8125rem",
+              padding: "10px 14px",
+              border: "1px solid rgba(0,0,0,0.15)",
+              borderRadius: "3px",
+              background: "#fff",
+              color: "#1a1a1a",
+              outline: "none",
+            }}
+          />
+          {authError && (
+            <p style={{
+              fontFamily: "var(--fm), monospace",
+              fontSize: "0.6875rem",
+              color: "#C03A1E",
+              margin: 0,
+            }}>
+              {authError}
+            </p>
+          )}
+          <button type="submit" style={{
+            fontFamily: "var(--fh), system-ui, sans-serif",
+            fontSize: "0.75rem",
+            fontWeight: 500,
+            letterSpacing: "0.04em",
+            padding: "8px 16px",
+            border: "1px solid #1a1a1a",
+            borderRadius: "3px",
+            background: "#1a1a1a",
+            color: "#FAF6F0",
+            cursor: "pointer",
+          }}>
+            sign in
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   const filtered = entries.filter((e) => {
-    if (filterStatus !== "all" && (e.status || "pending") !== filterStatus)
+    if (filterStatus !== "all" && (e.status || "pending-review") !== filterStatus)
       return false;
-    if (filterSource !== "all" && (e.source_type || "ai") !== filterSource)
+    if (filterSource !== "all" && (e.quoteSource || "ai") !== filterSource)
       return false;
     if (
       filterCategory !== "all" &&
-      e.category.toLowerCase() !== filterCategory.toLowerCase()
+      (e.categories[0] || "").toLowerCase() !== filterCategory.toLowerCase()
     )
       return false;
-    if (filterVerification !== "all" && (e.verification_status || "unverified") !== filterVerification)
+    if (filterVerification !== "all" && (e.verificationStatus || "unverified") !== filterVerification)
       return false;
     if (search) {
       const q = search.toLowerCase();
       if (
-        !e.quote.toLowerCase().includes(q) &&
+        !e.text.toLowerCase().includes(q) &&
         !e.author.toLowerCase().includes(q)
       )
         return false;
@@ -97,14 +208,14 @@ export default function AdminPanel() {
     setSaving(false);
   };
 
-  const handleStatus = async (id: string, status: string) => {
+  const handleStatus = async (slug: string, status: string) => {
     await fetch("/api/corpus", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ slug, status }),
     });
     await fetchEntries();
-    if (selected?.id === id) {
+    if (selected?.slug === slug) {
       setSelected((prev) =>
         prev ? { ...prev, status: status as Entry["status"] } : null
       );
@@ -113,9 +224,9 @@ export default function AdminPanel() {
 
   const statusColor = (status: string | undefined) => {
     switch (status) {
-      case "confirmed":
+      case "published":
         return "#2d6a30";
-      case "rejected":
+      case "draft":
         return "#C03A1E";
       default:
         return "#787167";
@@ -137,18 +248,18 @@ export default function AdminPanel() {
 
   const statusCounts = {
     all: entries.length,
-    pending: entries.filter((e) => (e.status || "pending") === "pending")
+    "pending-review": entries.filter((e) => (e.status || "pending-review") === "pending-review")
       .length,
-    confirmed: entries.filter((e) => e.status === "confirmed").length,
-    rejected: entries.filter((e) => e.status === "rejected").length,
+    published: entries.filter((e) => e.status === "published").length,
+    draft: entries.filter((e) => e.status === "draft").length,
   };
 
   const verificationCounts = {
     all: entries.length,
-    verified: entries.filter((e) => e.verification_status === "verified").length,
-    paraphrased: entries.filter((e) => e.verification_status === "paraphrased").length,
-    unverified: entries.filter((e) => (e.verification_status || "unverified") === "unverified").length,
-    fabricated: entries.filter((e) => e.verification_status === "fabricated").length,
+    verified: entries.filter((e) => e.verificationStatus === "verified").length,
+    paraphrased: entries.filter((e) => e.verificationStatus === "paraphrased").length,
+    unverified: entries.filter((e) => (e.verificationStatus || "unverified") === "unverified").length,
+    fabricated: entries.filter((e) => e.verificationStatus === "fabricated").length,
   };
 
   if (loading) {
@@ -213,46 +324,46 @@ export default function AdminPanel() {
               color: statusColor(entry.status),
             }}
           >
-            {(entry.status || "pending").toUpperCase()}
+            {(entry.status || "pending-review").toUpperCase()}
           </span>
           <span
             style={{
               ...styles.verificationBadge,
-              color: verificationColor(entry.verification_status),
-              borderColor: verificationColor(entry.verification_status),
+              color: verificationColor(entry.verificationStatus),
+              borderColor: verificationColor(entry.verificationStatus),
             }}
           >
-            {(entry.verification_status || "unverified").toUpperCase()}
+            {(entry.verificationStatus || "unverified").toUpperCase()}
           </span>
           <span style={styles.mono}>
-            {entry.source_type || "ai"} · {entry.category}
+            {entry.quoteSource || "ai"} · {entry.categories[0]}
           </span>
           {!isEditing && (
             <div
               style={{ marginLeft: "auto", display: "flex", gap: "8px" }}
             >
               <button
-                onClick={() => handleStatus(entry.id, "confirmed")}
+                onClick={() => handleStatus(entry.slug, "published")}
                 style={{
                   ...styles.smallBtn,
                   borderColor: "#2d6a30",
                   color: "#2d6a30",
                 }}
               >
-                confirm
+                publish
               </button>
               <button
-                onClick={() => handleStatus(entry.id, "rejected")}
+                onClick={() => handleStatus(entry.slug, "draft")}
                 style={{
                   ...styles.smallBtn,
                   borderColor: "#C03A1E",
                   color: "#C03A1E",
                 }}
               >
-                reject
+                draft
               </button>
               <button
-                onClick={() => handleStatus(entry.id, "pending")}
+                onClick={() => handleStatus(entry.slug, "pending-review")}
                 style={styles.smallBtn}
               >
                 reset
@@ -263,13 +374,13 @@ export default function AdminPanel() {
 
         {/* Fields */}
         <div style={styles.fieldGrid}>
-          <Field label="ID" value={entry.id} />
+          <Field label="Slug" value={entry.slug} />
           <Field
             label="Quote"
-            value={isEditing ? editing!.quote : entry.quote}
+            value={isEditing ? editing!.text : entry.text}
             multiline
             editable={isEditing}
-            onChange={(v) => setEditing((e) => e && { ...e, quote: v })}
+            onChange={(v) => setEditing((e) => e && { ...e, text: v })}
           />
           <Field
             label="Author"
@@ -292,20 +403,20 @@ export default function AdminPanel() {
           >
             <Field
               label="Date Written"
-              value={isEditing ? editing!.dateWritten : entry.dateWritten}
+              value={isEditing ? String(editing!.yearWritten) : String(entry.yearWritten)}
               editable={isEditing}
               onChange={(v) =>
-                setEditing((e) => e && { ...e, dateWritten: v })
+                setEditing((e) => e && { ...e, yearWritten: parseInt(v) || 0 })
               }
             />
             <Field
               label="Predicted Date"
               value={
-                isEditing ? editing!.predictedDate : entry.predictedDate
+                isEditing ? editing!.yearImagined : entry.yearImagined
               }
               editable={isEditing}
               onChange={(v) =>
-                setEditing((e) => e && { ...e, predictedDate: v })
+                setEditing((e) => e && { ...e, yearImagined: v })
               }
             />
             <Field
@@ -325,10 +436,10 @@ export default function AdminPanel() {
             <div>
               <label style={styles.fieldLabel}>Category</label>
               <select
-                value={editing!.category}
+                value={editing!.categories[0] || ""}
                 onChange={(e) =>
                   setEditing(
-                    (prev) => prev && { ...prev, category: e.target.value }
+                    (prev) => prev && { ...prev, categories: [e.target.value] }
                   )
                 }
                 style={styles.select}
@@ -341,11 +452,11 @@ export default function AdminPanel() {
               </select>
             </div>
           ) : (
-            <Field label="Category" value={entry.category} />
+            <Field label="Category" value={entry.categories.join(", ")} />
           )}
           <Field
             label="Annotation"
-            value={isEditing ? editing!.annotation : entry.annotation}
+            value={isEditing ? editing!.annotation || "" : entry.annotation || ""}
             multiline
             editable={isEditing}
             onChange={(v) =>
@@ -356,21 +467,24 @@ export default function AdminPanel() {
             label="What Actually Happened"
             value={
               isEditing
-                ? editing!.actualOutcome || ""
-                : entry.actualOutcome || ""
+                ? editing!.didItHoldUp?.analysis || ""
+                : entry.didItHoldUp?.analysis || ""
             }
             multiline
             editable={isEditing}
             onChange={(v) =>
-              setEditing((e) => e && { ...e, actualOutcome: v })
+              setEditing((e) => e && {
+                ...e,
+                didItHoldUp: { verdict: e.didItHoldUp?.verdict || "pending", analysis: v },
+              })
             }
           />
           <Field
             label="Tags (comma-separated)"
             value={
               isEditing
-                ? editing!.tags.join(", ")
-                : entry.tags.join(", ")
+                ? (editing!.tags || []).join(", ")
+                : (entry.tags || []).join(", ")
             }
             editable={isEditing}
             onChange={(v) =>
@@ -389,10 +503,10 @@ export default function AdminPanel() {
             <div>
               <label style={styles.fieldLabel}>Verification Status</label>
               <select
-                value={editing!.verification_status || "unverified"}
+                value={editing!.verificationStatus || "unverified"}
                 onChange={(e) =>
                   setEditing(
-                    (prev) => prev && { ...prev, verification_status: e.target.value as Entry["verification_status"] }
+                    (prev) => prev && { ...prev, verificationStatus: e.target.value as Entry["verificationStatus"] }
                   )
                 }
                 style={styles.select}
@@ -404,20 +518,20 @@ export default function AdminPanel() {
               </select>
             </div>
           ) : (
-            <Field label="Verification Status" value={entry.verification_status || "unverified"} />
+            <Field label="Verification Status" value={entry.verificationStatus || "unverified"} />
           )}
           <Field
             label="Source URL"
-            value={isEditing ? editing!.source_url || "" : entry.source_url || ""}
+            value={isEditing ? editing!.sourceUrl || "" : entry.sourceUrl || ""}
             editable={isEditing}
-            onChange={(v) => setEditing((e) => e && { ...e, source_url: v })}
+            onChange={(v) => setEditing((e) => e && { ...e, sourceUrl: v })}
           />
           <Field
             label="Verification Note"
-            value={isEditing ? editing!.verification_note || "" : entry.verification_note || ""}
+            value={isEditing ? editing!.verificationNote || "" : entry.verificationNote || ""}
             multiline
             editable={isEditing}
-            onChange={(v) => setEditing((e) => e && { ...e, verification_note: v })}
+            onChange={(v) => setEditing((e) => e && { ...e, verificationNote: v })}
           />
         </div>
       </div>
@@ -427,7 +541,16 @@ export default function AdminPanel() {
   // List view
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Admin Panel</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px" }}>
+        <h1 style={styles.title}>Admin Panel</h1>
+        <button onClick={handleLogout} style={{
+          ...styles.smallBtn,
+          color: "#6b6560",
+          borderColor: "rgba(0,0,0,0.15)",
+        }}>
+          sign out
+        </button>
+      </div>
       <p style={styles.subtitle}>{entries.length} entries in corpus</p>
 
       {/* Filters */}
@@ -440,7 +563,7 @@ export default function AdminPanel() {
           style={styles.searchInput}
         />
         <div style={styles.filterGroup}>
-          {(["all", "pending", "confirmed", "rejected"] as const).map(
+          {(["all", "pending-review", "published", "draft"] as const).map(
             (s) => (
               <button
                 key={s}
@@ -503,12 +626,12 @@ export default function AdminPanel() {
       <div>
         {filtered.map((entry) => (
           <div
-            key={entry.id}
+            key={entry.slug}
             onClick={() => setSelected(entry)}
             style={styles.row}
             onMouseEnter={(e) =>
               (e.currentTarget.style.background =
-                "rgba(240,234,224,0.4)")
+                "rgba(0,0,0,0.04)")
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.background = "transparent")
@@ -525,18 +648,18 @@ export default function AdminPanel() {
                 {entry.predictedDateNormalized.slice(0, 4)}
               </span>
               <span style={styles.rowQuote}>
-                {entry.quote.length > 100
-                  ? entry.quote.slice(0, 100) + "…"
-                  : entry.quote}
+                {entry.text.length > 100
+                  ? entry.text.slice(0, 100) + "…"
+                  : entry.text}
               </span>
             </div>
             <div style={styles.rowRight}>
               <span style={styles.rowAuthor}>{entry.author}</span>
               <span style={styles.rowMeta}>
-                {entry.source_type || "ai"} ·{" "}
-                {entry.status || "pending"} ·{" "}
-                <span style={{ color: verificationColor(entry.verification_status) }}>
-                  {entry.verification_status || "unverified"}
+                {entry.quoteSource || "ai"} ·{" "}
+                {entry.status || "pending-review"} ·{" "}
+                <span style={{ color: verificationColor(entry.verificationStatus) }}>
+                  {entry.verificationStatus || "unverified"}
                 </span>
               </span>
             </div>
@@ -588,6 +711,17 @@ function Field({
   );
 }
 
+// Light theme admin styles
+const BG = "#FAF6F0";
+const TEXT = "#1a1a1a";
+const SECONDARY = "#6b6560";
+const ACCENT = "#2B5CE6";
+const BORDER = "rgba(0,0,0,0.12)";
+const BORDER_MED = "rgba(0,0,0,0.18)";
+const FONT_H = "var(--fh, system-ui), system-ui, sans-serif";
+const FONT_M = "var(--fm, monospace), monospace";
+const FONT_Q = "var(--fq, Georgia), Georgia, serif";
+
 const styles: Record<string, React.CSSProperties> = {
   container: {
     maxWidth: "1040px",
@@ -595,17 +729,18 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "48px 64px 96px",
   },
   title: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "1.5rem",
     fontWeight: 500,
     letterSpacing: "-0.01em",
+    color: TEXT,
     margin: 0,
     marginBottom: "4px",
   },
   subtitle: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     margin: 0,
     marginBottom: "32px",
@@ -617,16 +752,16 @@ const styles: Record<string, React.CSSProperties> = {
     flexWrap: "wrap",
     marginBottom: "16px",
     paddingBottom: "16px",
-    borderBottom: "1px solid rgba(120,113,103,0.2)",
+    borderBottom: `1px solid ${BORDER}`,
   },
   searchInput: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.8125rem",
     padding: "6px 12px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     width: "240px",
     outline: "none",
   },
@@ -635,36 +770,36 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "4px",
   },
   filterBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.6875rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
     padding: "4px 10px",
-    border: "1px solid rgba(120,113,103,0.2)",
+    border: `1px solid ${BORDER}`,
     borderRadius: "2px",
     background: "transparent",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     cursor: "pointer",
   },
   filterBtnActive: {
-    background: "var(--color-text)",
-    color: "var(--color-bg)",
-    borderColor: "var(--color-text)",
+    background: TEXT,
+    color: BG,
+    borderColor: TEXT,
   },
   select: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.75rem",
     padding: "5px 8px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     cursor: "pointer",
   },
   resultCount: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     marginBottom: "8px",
   },
@@ -673,7 +808,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "baseline",
     padding: "12px 8px",
-    borderBottom: "1px solid rgba(120,113,103,0.12)",
+    borderBottom: `1px solid ${BORDER}`,
     cursor: "pointer",
     transition: "background 100ms ease",
     gap: "16px",
@@ -695,16 +830,16 @@ const styles: Record<string, React.CSSProperties> = {
     display: "inline-block",
   },
   rowYear: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.875rem",
     fontWeight: 500,
-    color: "var(--color-accent)",
+    color: ACCENT,
     flexShrink: 0,
   },
   rowQuote: {
-    fontFamily: "var(--font-body)",
+    fontFamily: FONT_Q,
     fontSize: "0.8125rem",
-    color: "var(--color-text)",
+    color: TEXT,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -717,23 +852,23 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "2px",
   },
   rowAuthor: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     whiteSpace: "nowrap",
   },
   rowMeta: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.625rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
     opacity: 0.6,
   },
   mono: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.6875rem",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     letterSpacing: "0.04em",
   },
   topBar: {
@@ -743,49 +878,49 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: "24px",
   },
   backBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.75rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     background: "none",
     border: "none",
     cursor: "pointer",
     padding: 0,
   },
   actionBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.6875rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
     padding: "5px 14px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
     background: "transparent",
-    color: "var(--color-text)",
+    color: TEXT,
     cursor: "pointer",
   },
   confirmBtn: {
-    background: "var(--color-text)",
-    color: "var(--color-bg)",
-    borderColor: "var(--color-text)",
+    background: TEXT,
+    color: BG,
+    borderColor: TEXT,
   },
   statusBar: {
     display: "flex",
     alignItems: "center",
     gap: "16px",
     paddingBottom: "16px",
-    borderBottom: "1px solid rgba(120,113,103,0.2)",
+    borderBottom: `1px solid ${BORDER}`,
     marginBottom: "32px",
   },
   statusBadge: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.6875rem",
     fontWeight: 500,
     letterSpacing: "0.08em",
   },
   verificationBadge: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.625rem",
     fontWeight: 500,
     letterSpacing: "0.06em",
@@ -794,15 +929,15 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "2px",
   },
   smallBtn: {
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.625rem",
     fontWeight: 500,
     letterSpacing: "0.04em",
     padding: "3px 10px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
     background: "transparent",
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     cursor: "pointer",
   },
   fieldGrid: {
@@ -812,49 +947,49 @@ const styles: Record<string, React.CSSProperties> = {
   },
   fieldLabel: {
     display: "block",
-    fontFamily: "var(--font-chrome)",
+    fontFamily: FONT_H,
     fontSize: "0.625rem",
     fontWeight: 500,
     letterSpacing: "0.08em",
     textTransform: "uppercase" as const,
-    color: "var(--color-secondary)",
+    color: SECONDARY,
     marginBottom: "6px",
   },
   fieldValue: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.8125rem",
-    color: "var(--color-text)",
+    color: TEXT,
     lineHeight: 1.5,
     margin: 0,
   },
   fieldValueMulti: {
-    fontFamily: "var(--font-body)",
+    fontFamily: FONT_Q,
     fontSize: "0.9375rem",
-    color: "var(--color-text)",
+    color: TEXT,
     lineHeight: 1.65,
     margin: 0,
   },
   input: {
-    fontFamily: "var(--font-mono)",
+    fontFamily: FONT_M,
     fontSize: "0.8125rem",
     width: "100%",
     padding: "6px 10px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     boxSizing: "border-box" as const,
   },
   textarea: {
-    fontFamily: "var(--font-body)",
+    fontFamily: FONT_Q,
     fontSize: "0.9375rem",
     lineHeight: 1.65,
     width: "100%",
     padding: "8px 10px",
-    border: "1px solid rgba(120,113,103,0.3)",
+    border: `1px solid ${BORDER_MED}`,
     borderRadius: "2px",
-    background: "var(--color-bg)",
-    color: "var(--color-text)",
+    background: "#fff",
+    color: TEXT,
     resize: "vertical" as const,
     boxSizing: "border-box" as const,
   },

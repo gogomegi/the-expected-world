@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const entryPages: MetadataRoute.Sitemap = entries.map((e) => ({
-    url: `${BASE_URL}/entry/${e.id}`,
+    url: `${BASE_URL}/entry/${e.slug}`,
     changeFrequency: "monthly",
     priority: 0.8,
   }));

@@ -39,7 +39,7 @@ function truncate(text: string, maxLen: number): string {
 export default function HomePage() {
   const featured = getFeaturedEntry();
   const archiveEntries = getArchiveEntries()
-    .filter((e) => e.id !== featured.id)
+    .filter((e) => e.slug !== featured.slug)
     .sort((a, b) => b.predictedDateNormalized.localeCompare(a.predictedDateNormalized));
   const closingEntries = getClosingEntries().slice(0, 4);
   const confirmed = getConfirmedEntries();
@@ -76,7 +76,7 @@ export default function HomePage() {
   const tickerItems = tickerSource.map((e, i) => ({
     year: displayYear(e),
     label: `${isExpired(e.predictedDateNormalized) ? "Expires" : "Closing"} ${displayYear(e)}`,
-    excerpt: truncate(e.quote, 80),
+    excerpt: truncate(e.text, 80),
     colorClass: COLORS[i % COLORS.length],
   }));
   // Duplicate for seamless loop
@@ -137,7 +137,7 @@ export default function HomePage() {
         }}
       >
         <ScrollReveal delay={0}>
-          <Link href={`/entry/${featured.id}`} style={{ display: "block" }}>
+          <Link href={`/entry/${featured.slug}`} style={{ display: "block" }}>
             <div className="hp-feat-grid">
               {/* LEFT: Expires panel */}
               <div className="feat-exp">
@@ -160,10 +160,10 @@ export default function HomePage() {
                     lineHeight: 1.8,
                   }}
                 >
-                  <div>WRITTEN: {featured.dateWritten}</div>
-                  <div>ADDRESSED TO: {featured.predictedDate}</div>
+                  <div>WRITTEN: {featured.yearWritten}</div>
+                  <div>ADDRESSED TO: {featured.yearImagined}</div>
                 </div>
-                {featured.is_fiction && (
+                {featured.isFiction && (
                   <span className="fiction-badge" style={{ marginTop: 12, marginLeft: 0 }}>
                     FICTION
                   </span>
@@ -192,7 +192,7 @@ export default function HomePage() {
                     border: "none",
                   }}
                 >
-                  &ldquo;{featured.quote}&rdquo;
+                  &ldquo;{featured.text}&rdquo;
                 </blockquote>
                 <p
                   style={{
@@ -295,7 +295,7 @@ export default function HomePage() {
                 const cardColor = i % 2 === 0 ? "--amber" : "--green";
                 const cardClass = i % 2 === 0 ? "gate-card gate-card--amber" : "gate-card gate-card--green";
                 return (
-                  <Link key={entry.id} href={`/entry/${entry.id}`}>
+                  <Link key={entry.slug} href={`/entry/${entry.slug}`}>
                     <div className={cardClass}>
                       <span className="section-label" style={{ color: "rgba(255,255,255,0.6)" }}>
                         closing
@@ -321,7 +321,7 @@ export default function HomePage() {
                           flex: 1,
                         }}
                       >
-                        &ldquo;{entry.quote}&rdquo;
+                        &ldquo;{entry.text}&rdquo;
                       </p>
                       <p
                         style={{
@@ -391,7 +391,7 @@ export default function HomePage() {
               const hoverBg = COLOR_VARS[ci];
               const yearStr = displayYear(entry);
               return (
-                <Link key={entry.id} href={`/entry/${entry.id}`}>
+                <Link key={entry.slug} href={`/entry/${entry.slug}`}>
                   <div className="ac-light">
                     <div
                       className="ac-hover-bg"
@@ -425,7 +425,7 @@ export default function HomePage() {
                       <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
                         <CounterYear year={parseInt(yearStr) || 0} />
                       </span>
-                      {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
+                      {entry.isFiction && <span className="fiction-badge">FICTION</span>}
                     </div>
                     {/* Quote */}
                     <p
@@ -445,7 +445,7 @@ export default function HomePage() {
                         zIndex: 1,
                       }}
                     >
-                      &ldquo;{entry.quote}&rdquo;
+                      &ldquo;{entry.text}&rdquo;
                     </p>
                     {/* Bottom */}
                     <div
@@ -480,7 +480,7 @@ export default function HomePage() {
                           color: "var(--muted-l)",
                         }}
                       >
-                        {entry.category}
+                        {entry.categories[0]}
                       </span>
                     </div>
                   </div>

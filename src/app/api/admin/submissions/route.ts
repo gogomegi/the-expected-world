@@ -33,6 +33,10 @@ export async function POST(request: Request) {
   const sub = getSubmissionById(id);
   if (!sub) return Response.json({ error: "Not found" }, { status: 404 });
 
+  const yearImagined = sub.yearImagined || "Unknown";
+  const yearMatch = yearImagined.match(/(\d{4})/);
+  const predictedDateNormalized = yearMatch ? `${yearMatch[1]}-01-01` : "2100-01-01";
+
   const quote: Quote = {
     slug: slugify(`${sub.author}-${sub.text.slice(0, 30)}-${sub.yearWritten}`),
     text: sub.text,
@@ -41,7 +45,8 @@ export async function POST(request: Request) {
     source: sub.source,
     sourceUrl: sub.sourceUrl,
     yearWritten: sub.yearWritten,
-    yearImagined: sub.yearImagined || "Unknown",
+    yearImagined,
+    predictedDateNormalized,
     categories: sub.topic ? [sub.topic] : [],
     status: "published",
     quoteSource: "user-submission",
