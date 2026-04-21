@@ -68,7 +68,7 @@
       "prescience"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://unfoldingprophecy.wordpress.com/2012/08/06/predictions-of-the-year-2000-from-the-ladies-home-journal-of-december-1900/",
     "verification_note": "Confirmed verbatim in multiple sources reproducing the original Ladies' Home Journal article. Exact match.",
@@ -143,7 +143,7 @@
       "triumphalism"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://pages.ucsd.edu/~bslantchev/courses/pdf/Fukuyama%20-%20End%20of%20History.pdf",
     "verification_note": "Exact text confirmed from 'The End of History?' in The National Interest (1989). Verbatim match.",
@@ -168,7 +168,7 @@
       "edwardian"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://www.gutenberg.org/files/19229/19229-h/19229-h.htm",
     "verification_note": "FABRICATED. Full text of Anticipations (1901) is on Project Gutenberg. Wells actually DISMISSED aviation in that book, writing 'I do not think it at all probable that aeronautics will ever come into play as a serious modification of transport and communication.' The claim about air power subordinating land and sea by 2000 contradicts what Wells actually wrote.",
@@ -193,7 +193,7 @@
       "telecommunications"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.snopes.com/fact-check/tesla-cell-phones-1926/",
     "verification_note": "Exact text confirmed from Collier's magazine interview 'When Woman is Boss,' January 30, 1926. Multiple sources verify the verbatim quote.",
@@ -268,7 +268,7 @@
       "commission-report"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://theconversation.com/two-societies-one-black-one-white-the-kerner-commissions-prophetic-warnings-91964",
     "verification_note": "Exact text confirmed: 'Our nation is moving toward two societies, one black, one white — separate and unequal.' Verbatim from the 1968 report.",
@@ -293,7 +293,7 @@
       "boston"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://www.gutenberg.org/files/624/624-h/624-h.htm",
     "verification_note": "FABRICATED composite. Full text on Project Gutenberg. The novel describes the transformation differently across chapters: 'it became the one capitalist in the place of all other capitalists' and separately 'Every man...is a member of a vast industrial partnership.' The submitted quote stitches these into a single sentence that does not exist in the book.",
@@ -343,7 +343,7 @@
       "forecasting"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://www.rand.org/pubs/papers/P2982.html",
     "verification_note": "FABRICATED. The RAND 1964 Delphi study is real but: (1) the median estimate for automatic language translators was 1972, not 1990 as our entry claims; (2) Delphi results were presented as numerical tables of expert consensus, NOT as prose quotations. The narrative framing is invented.",
@@ -393,7 +393,7 @@
       "science-fiction"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "",
     "verification_note": "FABRICATED. Searched Wikiquote, Clarke Institute quote database, Goodreads, BrainyQuote, and multiple Clarke archives. This quote does not exist in any Clarke work including 2001, Profiles of the Future, or any essay collection. The novel's actual passage about HAL discusses the Turing test. This is an AI-generated fabrication.",
@@ -443,7 +443,7 @@
       "mistranslation"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://en.wikipedia.org/wiki/We_will_bury_you",
     "verification_note": "PARTIALLY FABRICATED. 'We will bury you!' is real (Nov 18, 1956, Polish embassy). But 'Your grandchildren will live under communism. You Americans are so gullible...' is a well-documented fake — PolitiFact, Snopes, and 'They Never Said It' all confirm the Library of Congress found no evidence Khrushchev said it. Two separate texts were falsely combined.",
@@ -493,7 +493,7 @@
       "digital-age"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://archive.org/stream/FutureShock-Toffler/Future-Shock_-_Toffler_djvu.txt",
     "verification_note": "Exact text confirmed from Chapter 1 of Future Shock (1970): 'In the three short decades between now and the twenty-first century, millions of ordinary, psychologically normal people will face an abrupt collision with the future.'",
@@ -543,7 +543,7 @@
       "web"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://web.mit.edu/sts.035/www/PDFs/think.pdf",
     "verification_note": "Exact text confirmed from 'As We May Think,' The Atlantic, July 1945: 'Consider a future device for individual use, which is a sort of mechanized private file and library.'",
@@ -568,7 +568,7 @@
       "consumer-technology"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://digital-world.itu.int/visit-to-the-worlds-fair-of-2014/",
     "verification_note": "Exact text confirmed from 'Visit to the World's Fair of 2014,' New York Times, August 16, 1964: 'By 2014, electroluminescent panels will be in common use. Ceilings and walls will glow softly, and in a variety of colors that will change at the touch of a push button.'",
@@ -593,7 +593,7 @@
       "new-york-times"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://digital-world.itu.int/visit-to-the-worlds-fair-of-2014/",
     "verification_note": "Confirmed in original NYT essay. Exact text: 'Indeed, the most somber speculation I can make about A.D. 2014 is that in a society of enforced leisure, the most glorious single word in the vocabulary will have become work!' Our entry truncates before the key conclusion about 'work.'",
@@ -618,7 +618,7 @@
       "nobel-laureate"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.econlib.org/archives/2009/12/why_were_americ.html",
     "verification_note": "Confirmed from 1989 (13th) edition of Samuelson and Nordhaus's Economics textbook. Exact text widely cited in academic sources. Note: should credit Nordhaus as co-author of that edition.",
@@ -768,7 +768,7 @@
       "modeling"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://collections.dartmouth.edu/archive/text/meadows/diplomatic/meadows_ltg-diplomatic.html",
     "verification_note": "FABRICATED. The book contains Table 4 showing petroleum's 'exponential reserve index' as ~20 years, but it explicitly does NOT state 'reserves will be exhausted by approximately 1992.' The book avoided specific depletion date predictions. Academic sources note that critics invented specific depletion dates not present in the original text — our entry repeats this misrepresentation.",
@@ -793,7 +793,7 @@
       "war-metaphor"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://millercenter.org/the-presidency/presidential-speeches/january-22-1971-state-union-address",
     "verification_note": "Confirmed from Jan 22, 1971 State of the Union. Actual text: 'I will also ask for an appropriation of an extra $100 million to launch an intensive campaign to find a cure for cancer.' Our entry drops 'also' and the second clause, but core quote is accurate.",
@@ -868,7 +868,7 @@
       "market-sizing"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://en.wikipedia.org/wiki/Thomas_J._Watson",
     "verification_note": "MISATTRIBUTED/FABRICATED. This quote ('I think there is a world market for maybe five computers') has been extensively debunked. There is no primary source evidence Watson Sr. ever said this. It appears to be a mangled version of Watson Jr.'s 1953 remarks about expected orders for the IBM 701.",
@@ -918,7 +918,7 @@
       "foundational-text"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.marxists.org/reference/subject/economics/malthus/ch01.htm",
     "verification_note": "Exact text confirmed from An Essay on the Principle of Population (1798), Chapter 1: 'The power of population is indefinitely greater than the power in the earth to produce subsistence for man.'",
@@ -1018,7 +1018,7 @@
       "technology-determinism"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.azquotes.com/quote/694855",
     "verification_note": "Exact quote confirmed: 'The coming of the wireless era will make war impossible, because it will make war ridiculous.' Sourced to Technical World Magazine, October 1912, p. 145, article titled 'Marconi's Plans for the World.'",
@@ -1068,7 +1068,7 @@
       "nuclear-weapons"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.reaganlibrary.gov/archives/speech/address-nation-defense-and-national-security",
     "verification_note": "Exact text confirmed from Reagan Library transcript: 'I call upon the scientific community in our country, those who gave us nuclear weapons, to turn their great talents now to the cause of mankind and world peace, to give us the means of rendering these nuclear weapons impotent and obsolete.' Our entry truncates before the final clause but is otherwise verbatim.",
@@ -1168,7 +1168,7 @@
       "dystopia"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.telelib.com/authors/O/OrwellGeorge/prose/NineteenEightyFour/part1sec1.html",
     "verification_note": "Exact text confirmed from Nineteen Eighty-Four, Part 1, Section 1: 'The telescreen received and transmitted simultaneously. Any sound that Winston made, above the level of a very low whisper, would be picked up by it.'",
@@ -1243,7 +1243,7 @@
       "energy-economics"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://en.wikipedia.org/wiki/Too_cheap_to_meter",
     "verification_note": "Exact text confirmed from Strauss's September 16, 1954 speech to the National Association of Science Writers: 'It is not too much to expect that our children will enjoy in their homes electrical energy too cheap to meter.'",
@@ -1293,7 +1293,7 @@
       "atoms-to-bits"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "paraphrased",
     "source_url": "https://en.wikipedia.org/wiki/Being_Digital",
     "verification_note": "Both sentences exist in Being Digital (1995) but from DIFFERENT parts of the book (~p.4 and ~p.6). Joining them as one continuous quote without indicating they are separate passages is misleading, though both are real Negroponte sentences.",
@@ -1343,7 +1343,7 @@
       "living-standards"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.juliansimon.com/writings/Articles/POPENVI2.txt",
     "verification_note": "Exact phrase confirmed in Simon's writings: 'The standard of living has risen along with the size of the world's population since the beginning of recorded time.' Appears in Summary and Conclusion consistent with The Ultimate Resource thesis.",
@@ -1418,7 +1418,7 @@
       "self-fulfilling-prophecy"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://en.wikipedia.org/wiki/Moore's_law",
     "verification_note": "Exact text confirmed from 'Cramming More Components onto Integrated Circuits,' Electronics, April 19, 1965: 'The complexity for minimum component costs has increased at a rate of roughly a factor of two per year.'",
@@ -1468,7 +1468,7 @@
       "epistemology"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://www.velikovsky.info/velikovsky-s-predictions-2/",
     "verification_note": "FABRICATED wording. Velikovsky did predict Venus was hot, but the book describes Venus in a state of 'candescence' — the specific phrasing 'Its surface temperature will be found to be far higher than current astronomical estimates suggest' does not appear in the 1950 book. This is a modern reconstruction of his prediction, not a verbatim quote.",
@@ -1568,7 +1568,7 @@
       "post-cold-war"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.foreignaffairs.com/articles/united-states/1993-06-01/clash-civilizations",
     "verification_note": "Confirmed from 'The Clash of Civilizations?' Foreign Affairs, Summer 1993. The thesis statement about cultural divisions as the dominating source of conflict is well documented.",
@@ -1893,7 +1893,7 @@
       "Rumsfeld"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "",
     "verification_note": "Quote confirmed. Rumsfeld said 'It could last, you know, six days, six weeks. I doubt six months' during a 2003 interview about the Iraq war. Widely documented and verified.",
@@ -1994,7 +1994,7 @@
       "disinformation"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.azquotes.com/quote/1159877",
     "verification_note": "Exact text confirmed from 'Truth and Politics' in Between Past and Future (1967/1968). Minor punctuation variations (dashes vs. commas) but the substantive text is verbatim. Note: our version uses 'lies' where the original may use 'lie' (singular).",
@@ -2045,7 +2045,7 @@
       "prescience"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "",
     "verification_note": "FABRICATED. Chapter 1 opens with a diary entry dated Saturday, July 20, 2024 — so the year is correct. But the quoted passage does not exist in the book. No search source, study guide, or text search finds 'few more years of relative stability' or 'step outside and get ready' anywhere in the novel. The book's Chapter 1 opens with Lauren's dream and birthday. This is an AI-generated conflation of the novel's themes, not actual text.",
@@ -2071,7 +2071,7 @@
       "America"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://www.readinggroupguides.com/reviews/parable-of-the-talents/excerpt",
     "verification_note": "Passage confirmed across multiple sources. 'Jarret supporters have been known, now and then, to form mobs and burn people at the stake for being witches' and 'Jarret condemns the burnings, but does so in such mild language that his people are free to hear what they want to hear' match verified excerpts. Only minor punctuation differences.",
@@ -2096,7 +2096,7 @@
       "slum-clearance"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "paraphrased",
     "source_url": "https://wist.info/jacobs-jane/71910/",
     "verification_note": "Both phrases individually confirmed from the Introduction: 'dishonest mask of pretended order' and 'Low-income projects that become worse centers of delinquency, vandalism and general social hopelessness than the slums they were supposed to replace.' However, these are TWO SEPARATE passages in the text that our entry joins together as if continuous.",
@@ -2146,7 +2146,7 @@
       "analytical-engine"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://libquotes.com/ada-lovelace/quote/lbe2t3e",
     "verification_note": "Full passage confirmed across multiple authoritative sources. Note: the passage is from Note G, not Note A as cited in our entry — this is a common misattribution. Published in Taylor's Scientific Memoirs, 1843.",
@@ -2172,7 +2172,7 @@
       "Club-of-Rome"
     ],
     "source_type": "ai",
-    "status": "confirmed",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://en.wikipedia.org/wiki/The_Limits_to_Growth",
     "verification_note": "Exact text confirmed from The Limits to Growth (1972): 'If the present growth trends in world population, industrialization, pollution, food production, and resource depletion continue unchanged, the limits to growth on this planet will be reached sometime within the next one hundred years. The most probable result will be a rather sudden and uncontrollable decline in both population and industrial capacity.'",
@@ -2323,7 +2323,7 @@
       "global-cooperation"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://quotation.io/page/quote/travel-together-passengers-little-spaceship",
     "verification_note": "MISATTRIBUTED. This quote is by ADLAI STEVENSON, not Barbara Ward. Stevenson used this passage in a speech to the UN Economic and Social Council on July 9, 1965. While Ward did write a book titled Spaceship Earth (1966), the specific quote attributed to her in our entry is Stevenson's. The entry must be corrected or removed.",
@@ -2424,7 +2424,7 @@
       "boundaries"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "paraphrased",
     "source_url": "https://www.goodreads.com/quotes/461138-there-was-a-wall-it-did-not-look-important-it",
     "verification_note": "TWO SEPARATE PASSAGES COMBINED. The wall passage ('There was a wall...') is VERIFIED as the Chapter 1 opening. But 'You cannot buy the revolution...' is from Chapter 9 — confirmed as 'You cannot buy the Revolution. You cannot make the Revolution. You can only be the Revolution.' (with capital R). These are from different chapters improperly merged into one entry.",
@@ -2449,7 +2449,7 @@
       "thought-experiment"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "verified",
     "source_url": "https://en.wikipedia.org/wiki/The_Left_Hand_of_Darkness",
     "verification_note": "Both passages confirmed real from The Left Hand of Darkness (1969). 'The king was pregnant' is one of the novel's most famous lines. The passage about 'no division of humanity into strong and weak halves, protective/protected, dominant/submissive, owner/chattel, active/passive' is also confirmed.",
@@ -2500,7 +2500,7 @@
       "Cold-War"
     ],
     "source_type": "ai",
-    "status": "rejected",
+    "status": "pending",
     "verification_status": "fabricated",
     "source_url": "https://www.commentary.org/articles/jeane-kirkpatrick/dictatorships-double-standards/",
     "verification_note": "FABRICATED. The essay is real (Commentary, November 1979) but this passage does not appear in it. Full-text searches confirm it is not in the article. The essay's actual opening line is 'The failure of the Carter administration's foreign policy is now clear to everyone except its architects.' The submitted passage is an AI-generated paraphrase of Kirkpatrick's general argument, not actual text from the essay.",
@@ -2955,7 +2955,7 @@
       "geneticist-as-prophet"
     ],
     "source_type": "scout",
-    "status": "confirmed",
+    "status": "pending",
     "source_url": "https://www.marxists.org/archive/haldane/works/1920s/daedalus.htm",
     "verification_note": "Verified against the full text hosted at the Marxists Internet Archive, which reproduces the 1924 Kegan Paul edition. Also available on archive.org at multiple URLs (e.g., archive.org/details/daedalusorscienc0000hald). The quote appears in the fictional-essay section of the text.",
     "is_fiction": true,
@@ -3032,7 +3032,7 @@
       "daily-life"
     ],
     "source_type": "scout",
-    "status": "confirmed",
+    "status": "pending",
     "source_url": "https://slate.com/technology/2013/08/pierre-eugene-marcellin-berthelot-s-19th-century-quest-to-create-lab-grown-food.html",
     "verification_note": "Quotes verified against the Slate article by Nicola Twilley (2013) which cites the original McClure's Magazine article directly. Also cross-referenced with Scientific American blog 'Foods in the Year 2000' which reproduces the same quotes. Original magazine available on archive.org under McClure's Magazine Volume 3 (1894).",
     "is_fiction": false,
@@ -3089,5 +3089,87 @@
     "verification_note": "Verified against multiple reproductions of the original Ladies' Home Journal article (December 1900), including Ross Dawson's futurist profile, Open Culture's transcription, and the Scanalyst forum's full-text reproduction. The original article is held in numerous library archives. The text has been consistently reproduced across sources with identical wording.",
     "is_fiction": false,
     "verification_status": "unverified"
+  },
+  {
+    "id": "ginzburg-publication-prophecy-1975",
+    "quote": "All the same, I want to hope that if not I and not my son, then perhaps at least my grandson will see this book fully printed in our homeland...",
+    "author": "Evgenia Ginzburg",
+    "source": "Journey into the Whirlwind / Within the Whirlwind, Epilogue (~1967–1977)",
+    "dateWritten": "1975",
+    "predictedDate": "2000–2020",
+    "predictedDateNormalized": "2000-01-01",
+    "category": "Culture & Society",
+    "annotation": "Ginzburg's memoir was published in the USSR in 1988–1989 during glasnost. She was too pessimistic by one generation — her son Aksyonov lived to see it, not just her grandson. The book became a landmark document of Gulag testimony and Soviet repression. Her hope that truth would eventually surface in her homeland proved well-founded, arriving faster than she dared predict.",
+    "actualOutcome": "",
+    "tags": [
+      "society",
+      "war-politics",
+      "culture-entertainment"
+    ],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "is_fiction": false
+  },
+  {
+    "id": "ulitskaya-iron-curtain-return-2015",
+    "quote": "Not even 25 years have passed since most of us first saw Europe with our own eyes. Before, this was impossible because of the Iron Curtain. And now the impression is forming that this curtain is falling once again.",
+    "author": "Lyudmila Ulitskaya",
+    "source": "Interview for newsru.com, June 22, 2015",
+    "dateWritten": "2015",
+    "predictedDate": "2020s",
+    "predictedDateNormalized": "2020-01-01",
+    "category": "Culture & Society",
+    "annotation": "Ulitskaya's warning proved grimly prescient. After Russia's full-scale invasion of Ukraine in 2022, the EU imposed flight bans and visa restrictions on Russian citizens. Russia responded with exit controls, media censorship, and a crackdown on dissent that echoed Soviet-era repression. A literal new Iron Curtain descended — not just metaphorically but in practical terms of travel, information flow, and cultural exchange. What she sensed as an 'impression forming' in 2015 became the defining geopolitical rupture of the 2020s.",
+    "actualOutcome": "",
+    "tags": [
+      "society",
+      "war-politics"
+    ],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "is_fiction": false
+  },
+  {
+    "id": "petersen-shipping-great-recession-2023",
+    "quote": "A 'Great Recession' is here for ocean shipping.",
+    "author": "Ryan Petersen",
+    "source": "Bloomberg interview/transcript, January 5, 2023",
+    "dateWritten": "2023",
+    "predictedDate": "2023",
+    "predictedDateNormalized": "2023-01-01",
+    "category": "Daily Life",
+    "annotation": "Confirmed. Transpacific spot rates (Shanghai–LA) fell from over $12,000/FEU in September 2021 to below $1,000/FEU by March 2023. Container volumes to the US dropped nearly 20%. Carrier profits collapsed. The 'Great Recession' framing proved accurate for the 2023 freight market, which saw the worst downturn since 2009. After his October 2021 thread diagnosed the port congestion crisis, Petersen was among the first logistics insiders to call the dramatic reversal — from diagnosing congestion to calling overcapacity within 14 months.",
+    "actualOutcome": "",
+    "tags": [
+      "economy",
+      "transportation"
+    ],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "is_fiction": false
+  },
+  {
+    "id": "padmanabhan-harvest-donor-world-1997",
+    "quote": "Time: The year is 2010. There are significant technical advances, but the clothes and habits of ordinary people in the 'Donor' World are no different to those of Third World citizens today.",
+    "author": "Manjula Padmanabhan",
+    "source": "Harvest, Kali for Women, 1997. Winner of 1997 Onassis Award.",
+    "dateWritten": "1997",
+    "predictedDate": "2010",
+    "predictedDateNormalized": "2010-01-01",
+    "category": "Culture & Society",
+    "annotation": "By 2010, Mumbai's reality eerily mirrored Padmanabhan's dystopia. India's organ trafficking crisis was extensively documented, with impoverished donors selling kidneys to wealthy recipients — both domestic and international. Smartphone adoption was exploding, video calling had become commonplace, yet the rich-poor divide remained exactly as depicted. The play's core premise — that globalization would create a world where the poor literally sell their bodies to the rich, mediated by technology — proved disturbingly accurate.",
+    "actualOutcome": "",
+    "tags": [
+      "society",
+      "health-medicine",
+      "technology"
+    ],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "is_fiction": false
   }
 ]
