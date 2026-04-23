@@ -12,7 +12,7 @@ export async function GET() {
   if (!(await isAuthenticated())) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
-  return Response.json(getAllSubmissions());
+  return Response.json(await getAllSubmissions());
 }
 
 export async function POST(request: Request) {
@@ -25,12 +25,12 @@ export async function POST(request: Request) {
   };
 
   if (action === "reject") {
-    updateSubmissionStatus(id, "rejected");
+    await updateSubmissionStatus(id, "rejected");
     return Response.json({ ok: true });
   }
 
   // Approve: convert submission to quote
-  const sub = getSubmissionById(id);
+  const sub = await getSubmissionById(id);
   if (!sub) return Response.json({ error: "Not found" }, { status: 404 });
 
   const quote: Quote = {
@@ -48,6 +48,6 @@ export async function POST(request: Request) {
   };
 
   saveQuote(quote);
-  updateSubmissionStatus(id, "approved");
+  await updateSubmissionStatus(id, "approved");
   return Response.json({ ok: true, quote });
 }

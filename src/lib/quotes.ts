@@ -3,7 +3,6 @@ import path from "path";
 import type { Quote, Submission } from "@/types/quote";
 
 const quotesDirectory = path.join(process.cwd(), "src/data/quotes");
-const submissionsFile = path.join(process.cwd(), "src/data/submissions.json");
 
 // ── Read operations ──
 
@@ -111,26 +110,22 @@ export function deleteQuote(slug: string): boolean {
   return false;
 }
 
-// ── Submissions ──
+// ── Submissions (async — uses Vercel Blob in prod, filesystem in dev) ──
 
-function readSubmissions(): Submission[] {
-  if (!fs.existsSync(submissionsFile)) return [];
-  const raw = fs.readFileSync(submissionsFile, "utf-8");
-  return JSON.parse(raw) as Submission[];
-}
+import {
+  readSubmissions as storeRead,
+  writeSubmissions as storeWrite,
+} from "@/lib/submission-store";
 
-function writeSubmissions(submissions: Submission[]): void {
-  fs.writeFileSync(submissionsFile, JSON.stringify(submissions, null, 2), "utf-8");
-}
-
-export function getAllSubmissions(): Submission[] {
-  return readSubmissions().sort(
+export async function getAllSubmissions(): Promise<Submission[]> {
+  const subs = await storeRead();
+  return subs.sort(
     (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
   );
 }
 
-export function addSubmission(sub: Omit<Submission, "id" | "submittedAt" | "status">): Submission {
-  const submissions = readSubmissions();
+export async function addSubmission(sub: Omit<Submission, "id" | "submittedAt" | "status">): Promise<Submission> {
+  const submissions = await storeRead();
   const newSub: Submission = {
     ...sub,
     id: crypto.randomUUID(),
@@ -138,21 +133,22 @@ export function addSubmission(sub: Omit<Submission, "id" | "submittedAt" | "stat
     status: "pending",
   };
   submissions.push(newSub);
-  writeSubmissions(submissions);
+  await storeWrite(submissions);
   return newSub;
 }
 
-export function updateSubmissionStatus(id: string, status: Submission["status"]): boolean {
-  const submissions = readSubmissions();
+export async function updateSubmissionStatus(id: string, status: Submission["status"]): Promise<boolean> {
+  const submissions = await storeRead();
   const sub = submissions.find((s) => s.id === id);
   if (!sub) return false;
   sub.status = status;
-  writeSubmissions(submissions);
+  await storeWrite(submissions);
   return true;
 }
 
-export function getSubmissionById(id: string): Submission | undefined {
-  return readSubmissions().find((s) => s.id === id);
+export async function getSubmissionById(id: string): Promise<Submission | undefined> {
+  const subs = await storeRead();
+  return subs.find((s) => s.id === id);
 }
 
 // ── Utility ──

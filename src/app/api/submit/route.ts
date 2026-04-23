@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const submission = addSubmission({
+    const submission = await addSubmission({
       text: String(text),
       author: String(data.author),
       source: String(data.source || ""),
