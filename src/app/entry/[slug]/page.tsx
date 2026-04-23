@@ -9,7 +9,7 @@ import {
 } from "@/lib/corpus";
 import Link from "next/link";
 import type { Metadata } from "next";
-import PaintCanvas from "@/components/PaintCanvas";
+import LazyPaintCanvas from "@/components/LazyPaintCanvas";
 import CounterYear from "@/components/CounterYear";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -101,7 +101,7 @@ export default async function EntryPage({ params }: Props) {
           overflow: "hidden",
         }}
       >
-        <PaintCanvas />
+        <LazyPaintCanvas />
         <ScrollReveal delay={0}>
           <div className="entry-hero-grid">
             {/* LEFT: Expires column */}
@@ -182,6 +182,7 @@ export default async function EntryPage({ params }: Props) {
 
             {/* RIGHT: Quote column */}
             <div
+              className="entry-quote-col"
               style={{
                 background: "#0A0A0A",
                 padding: "64px 56px",
@@ -191,6 +192,7 @@ export default async function EntryPage({ params }: Props) {
               }}
             >
               <h1
+                className="entry-quote-text"
                 style={{
                   fontFamily: "var(--fq)",
                   fontSize: "2rem",

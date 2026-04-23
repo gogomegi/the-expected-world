@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PaintCanvas from "@/components/PaintCanvas";
+import LazyPaintCanvas from "@/components/LazyPaintCanvas";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function SubmitPage() {
           textAlign: "center",
         }}
       >
-        <PaintCanvas />
+        <LazyPaintCanvas />
         <ScrollReveal delay={0}>
           <p className="section-label" style={{ marginBottom: "16px" }}>
             Contribute to the archive

@@ -22,12 +22,12 @@ export default function BottomBar({ closedCount }: BottomBarProps) {
   useEffect(() => {
     const update = () => {
       const now = new Date();
-      setTime(`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`);
+      setTime(`${pad(now.getHours())}:${pad(now.getMinutes())}`);
       setDate(`${pad(now.getDate())} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`);
     };
 
     update();
-    const interval = setInterval(update, 1000);
+    const interval = setInterval(update, 60000);
     return () => clearInterval(interval);
   }, []);
 

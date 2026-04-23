@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import PaintCanvas from "@/components/PaintCanvas";
+import LazyPaintCanvas from "@/components/LazyPaintCanvas";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function AboutPage() {
           textAlign: "center",
         }}
       >
-        <PaintCanvas />
+        <LazyPaintCanvas />
         <ScrollReveal delay={0}>
           <h1
             className="section-title"

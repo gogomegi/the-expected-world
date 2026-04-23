@@ -1,7 +1,7 @@
 import { getClosingEntries, timeRemaining, displayYear } from "@/lib/corpus";
 import Link from "next/link";
 import type { Metadata } from "next";
-import PaintCanvas from "@/components/PaintCanvas";
+import LazyPaintCanvas from "@/components/LazyPaintCanvas";
 import ScrollReveal from "@/components/ScrollReveal";
 import CounterYear from "@/components/CounterYear";
 import CountdownTimer from "@/components/CountdownTimer";
@@ -30,7 +30,7 @@ export default function ClosingPage() {
           textAlign: "center",
         }}
       >
-        <PaintCanvas />
+        <LazyPaintCanvas />
         <ScrollReveal delay={0}>
           <h1
             className="section-title"
