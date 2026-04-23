@@ -67,9 +67,9 @@ export default function SubmitFormClient() {
         let message = "Submission failed";
         try {
           const data = await res.json();
-          message = data.error || message;
+          message = data.detail ? `${data.error}: ${data.detail}` : (data.error || message);
         } catch {
-          // Response body may not be JSON
+          message = `Server error (${res.status})`;
         }
         throw new Error(message);
       }
