@@ -1,7 +1,7 @@
 /**
  * Submission storage abstraction.
  * - Local dev: reads/writes to src/data/submissions.json (filesystem)
- * - Vercel prod: reads/writes to Vercel Blob storage (filesystem is read-only)
+ * - Vercel prod: reads/writes to Vercel Blob storage (private, filesystem is read-only)
  */
 import fs from "fs";
 import path from "path";
@@ -26,18 +26,18 @@ function fsWrite(submissions: Submission[]): void {
   fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify(submissions, null, 2), "utf-8");
 }
 
-// ── Vercel Blob (production) ──
+// ── Vercel Blob (production, private store) ──
 
-// Cache the blob URL after first write so reads don't need to list
 let cachedBlobUrl: string | null = null;
 
 async function blobRead(): Promise<Submission[]> {
-  const { list } = await import("@vercel/blob");
+  const { list, getDownloadUrl } = await import("@vercel/blob");
 
   // Try cached URL first
   if (cachedBlobUrl) {
     try {
-      const res = await fetch(cachedBlobUrl);
+      const url = await getDownloadUrl(cachedBlobUrl);
+      const res = await fetch(url);
       if (res.ok) return (await res.json()) as Submission[];
     } catch {
       cachedBlobUrl = null;
@@ -48,10 +48,10 @@ async function blobRead(): Promise<Submission[]> {
   const { blobs } = await list({ prefix: BLOB_KEY });
   if (blobs.length === 0) return [];
 
-  // Use the most recent blob matching our key
   const blob = blobs.find(b => b.pathname === BLOB_KEY) || blobs[0];
   cachedBlobUrl = blob.url;
-  const res = await fetch(blob.url);
+  const url = await getDownloadUrl(blob.url);
+  const res = await fetch(url);
   if (!res.ok) return [];
   return (await res.json()) as Submission[];
 }
@@ -59,7 +59,7 @@ async function blobRead(): Promise<Submission[]> {
 async function blobWrite(submissions: Submission[]): Promise<void> {
   const { put } = await import("@vercel/blob");
   const blob = await put(BLOB_KEY, JSON.stringify(submissions, null, 2), {
-    access: "public",
+    access: "private",
     addRandomSuffix: false,
     contentType: "application/json",
   });
