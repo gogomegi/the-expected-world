@@ -1,7 +1,15 @@
 import { addSubmission } from "@/lib/quotes";
 
 export async function POST(request: Request) {
-  const data = await request.json();
+  let data: Record<string, unknown>;
+  try {
+    data = await request.json();
+  } catch {
+    return Response.json(
+      { error: "Invalid JSON in request body" },
+      { status: 400 }
+    );
+  }
 
   const text = data.text || data.quote;
   if (!text || !data.author || !data.yearWritten) {
@@ -11,16 +19,23 @@ export async function POST(request: Request) {
     );
   }
 
-  const submission = addSubmission({
-    text,
-    author: data.author,
-    source: data.source || "",
-    yearWritten: Number(data.yearWritten),
-    yearImagined: data.yearImagined,
-    topic: data.topic,
-    sourceUrl: data.sourceUrl,
-    email: data.email,
-  });
+  try {
+    const submission = addSubmission({
+      text: String(text),
+      author: String(data.author),
+      source: String(data.source || ""),
+      yearWritten: Number(data.yearWritten),
+      yearImagined: data.yearImagined ? String(data.yearImagined) : undefined,
+      topic: data.topic ? String(data.topic) : undefined,
+      sourceUrl: data.sourceUrl ? String(data.sourceUrl) : undefined,
+      email: data.email ? String(data.email) : undefined,
+    });
 
-  return Response.json({ ok: true, id: submission.id }, { status: 201 });
+    return Response.json({ ok: true, id: submission.id }, { status: 201 });
+  } catch {
+    return Response.json(
+      { error: "Failed to save submission" },
+      { status: 500 }
+    );
+  }
 }

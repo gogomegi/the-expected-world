@@ -64,8 +64,14 @@ export default function SubmitFormClient() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Submission failed");
+        let message = "Submission failed";
+        try {
+          const data = await res.json();
+          message = data.error || message;
+        } catch {
+          // Response body may not be JSON
+        }
+        throw new Error(message);
       }
 
       setSuccess(true);
