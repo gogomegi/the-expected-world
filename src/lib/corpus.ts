@@ -127,18 +127,11 @@ export function getEntriesByCategory(slug: string): Entry[] {
 }
 
 export function getFeaturedEntry(): Entry {
+  const cardin = confirmedEntries.find(e => e.id === 'joseph-barry-1968-lovable');
+  if (cardin) return cardin;
   const archive = getArchiveEntries();
   if (archive.length === 0) return confirmedEntries[0];
-  const today = new Date();
-  const tm = today.getMonth(), td = today.getDate();
-  let best = archive[0], bestDiff = Infinity;
-  for (const e of archive) {
-    const d = new Date(e.predictedDateNormalized);
-    let diff = Math.abs((d.getMonth() * 31 + d.getDate()) - (tm * 31 + td));
-    if (diff > 183) diff = 366 - diff;
-    if (diff < bestDiff) { bestDiff = diff; best = e; }
-  }
-  return best;
+  return archive[0];
 }
 
 export function getRecentEntries(n = 10): Entry[] {

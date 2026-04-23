@@ -3,7 +3,6 @@ import {
   getArchiveEntries,
   getClosingEntries,
   isExpired,
-  timeRemaining,
   displayYear,
   getConfirmedEntries,
 } from "@/lib/corpus";
@@ -15,6 +14,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import MarqueeTicker from "@/components/MarqueeTicker";
 import CountdownTimer from "@/components/CountdownTimer";
 import HeroVideo from "@/components/HeroVideo";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "The Expected World — An archive of expired futures",
@@ -39,11 +39,10 @@ export default function HomePage() {
   const archiveEntries = getArchiveEntries()
     .filter((e) => e.id !== featured.id)
     .sort((a, b) => b.predictedDateNormalized.localeCompare(a.predictedDateNormalized));
-  const closingEntries = getClosingEntries().slice(0, 4);
+  const closingEntries = getClosingEntries();
   const confirmed = getConfirmedEntries();
   const archiveCount = getArchiveEntries().length;
 
-  // Ticker items from confirmed entries
   const tickerSource = confirmed.slice(0, 12);
   const tickerItems = tickerSource.map((e, i) => ({
     year: displayYear(e),
@@ -51,23 +50,21 @@ export default function HomePage() {
     excerpt: truncate(e.quote, 80),
     colorClass: COLORS[i % COLORS.length],
   }));
-  // Duplicate for seamless loop
   const tickerItemsDoubled = [...tickerItems, ...tickerItems];
 
-  const displayArchive = archiveEntries.slice(0, 18);
+  const previewArchive = archiveEntries.slice(0, 3);
 
   return (
     <div>
+      <ScrollToTop />
       <BottomBar closedCount={archiveCount} />
 
       {/* ── HERO ── */}
       <section className="hero-phello">
         <div className="hero-phello-outer">
           <div className="hero-phello-inner">
-            {/* Video */}
             <div className="hero-video-container">
               <HeroVideo />
-              {/* Title overlay on video */}
               <div className="hero-title-overlay">
                 <span className="section-label" style={{ color: "rgba(255,255,255,0.45)" }}>
                   Archive of Expired Futures
@@ -95,20 +92,13 @@ export default function HomePage() {
       {/* ── FEATURED ENTRY ── */}
       <section
         className="grid-bg"
-        style={{
-          padding: "0 48px 120px",
-          background: "var(--black)",
-        }}
+        style={{ padding: "0 48px 120px", background: "var(--black)" }}
       >
         <ScrollReveal delay={0}>
           <Link href={`/entry/${featured.id}`} style={{ display: "block" }}>
             <div className="hp-feat-grid">
-              {/* LEFT: Expires panel */}
               <div className="feat-exp">
-                <span
-                  className="section-label"
-                  style={{ color: "rgba(255,255,255,0.7)" }}
-                >
+                <span className="section-label" style={{ color: "rgba(255,255,255,0.7)" }}>
                   {isExpired(featured.predictedDateNormalized) ? "EXPIRES" : "CLOSING"}
                 </span>
                 <div style={{ marginTop: 8 }}>
@@ -128,12 +118,9 @@ export default function HomePage() {
                   <div>ADDRESSED TO: {featured.predictedDate}</div>
                 </div>
                 {featured.is_fiction && (
-                  <span className="fiction-badge" style={{ marginTop: 12, marginLeft: 0 }}>
-                    FICTION
-                  </span>
+                  <span className="fiction-badge" style={{ marginTop: 12, marginLeft: 0 }}>FICTION</span>
                 )}
               </div>
-              {/* RIGHT: Quote panel */}
               <div
                 className="hp-feat-quote"
                 style={{
@@ -151,56 +138,21 @@ export default function HomePage() {
                     fontStyle: "italic",
                     lineHeight: 1.45,
                     color: "var(--text-d)",
-                    margin: 0,
-                    padding: 0,
-                    border: "none",
+                    margin: 0, padding: 0, border: "none",
                   }}
                 >
                   &ldquo;{featured.quote}&rdquo;
                 </blockquote>
-                <p
-                  style={{
-                    fontFamily: "var(--fh)",
-                    fontWeight: 600,
-                    fontSize: "0.9375rem",
-                    color: "var(--text-d)",
-                    marginTop: 24,
-                  }}
-                >
+                <p style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--text-d)", marginTop: 24 }}>
                   {featured.author}
                 </p>
-                <p
-                  style={{
-                    fontFamily: "var(--fm)",
-                    fontSize: "0.6875rem",
-                    letterSpacing: "0.04em",
-                    color: "var(--muted-d)",
-                    marginTop: 4,
-                  }}
-                >
+                <p style={{ fontFamily: "var(--fm)", fontSize: "0.6875rem", letterSpacing: "0.04em", color: "var(--muted-d)", marginTop: 4 }}>
                   {featured.source}
                 </p>
               </div>
             </div>
-            {/* Annotation bar */}
-            <div
-              className="hp-annotation"
-              style={{
-                background: "#111",
-                maxWidth: "var(--max-width)",
-                margin: "4px auto 0",
-                padding: "40px 48px",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--fq)",
-                  fontSize: "0.9375rem",
-                  fontStyle: "italic",
-                  lineHeight: 1.65,
-                  color: "var(--muted-d)",
-                }}
-              >
+            <div className="hp-annotation" style={{ background: "#111", maxWidth: "var(--max-width)", margin: "4px auto 0", padding: "40px 48px" }}>
+              <p style={{ fontFamily: "var(--fq)", fontSize: "0.9375rem", fontStyle: "italic", lineHeight: 1.65, color: "var(--muted-d)" }}>
                 {featured.annotation}
               </p>
             </div>
@@ -211,253 +163,154 @@ export default function HomePage() {
       {/* ── MARQUEE TICKER ── */}
       <MarqueeTicker items={tickerItemsDoubled} />
 
-      {/* ── GATE IS CLOSING ── */}
-      {closingEntries.length > 0 && (
-        <section
-          className="grid-bg"
-          style={{
-            padding: "120px 48px",
-            background: "var(--black)",
-          }}
-        >
-          <div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 40,
-              }}
-            >
-              <h2
-                style={{
-                  fontFamily: "var(--fh)",
-                  fontWeight: 800,
-                  fontSize: "2rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.03em",
-                  color: "var(--text-d)",
-                }}
-              >
-                The Gate is Closing
-              </h2>
-              <Link
-                href="/closing"
-                style={{
-                  fontFamily: "var(--fm)",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  color: "var(--muted-d)",
-                }}
-              >
-                View all →
-              </Link>
-            </div>
-            <div className="hp-gate-grid">
-              {closingEntries.map((entry, i) => {
-                const cardColor = i % 2 === 0 ? "--amber" : "--green";
-                const cardClass = i % 2 === 0 ? "gate-card gate-card--amber" : "gate-card gate-card--green";
+      {/* ── ARCHIVE + CLOSING SIDE BY SIDE ── */}
+      <section style={{ background: "var(--cream)", padding: "80px 48px" }}>
+        <div className="hp-browse-grid">
+
+          {/* LEFT: Archive */}
+          <div className="phone-frame-outer">
+            <div className="phone-frame-inner">
+              <p style={{ ...labelStyle, marginBottom: 24 }}>Archive</p>
+              {previewArchive.map((entry, i) => {
+                const yearStr = displayYear(entry);
+                const hoverBg = COLOR_VARS[colorIndex(i)];
                 return (
                   <Link key={entry.id} href={`/entry/${entry.id}`}>
-                    <div className={cardClass}>
-                      <span className="section-label" style={{ color: "rgba(255,255,255,0.6)" }}>
-                        closing
-                      </span>
-                      <div style={{ marginTop: 8 }}>
-                        <CounterYear year={parseInt(displayYear(entry))} />
+                    <div className="ac-light" style={{ marginBottom: 4 }}>
+                      <div className="ac-hover-bg" style={{ background: hoverBg }} />
+                      <span className="ac-ghost">{yearStr}</span>
+                      <div className="ac-top" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, position: "relative", zIndex: 1 }}>
+                        <span className="ac-el" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted-l)" }}>
+                          expires
+                        </span>
+                        <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
+                          <CounterYear year={parseInt(yearStr) || 0} />
+                        </span>
+                        {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
                       </div>
-                      <div style={{ marginTop: 8 }}>
-                        <CountdownTimer targetDate={entry.predictedDateNormalized} />
-                      </div>
-                      <p
-                        style={{
-                          fontFamily: "var(--fq)",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                          lineHeight: 1.5,
-                          color: "rgba(255,255,255,0.85)",
-                          marginTop: 20,
-                          display: "-webkit-box",
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                          flex: 1,
-                        }}
-                      >
+                      <p className="ac-excerpt" style={{ fontFamily: "var(--fq)", fontStyle: "italic", fontSize: "0.875rem", lineHeight: 1.5, color: "var(--text-l)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", position: "relative", zIndex: 1 }}>
                         &ldquo;{entry.quote}&rdquo;
                       </p>
-                      <p
-                        style={{
-                          fontFamily: "var(--fh)",
-                          fontWeight: 600,
-                          fontSize: "0.8125rem",
-                          color: "rgba(255,255,255,0.7)",
-                          marginTop: 16,
-                        }}
-                      >
-                        {entry.author}
-                      </p>
+                      <div className="ac-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12, position: "relative", zIndex: 1 }}>
+                        <span className="ac-auth" style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.6875rem", color: "var(--text-l)" }}>{entry.author}</span>
+                      </div>
                     </div>
                   </Link>
                 );
               })}
+              <div style={{ textAlign: "center", marginTop: 20 }}>
+                <Link
+                  href="/timeline"
+                  style={{
+                    fontFamily: "var(--fm)",
+                    fontSize: "0.625rem",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "var(--text-l)",
+                    opacity: 0.5,
+                  }}
+                >
+                  View all entries →
+                </Link>
+              </div>
             </div>
           </div>
-        </section>
-      )}
 
-      {/* ── ARCHIVE (LIGHT BG) ── */}
-      <section className="cream-section"
-        style={{
-          padding: "120px 48px",
-          background: "var(--cream)",
-        }}
-      >
-        <div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
-          <div
+          {/* RIGHT: Closing */}
+          <div className="phone-frame-outer">
+            <div className="phone-frame-inner">
+              <p style={{ ...labelStyle, marginBottom: 24 }}>Closing</p>
+              {closingEntries.map((entry, i) => {
+                const yearStr = displayYear(entry);
+                const hoverBg = COLOR_VARS[i % COLOR_VARS.length];
+                return (
+                  <Link key={entry.id} href={`/entry/${entry.id}`} style={{ display: "block", textDecoration: "none" }}>
+                    <div className="ac-light" style={{ marginBottom: 4 }}>
+                      <div className="ac-hover-bg" style={{ background: hoverBg }} />
+                      <span className="ac-ghost">{yearStr}</span>
+                      <div className="ac-top" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, position: "relative", zIndex: 1 }}>
+                        <span className="ac-el" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted-l)" }}>closing</span>
+                        <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
+                          <CounterYear year={parseInt(yearStr) || 0} />
+                        </span>
+                        {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
+                      </div>
+                      <div style={{ marginBottom: 12, position: "relative", zIndex: 1 }}>
+                        <CountdownTimer targetDate={entry.predictedDateNormalized} />
+                      </div>
+                      <p className="ac-excerpt" style={{ fontFamily: "var(--fq)", fontStyle: "italic", fontSize: "0.875rem", lineHeight: 1.5, color: "var(--text-l)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", position: "relative", zIndex: 1 }}>
+                        &ldquo;{entry.quote}&rdquo;
+                      </p>
+                      <div className="ac-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12, position: "relative", zIndex: 1 }}>
+                        <span className="ac-auth" style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.6875rem", color: "var(--text-l)" }}>{entry.author}</span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+              <div style={{ textAlign: "center", marginTop: 20 }}>
+                <Link
+                  href="/closing"
+                  style={{
+                    fontFamily: "var(--fm)",
+                    fontSize: "0.625rem",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "var(--text-l)",
+                    opacity: 0.5,
+                  }}
+                >
+                  View all closing →
+                </Link>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ── CTA SECTION ── */}
+        <div
+          style={{
+            maxWidth: "780px",
+            margin: "48px auto 0",
+            textAlign: "center",
+          }}
+        >
+          <p
             style={{
-              display: "flex",
-              alignItems: "baseline",
-              justifyContent: "space-between",
-              marginBottom: 40,
+              fontFamily: "var(--fm)",
+              fontSize: "0.5625rem",
+              fontWeight: 500,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "var(--text-l)",
+              lineHeight: 2.4,
             }}
           >
-            <h2 className="archive-heading"
-              style={{
-                fontFamily: "var(--fh)",
-                fontWeight: 900,
-                fontSize: "2.5rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.03em",
-                color: "var(--text-l)",
-                lineHeight: 1,
-              }}
-            >
-              From the Archive
-            </h2>
-            <Link
-              href="/timeline"
-              style={{
-                fontFamily: "var(--fm)",
-                fontSize: "0.75rem",
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                color: "var(--muted-l)",
-              }}
-            >
-              {archiveCount} entries →
+            CURIOUS{" "}
+            <Link href="/about" style={{ color: "var(--orange)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+              WHAT THIS IS
             </Link>
-          </div>
-          <div className="hp-archive-grid">
-            {displayArchive.map((entry, i) => {
-              const ci = colorIndex(i);
-              const hoverBg = COLOR_VARS[ci];
-              const yearStr = displayYear(entry);
-              return (
-                <Link key={entry.id} href={`/entry/${entry.id}`}>
-                  <div className="ac-light">
-                    <div
-                      className="ac-hover-bg"
-                      style={{ background: hoverBg }}
-                    />
-                    <span className="ac-ghost">{yearStr}</span>
-                    {/* Top row */}
-                    <div
-                      className="ac-top"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                        marginBottom: 16,
-                        position: "relative",
-                        zIndex: 1,
-                      }}
-                    >
-                      <span
-                        className="ac-el"
-                        style={{
-                          fontFamily: "var(--fm)",
-                          fontSize: "0.5625rem",
-                          letterSpacing: "0.1em",
-                          textTransform: "uppercase",
-                          color: "var(--muted-l)",
-                        }}
-                      >
-                        {isExpired(entry.predictedDateNormalized) ? "expires" : "closing"}
-                      </span>
-                      <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
-                        <CounterYear year={parseInt(yearStr) || 0} />
-                      </span>
-                      {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
-                    </div>
-                    {/* Quote */}
-                    <p
-                      className="ac-excerpt"
-                      style={{
-                        fontFamily: "var(--fq)",
-                        fontStyle: "italic",
-                        fontSize: "0.9375rem",
-                        lineHeight: 1.55,
-                        color: "var(--text-l)",
-                        flex: 1,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                        position: "relative",
-                        zIndex: 1,
-                      }}
-                    >
-                      &ldquo;{entry.quote}&rdquo;
-                    </p>
-                    {/* Bottom */}
-                    <div
-                      className="ac-bottom"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginTop: 16,
-                        position: "relative",
-                        zIndex: 1,
-                      }}
-                    >
-                      <span
-                        className="ac-auth"
-                        style={{
-                          fontFamily: "var(--fh)",
-                          fontWeight: 600,
-                          fontSize: "0.75rem",
-                          color: "var(--text-l)",
-                        }}
-                      >
-                        {entry.author}
-                      </span>
-                      <span
-                        className="ac-cat"
-                        style={{
-                          fontFamily: "var(--fm)",
-                          fontSize: "0.5625rem",
-                          letterSpacing: "0.06em",
-                          textTransform: "uppercase",
-                          color: "var(--muted-l)",
-                        }}
-                      >
-                        {entry.category}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-          <div className="view-all">
-            <Link href="/timeline">View all entries →</Link>
-          </div>
+            ?&nbsp;&nbsp;&nbsp;WANT TO{" "}
+            <Link href="/submit" style={{ color: "var(--orange)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+              ADD SOMETHING
+            </Link>
+            ?
+          </p>
         </div>
-      </section>
 
+      </section>
     </div>
   );
 }
+
+const labelStyle: React.CSSProperties = {
+  fontFamily: "var(--fm)",
+  fontSize: "0.5625rem",
+  fontWeight: 500,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: "var(--muted-l)",
+  margin: 0,
+};
+

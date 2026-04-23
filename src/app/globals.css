@@ -221,6 +221,11 @@ a { color: inherit; text-decoration: none; }
 @media(max-width:1024px) { .archive-grid { grid-template-columns: repeat(2, 1fr); } }
 @media(max-width:640px) { .archive-grid { grid-template-columns: 1fr; } }
 
+/* ── HOMEPAGE BROWSE (archive + closing side by side) ── */
+.hp-browse-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: var(--max-width); margin: 0 auto; }
+.hp-browse-grid .phone-frame-outer { max-width: none; margin: 0; }
+@media(max-width:1024px) { .hp-browse-grid { grid-template-columns: 1fr; } }
+
 /* ── HOMEPAGE GRIDS ── */
 .hp-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: var(--max-width); margin: 0 auto; align-items: center; }
 .hp-feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; max-width: var(--max-width); margin: 0 auto; }

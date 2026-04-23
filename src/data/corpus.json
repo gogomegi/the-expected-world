@@ -3058,11 +3058,11 @@
       "material-culture"
     ],
     "source_type": "scout",
-    "status": "pending",
+    "status": "confirmed",
     "source_url": "https://blindarchive.substack.com/p/pierre-cardin-man",
     "verification_note": "Quotes verified against Beatrice Adler-Bolton's Blind Archive article which reproduces passages from the original NYT interview by Joseph Barry (September 21, 1968). The article provides extensive verbatim quotes from the original interview. The NYT article is also cited in multiple fashion history sources.",
     "is_fiction": false,
-    "verification_status": "unverified"
+    "verification_status": "verified"
   },
   {
     "id": "watkins-readycooked-meals-1900",
