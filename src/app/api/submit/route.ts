@@ -32,9 +32,10 @@ export async function POST(request: Request) {
     });
 
     return Response.json({ ok: true, id: submission.id }, { status: 201 });
-  } catch {
+  } catch (err) {
+    console.error("Submit error:", err);
     return Response.json(
-      { error: "Failed to save submission" },
+      { error: "Failed to save submission", detail: err instanceof Error ? err.message : String(err) },
       { status: 500 }
     );
   }

@@ -28,33 +28,62 @@ function fsWrite(submissions: Submission[]): void {
 
 // ── Vercel Blob (production) ──
 
+// Cache the blob URL after first write so reads don't need to list
+let cachedBlobUrl: string | null = null;
+
 async function blobRead(): Promise<Submission[]> {
-  // Dynamic import to avoid bundling @vercel/blob in dev
   const { list } = await import("@vercel/blob");
-  const { blobs } = await list({ prefix: BLOB_KEY, limit: 1 });
+
+  // Try cached URL first
+  if (cachedBlobUrl) {
+    try {
+      const res = await fetch(cachedBlobUrl);
+      if (res.ok) return (await res.json()) as Submission[];
+    } catch {
+      cachedBlobUrl = null;
+    }
+  }
+
+  // Fall back to listing
+  const { blobs } = await list({ prefix: BLOB_KEY });
   if (blobs.length === 0) return [];
-  const res = await fetch(blobs[0].url);
+
+  // Use the most recent blob matching our key
+  const blob = blobs.find(b => b.pathname === BLOB_KEY) || blobs[0];
+  cachedBlobUrl = blob.url;
+  const res = await fetch(blob.url);
   if (!res.ok) return [];
   return (await res.json()) as Submission[];
 }
 
 async function blobWrite(submissions: Submission[]): Promise<void> {
   const { put } = await import("@vercel/blob");
-  await put(BLOB_KEY, JSON.stringify(submissions, null, 2), {
+  const blob = await put(BLOB_KEY, JSON.stringify(submissions, null, 2), {
     access: "public",
     addRandomSuffix: false,
     contentType: "application/json",
   });
+  cachedBlobUrl = blob.url;
 }
 
 // ── Public API ──
 
 export async function readSubmissions(): Promise<Submission[]> {
-  if (useBlob()) return blobRead();
+  if (useBlob()) {
+    try {
+      return await blobRead();
+    } catch (err) {
+      console.error("Blob read error:", err);
+      return [];
+    }
+  }
   return fsRead();
 }
 
 export async function writeSubmissions(submissions: Submission[]): Promise<void> {
-  if (useBlob()) return blobWrite(submissions);
+  if (useBlob()) {
+    await blobWrite(submissions);
+    return;
+  }
   fsWrite(submissions);
 }
