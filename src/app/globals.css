@@ -111,7 +111,7 @@ a { color: inherit; text-decoration: none; }
 .ac-light:hover .ac-el, .ac-light:hover .ac-st, .ac-light:hover .ac-cat { color: rgba(255,255,255,0.5) !important; }
 .ac-ghost { position: absolute; bottom: -15px; right: -8px; font-family: var(--fh); font-size: 9rem; font-weight: 900; line-height: 1; color: rgba(255,255,255,0.08); pointer-events: none; opacity: 0; transform: translateY(16px); transition: opacity 0.4s, transform 0.4s; z-index: 0; }
 .ac-light:hover .ac-ghost { opacity: 1; transform: translateY(0); }
-@media(max-width:640px) { .ac-light { min-height: auto; padding: 24px; } .ac-ghost { font-size: 6rem; } .ac-excerpt { font-size: 0.8125rem !important; line-height: 1.5 !important; } }
+@media(max-width:640px) { .ac-light { min-height: auto; padding: 24px; } .ac-ghost { font-size: 6rem; } .ac-excerpt { font-size: 0.8125rem !important; line-height: 1.5 !important; } .ac-cat { display: none !important; } }
 
 /* ── ARCHIVE DARK CARDS ── */
 .acd { background: #0A0A0A; padding: 28px; display: flex; flex-direction: column; min-height: 220px; cursor: pointer; transition: background 0.3s, transform 0.3s; position: relative; overflow: hidden; }

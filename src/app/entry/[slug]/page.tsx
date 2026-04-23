@@ -9,9 +9,7 @@ import {
 } from "@/lib/corpus";
 import Link from "next/link";
 import type { Metadata } from "next";
-import LazyPaintCanvas from "@/components/LazyPaintCanvas";
 import CounterYear from "@/components/CounterYear";
-import ScrollReveal from "@/components/ScrollReveal";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -25,9 +23,6 @@ function colorForEntry(id: string): string {
 }
 
 const COLOR_VARS = ["var(--orange)", "var(--blue)", "var(--green)", "var(--amber)"];
-function hoverColorForIndex(i: number): string {
-  return COLOR_VARS[i % COLOR_VARS.length];
-}
 
 export async function generateStaticParams() {
   return getAllEntries().map((e) => ({ slug: e.id }));
@@ -46,15 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: {
-      canonical: `/entry/${entry.id}`,
-    },
-    openGraph: {
-      title,
-      description,
-      type: "article",
-      authors: [entry.author],
-    },
+    alternates: { canonical: `/entry/${entry.id}` },
+    openGraph: { title, description, type: "article", authors: [entry.author] },
   };
 }
 
@@ -76,231 +64,111 @@ export default async function EntryPage({ params }: Props) {
     author: { "@type": "Person", name: entry.author },
     datePublished: entry.dateWritten,
     description: entry.annotation,
-    publisher: {
-      "@type": "Organization",
-      name: "The Expected World",
-      url: "https://theexpectedworld.com",
-    },
+    publisher: { "@type": "Organization", name: "The Expected World", url: "https://theexpectedworld.com" },
     mainEntityOfPage: `https://theexpectedworld.com/entry/${entry.id}`,
   };
 
   return (
-    <div>
+    <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ── ENTRY HERO ── */}
-      <section
-        className="grid-bg"
-        style={{
-          padding: "160px 48px 0",
-          background: "var(--black)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <LazyPaintCanvas />
-        <ScrollReveal delay={0}>
-          <div className="entry-hero-grid">
-            {/* LEFT: Expires column */}
-            <div
-              className="entry-exp-col"
-              style={{ background: vividColor }}
-            >
-              <div>
-                <span
-                  className="section-label"
-                  style={{ color: "rgba(255,255,255,0.6)" }}
-                >
-                  {expired ? "expires" : "closing"}
-                </span>
-                <div style={{ marginTop: 8 }}>
-                  <CounterYear year={parseInt(yearStr) || 0} />
-                </div>
-              </div>
-              <div style={{ marginTop: "auto" }}>
-                <div
-                  style={{
-                    fontFamily: "var(--fm)",
-                    fontSize: "0.6875rem",
-                    letterSpacing: "0.06em",
-                    lineHeight: 2,
-                  }}
-                >
-                  <div>
-                    <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
-                      Written
-                    </span>
-                    <br />
-                    <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>
-                      {entry.dateWritten}
-                    </span>
-                  </div>
-                  <div style={{ marginTop: 8 }}>
-                    <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
-                      Addressed to
-                    </span>
-                    <br />
-                    <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>
-                      {entry.predictedDate}
-                    </span>
-                  </div>
-                  <div style={{ marginTop: 8 }}>
-                    <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
-                      Category
-                    </span>
-                    <br />
-                    <Link
-                      href={`/category/${catSlug}`}
-                      style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}
-                    >
-                      {entry.category}
-                    </Link>
-                  </div>
-                  <div style={{ marginTop: 8 }}>
-                    <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
-                      Status
-                    </span>
-                    <br />
-                    <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>
-                      {expired ? "Expired" : "Closing"}
-                    </span>
-                  </div>
-                </div>
-                {entry.is_fiction && (
-                  <span
-                    className="fiction-badge"
-                    style={{ marginTop: 16, marginLeft: 0, borderColor: "rgba(255,255,255,0.4)", color: "rgba(255,255,255,0.7)" }}
-                  >
-                    FICTION
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* RIGHT: Quote column */}
-            <div
-              className="entry-quote-col"
-              style={{
-                background: "#0A0A0A",
-                padding: "64px 56px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <h1
-                className="entry-quote-text"
-                style={{
-                  fontFamily: "var(--fq)",
-                  fontSize: "2rem",
-                  fontStyle: "italic",
-                  fontWeight: 400,
-                  lineHeight: 1.45,
-                  color: "var(--text-d)",
-                  margin: 0,
-                }}
-              >
-                &ldquo;{entry.quote}&rdquo;
-              </h1>
-              <p
-                style={{
-                  fontFamily: "var(--fh)",
-                  fontWeight: 600,
-                  fontSize: "0.9375rem",
-                  color: "var(--text-d)",
-                  marginTop: 24,
-                }}
-              >
-                {entry.author}
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--fm)",
-                  fontSize: "0.6875rem",
-                  letterSpacing: "0.04em",
-                  color: "var(--muted-d)",
-                  marginTop: 4,
-                }}
-              >
-                {entry.source}
-              </p>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
-
-      {/* ── ANNOTATION SECTION ── */}
-      <section
-        style={{
-          padding: "80px 48px",
-          background: "var(--cream)",
-        }}
-      >
-        <div className="entry-anno-grid">
-          {/* LEFT: Annotation */}
-          <div>
-            <h2
-              style={{
-                fontFamily: "var(--fh)",
-                fontWeight: 800,
-                fontSize: "1rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--text-l)",
-                marginBottom: 20,
-              }}
-            >
-              Annotation
-            </h2>
-            <p
-              style={{
-                fontFamily: "var(--fq)",
-                fontSize: "1rem",
-                lineHeight: 1.75,
-                color: "var(--text-l)",
-                opacity: 0.8,
-              }}
-            >
-              {entry.annotation}
-            </p>
-          </div>
-
-          {/* RIGHT: What Actually Happened */}
-          {entry.actualOutcome && (
-            <div>
-              <h2
-                style={{
-                  fontFamily: "var(--fh)",
-                  fontWeight: 800,
-                  fontSize: "1rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  color: vividColor,
-                  marginBottom: 20,
-                }}
-              >
-                What Actually Happened
-              </h2>
+      {/* ── QUOTE CARD (white on cream) ── */}
+      <section style={{ padding: "120px 48px 0" }}>
+        <div className="phone-frame-outer" style={{ maxWidth: "960px" }}>
+          <div className="phone-frame-inner" style={{ padding: 0, overflow: "hidden" }}>
+            <div className="entry-hero-grid">
+              {/* LEFT: Meta column */}
               <div
+                className="entry-exp-col"
+                style={{ background: vividColor }}
+              >
+                <div>
+                  <span className="section-label" style={{ color: "rgba(255,255,255,0.6)" }}>
+                    {expired ? "expires" : "gate is closing"}
+                  </span>
+                  <div style={{ marginTop: 8 }}>
+                    <CounterYear year={parseInt(yearStr) || 0} />
+                  </div>
+                </div>
+                <div style={{ marginTop: "auto" }}>
+                  <div style={{ fontFamily: "var(--fm)", fontSize: "0.6875rem", letterSpacing: "0.06em", lineHeight: 2 }}>
+                    <div>
+                      <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>Written</span>
+                      <br />
+                      <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>{entry.dateWritten}</span>
+                    </div>
+                    <div style={{ marginTop: 8 }}>
+                      <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>Addressed to</span>
+                      <br />
+                      <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>{entry.predictedDate}</span>
+                    </div>
+                    <div style={{ marginTop: 8 }}>
+                      <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>Category</span>
+                      <br />
+                      <Link href={`/category/${catSlug}`} style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>
+                        {entry.category}
+                      </Link>
+                    </div>
+                  </div>
+                  {entry.is_fiction && (
+                    <span className="fiction-badge" style={{ marginTop: 16, marginLeft: 0, borderColor: "rgba(255,255,255,0.4)", color: "rgba(255,255,255,0.7)" }}>FICTION</span>
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT: Quote on white */}
+              <div
+                className="entry-quote-col"
                 style={{
-                  borderLeft: `3px solid var(--blue)`,
-                  paddingLeft: 20,
+                  background: "var(--white)",
+                  padding: "64px 56px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
                 }}
               >
-                <p
+                <h1
+                  className="entry-quote-text"
                   style={{
                     fontFamily: "var(--fq)",
-                    fontSize: "1rem",
-                    lineHeight: 1.75,
+                    fontSize: "1.125rem",
+                    fontStyle: "italic",
+                    fontWeight: 400,
+                    lineHeight: 1.55,
                     color: "var(--text-l)",
-                    opacity: 0.8,
+                    margin: 0,
                   }}
                 >
-                  {entry.actualOutcome}
+                  &ldquo;{entry.quote}&rdquo;
+                </h1>
+                <p style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--text-l)", marginTop: 24 }}>
+                  {entry.author}
                 </p>
+                <p style={{ fontFamily: "var(--fm)", fontSize: "0.6875rem", letterSpacing: "0.04em", color: "var(--muted-l)", marginTop: 4 }}>
+                  {entry.source}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ANNOTATION + WHAT ACTUALLY HAPPENED ── */}
+      <section style={{ padding: "64px 48px 80px" }}>
+        <div className="entry-anno-grid">
+          <div>
+            <h2 style={sectionHeadStyle}>Annotation</h2>
+            <p style={bodyStyle}>{entry.annotation}</p>
+          </div>
+
+          {entry.actualOutcome && (
+            <div>
+              <h2 style={{ ...sectionHeadStyle, color: vividColor }}>What Actually Happened</h2>
+              <div style={{ borderLeft: `3px solid ${vividColor}`, paddingLeft: 20 }}>
+                <p style={bodyStyle}>{entry.actualOutcome}</p>
               </div>
             </div>
           )}
@@ -308,15 +176,7 @@ export default async function EntryPage({ params }: Props) {
 
         {/* Tags */}
         {entry.tags.length > 0 && (
-          <div
-            style={{
-              maxWidth: "var(--max-width)",
-              margin: "40px auto 0",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 8,
-            }}
-          >
+          <div style={{ maxWidth: "var(--max-width)", margin: "40px auto 0", display: "flex", flexWrap: "wrap", gap: 8 }}>
             {entry.tags.map((tag) => (
               <span
                 key={tag}
@@ -339,111 +199,30 @@ export default async function EntryPage({ params }: Props) {
         {/* Related entries */}
         {related.length > 0 && (
           <div style={{ maxWidth: "var(--max-width)", margin: "64px auto 0" }}>
-            <h3
-              style={{
-                fontFamily: "var(--fh)",
-                fontWeight: 800,
-                fontSize: "1rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--text-l)",
-                marginBottom: 24,
-              }}
-            >
-              Related Entries
-            </h3>
+            <h3 style={sectionHeadStyle}>Related Entries</h3>
             <div className="entry-related-grid">
               {related.map((rel, i) => {
                 const relYear = displayYear(rel);
-                const relColor = hoverColorForIndex(i);
+                const relColor = COLOR_VARS[i % COLOR_VARS.length];
                 return (
                   <Link key={rel.id} href={`/entry/${rel.id}`}>
                     <div className="ac-light">
-                      <div
-                        className="ac-hover-bg"
-                        style={{ background: relColor }}
-                      />
+                      <div className="ac-hover-bg" style={{ background: relColor }} />
                       <span className="ac-ghost">{relYear}</span>
-                      <div
-                        className="ac-top"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 8,
-                          marginBottom: 16,
-                          position: "relative",
-                          zIndex: 1,
-                        }}
-                      >
-                        <span
-                          className="ac-el"
-                          style={{
-                            fontFamily: "var(--fm)",
-                            fontSize: "0.5625rem",
-                            letterSpacing: "0.1em",
-                            textTransform: "uppercase",
-                            color: "var(--muted-l)",
-                          }}
-                        >
+                      <div className="ac-top" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, position: "relative", zIndex: 1 }}>
+                        <span className="ac-el" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted-l)" }}>
                           {isExpired(rel.predictedDateNormalized) ? "expires" : "closing"}
                         </span>
                         <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
                           <CounterYear year={parseInt(relYear) || 0} />
                         </span>
                       </div>
-                      <p
-                        className="ac-excerpt"
-                        style={{
-                          fontFamily: "var(--fq)",
-                          fontStyle: "italic",
-                          fontSize: "0.9375rem",
-                          lineHeight: 1.55,
-                          color: "var(--text-l)",
-                          flex: 1,
-                          display: "-webkit-box",
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                          position: "relative",
-                          zIndex: 1,
-                        }}
-                      >
+                      <p className="ac-excerpt" style={{ fontFamily: "var(--fq)", fontStyle: "italic", fontSize: "0.9375rem", lineHeight: 1.55, color: "var(--text-l)", flex: 1, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", position: "relative", zIndex: 1 }}>
                         &ldquo;{rel.quote}&rdquo;
                       </p>
-                      <div
-                        className="ac-bottom"
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          marginTop: 16,
-                          position: "relative",
-                          zIndex: 1,
-                        }}
-                      >
-                        <span
-                          className="ac-auth"
-                          style={{
-                            fontFamily: "var(--fh)",
-                            fontWeight: 600,
-                            fontSize: "0.75rem",
-                            color: "var(--text-l)",
-                          }}
-                        >
-                          {rel.author}
-                        </span>
-                        <span
-                          className="ac-cat"
-                          style={{
-                            fontFamily: "var(--fm)",
-                            fontSize: "0.5625rem",
-                            letterSpacing: "0.06em",
-                            textTransform: "uppercase",
-                            color: "var(--muted-l)",
-                          }}
-                        >
-                          {rel.category}
-                        </span>
+                      <div className="ac-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16, position: "relative", zIndex: 1 }}>
+                        <span className="ac-auth" style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.75rem", color: "var(--text-l)" }}>{rel.author}</span>
+                        <span className="ac-cat" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--muted-l)" }}>{rel.category}</span>
                       </div>
                     </div>
                   </Link>
@@ -453,7 +232,24 @@ export default async function EntryPage({ params }: Props) {
           </div>
         )}
       </section>
-
     </div>
   );
 }
+
+const sectionHeadStyle: React.CSSProperties = {
+  fontFamily: "var(--fh)",
+  fontWeight: 800,
+  fontSize: "0.75rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+  color: "var(--text-l)",
+  marginBottom: 16,
+};
+
+const bodyStyle: React.CSSProperties = {
+  fontFamily: "var(--fq)",
+  fontSize: "0.9375rem",
+  lineHeight: 1.75,
+  color: "var(--text-l)",
+  opacity: 0.8,
+};

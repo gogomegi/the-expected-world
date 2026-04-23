@@ -1,5 +1,4 @@
 import {
-  getFeaturedEntry,
   getArchiveEntries,
   getClosingEntries,
   isExpired,
@@ -10,11 +9,11 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import BottomBar from "@/components/BottomBar";
 import CounterYear from "@/components/CounterYear";
-import ScrollReveal from "@/components/ScrollReveal";
 import MarqueeTicker from "@/components/MarqueeTicker";
 import CountdownTimer from "@/components/CountdownTimer";
 import HeroVideo from "@/components/HeroVideo";
 import ScrollToTop from "@/components/ScrollToTop";
+import MiniArchiveBrowser from "@/components/MiniArchiveBrowser";
 
 export const metadata: Metadata = {
   title: "The Expected World — An archive of expired futures",
@@ -23,11 +22,6 @@ export const metadata: Metadata = {
 };
 
 const COLORS = ["orange", "blue", "green", "amber"] as const;
-const COLOR_VARS = ["var(--orange)", "var(--blue)", "var(--green)", "var(--amber)"];
-
-function colorIndex(i: number) {
-  return i % COLORS.length;
-}
 
 function truncate(text: string, maxLen: number): string {
   if (text.length <= maxLen) return text;
@@ -35,9 +29,7 @@ function truncate(text: string, maxLen: number): string {
 }
 
 export default function HomePage() {
-  const featured = getFeaturedEntry();
   const archiveEntries = getArchiveEntries()
-    .filter((e) => e.id !== featured.id)
     .sort((a, b) => b.predictedDateNormalized.localeCompare(a.predictedDateNormalized));
   const closingEntries = getClosingEntries();
   const confirmed = getConfirmedEntries();
@@ -52,7 +44,26 @@ export default function HomePage() {
   }));
   const tickerItemsDoubled = [...tickerItems, ...tickerItems];
 
-  const previewArchive = archiveEntries.slice(0, 3);
+  // Pick first closing entry for featured display
+  const closingFeat = closingEntries[0];
+  const closingYearStr = closingFeat ? displayYear(closingFeat) : "";
+
+  // Put Fourier 1818 first, then the rest
+  const fourierIdx = archiveEntries.findIndex(e => e.id === "charles-fourier-1808-lovable");
+  if (fourierIdx > 0) {
+    const [fourier] = archiveEntries.splice(fourierIdx, 1);
+    archiveEntries.unshift(fourier);
+  }
+
+  // Serialize archive entries for client component
+  const archiveForBrowser = archiveEntries.map(e => ({
+    id: e.id,
+    quote: e.quote,
+    author: e.author,
+    predictedDateNormalized: e.predictedDateNormalized,
+    category: e.category,
+    is_fiction: e.is_fiction,
+  }));
 
   return (
     <div>
@@ -89,217 +100,186 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── FEATURED ENTRY ── */}
-      <section
-        className="grid-bg"
-        style={{ padding: "0 48px 120px", background: "var(--black)" }}
-      >
-        <ScrollReveal delay={0}>
-          <Link href={`/entry/${featured.id}`} style={{ display: "block" }}>
-            <div className="hp-feat-grid">
-              <div className="feat-exp">
-                <span className="section-label" style={{ color: "rgba(255,255,255,0.7)" }}>
-                  {isExpired(featured.predictedDateNormalized) ? "EXPIRES" : "CLOSING"}
-                </span>
-                <div style={{ marginTop: 8 }}>
-                  <CounterYear year={parseInt(displayYear(featured))} />
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--fm)",
-                    fontSize: "0.6875rem",
-                    letterSpacing: "0.06em",
-                    color: "rgba(255,255,255,0.5)",
-                    marginTop: 16,
-                    lineHeight: 1.8,
-                  }}
-                >
-                  <div>WRITTEN: {featured.dateWritten}</div>
-                  <div>ADDRESSED TO: {featured.predictedDate}</div>
-                </div>
-                {featured.is_fiction && (
-                  <span className="fiction-badge" style={{ marginTop: 12, marginLeft: 0 }}>FICTION</span>
-                )}
-              </div>
-              <div
-                className="hp-feat-quote"
-                style={{
-                  background: "#0A0A0A",
-                  padding: "64px 48px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <blockquote
-                  style={{
-                    fontFamily: "var(--fq)",
-                    fontSize: "1.75rem",
-                    fontStyle: "italic",
-                    lineHeight: 1.45,
-                    color: "var(--text-d)",
-                    margin: 0, padding: 0, border: "none",
-                  }}
-                >
-                  &ldquo;{featured.quote}&rdquo;
-                </blockquote>
-                <p style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--text-d)", marginTop: 24 }}>
-                  {featured.author}
-                </p>
-                <p style={{ fontFamily: "var(--fm)", fontSize: "0.6875rem", letterSpacing: "0.04em", color: "var(--muted-d)", marginTop: 4 }}>
-                  {featured.source}
-                </p>
-              </div>
-            </div>
-            <div className="hp-annotation" style={{ background: "#111", maxWidth: "var(--max-width)", margin: "4px auto 0", padding: "40px 48px" }}>
-              <p style={{ fontFamily: "var(--fq)", fontSize: "0.9375rem", fontStyle: "italic", lineHeight: 1.65, color: "var(--muted-d)" }}>
-                {featured.annotation}
-              </p>
-            </div>
-          </Link>
-        </ScrollReveal>
-      </section>
-
-      {/* ── MARQUEE TICKER ── */}
-      <MarqueeTicker items={tickerItemsDoubled} />
-
-      {/* ── ARCHIVE + CLOSING SIDE BY SIDE ── */}
+      {/* ── ARCHIVE BROWSER + ABOUT TEXT ── */}
       <section style={{ background: "var(--cream)", padding: "80px 48px" }}>
         <div className="hp-browse-grid">
 
-          {/* LEFT: Archive */}
+          {/* LEFT: Mini archive with era slider */}
           <div className="phone-frame-outer">
             <div className="phone-frame-inner">
-              <p style={{ ...labelStyle, marginBottom: 24 }}>Archive</p>
-              {previewArchive.map((entry, i) => {
-                const yearStr = displayYear(entry);
-                const hoverBg = COLOR_VARS[colorIndex(i)];
-                return (
-                  <Link key={entry.id} href={`/entry/${entry.id}`}>
-                    <div className="ac-light" style={{ marginBottom: 4 }}>
-                      <div className="ac-hover-bg" style={{ background: hoverBg }} />
-                      <span className="ac-ghost">{yearStr}</span>
-                      <div className="ac-top" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, position: "relative", zIndex: 1 }}>
-                        <span className="ac-el" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted-l)" }}>
-                          expires
-                        </span>
-                        <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
-                          <CounterYear year={parseInt(yearStr) || 0} />
-                        </span>
-                        {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
-                      </div>
-                      <p className="ac-excerpt" style={{ fontFamily: "var(--fq)", fontStyle: "italic", fontSize: "0.875rem", lineHeight: 1.5, color: "var(--text-l)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", position: "relative", zIndex: 1 }}>
-                        &ldquo;{entry.quote}&rdquo;
-                      </p>
-                      <div className="ac-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12, position: "relative", zIndex: 1 }}>
-                        <span className="ac-auth" style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.6875rem", color: "var(--text-l)" }}>{entry.author}</span>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-              <div style={{ textAlign: "center", marginTop: 20 }}>
-                <Link
-                  href="/timeline"
-                  style={{
-                    fontFamily: "var(--fm)",
-                    fontSize: "0.625rem",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--text-l)",
-                    opacity: 0.5,
-                  }}
-                >
-                  View all entries →
-                </Link>
-              </div>
+              <p style={labelStyle}>Archive</p>
+              <MiniArchiveBrowser entries={archiveForBrowser} />
             </div>
           </div>
 
-          {/* RIGHT: Closing */}
-          <div className="phone-frame-outer">
-            <div className="phone-frame-inner">
-              <p style={{ ...labelStyle, marginBottom: 24 }}>Closing</p>
-              {closingEntries.map((entry, i) => {
-                const yearStr = displayYear(entry);
-                const hoverBg = COLOR_VARS[i % COLOR_VARS.length];
-                return (
-                  <Link key={entry.id} href={`/entry/${entry.id}`} style={{ display: "block", textDecoration: "none" }}>
-                    <div className="ac-light" style={{ marginBottom: 4 }}>
-                      <div className="ac-hover-bg" style={{ background: hoverBg }} />
-                      <span className="ac-ghost">{yearStr}</span>
-                      <div className="ac-top" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, position: "relative", zIndex: 1 }}>
-                        <span className="ac-el" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted-l)" }}>closing</span>
-                        <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
-                          <CounterYear year={parseInt(yearStr) || 0} />
-                        </span>
-                        {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
-                      </div>
-                      <div style={{ marginBottom: 12, position: "relative", zIndex: 1 }}>
-                        <CountdownTimer targetDate={entry.predictedDateNormalized} />
-                      </div>
-                      <p className="ac-excerpt" style={{ fontFamily: "var(--fq)", fontStyle: "italic", fontSize: "0.875rem", lineHeight: 1.5, color: "var(--text-l)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", position: "relative", zIndex: 1 }}>
-                        &ldquo;{entry.quote}&rdquo;
-                      </p>
-                      <div className="ac-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12, position: "relative", zIndex: 1 }}>
-                        <span className="ac-auth" style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.6875rem", color: "var(--text-l)" }}>{entry.author}</span>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-              <div style={{ textAlign: "center", marginTop: 20 }}>
+          {/* RIGHT: About text */}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ padding: "0 8px" }}>
+              <h2 style={sectionHeadStyle}>What This Is</h2>
+              <p style={bodyStyle}>
+                An archival publication that surfaces texts originally written about
+                the future — predictions, forecasts, policy projections, fictional
+                imaginings — each anchored to a specific date or period that has now
+                elapsed.
+              </p>
+              <p style={bodyStyle}>
+                The site exists to create a particular kind of encounter: a reader
+                meets a mind from the past speaking confidently, or anxiously, or
+                hopefully, about a moment the reader has already lived through. The
+                gap between expectation and outcome is the editorial territory.
+              </p>
+              <h2 style={sectionHeadStyle}>How Entries Are Selected</h2>
+              <p style={bodyStyle}>
+                Every entry must satisfy four criteria. The source text must
+                reference a specific future date, year, or bounded period. The
+                source must be verifiable. And the pairing of prediction and elapsed
+                reality must reward attention.
+              </p>
+              <hr style={hrStyle} />
+              <h2 style={sectionHeadStyle}>Contact & Submissions</h2>
+              <p style={bodyStyle}>
+                If you have found a passage that meets our criteria, we would like
+                to hear about it.{" "}
                 <Link
-                  href="/closing"
+                  href="/submit"
                   style={{
-                    fontFamily: "var(--fm)",
-                    fontSize: "0.625rem",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--text-l)",
-                    opacity: 0.5,
+                    color: "var(--orange)",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "3px",
                   }}
                 >
-                  View all closing →
+                  Submit a passage
                 </Link>
-              </div>
+                .
+              </p>
+              <p style={{ ...bodyStyle, marginBottom: 0 }}>
+                For other inquiries:{" "}
+                <a
+                  href="mailto:contact@theexpectedworld.com"
+                  style={{
+                    fontFamily: "var(--fm)",
+                    fontSize: "0.75rem",
+                    color: "var(--orange)",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "3px",
+                  }}
+                >
+                  contact@theexpectedworld.com
+                </a>
+              </p>
             </div>
           </div>
 
         </div>
-
-        {/* ── CTA SECTION ── */}
-        <div
-          style={{
-            maxWidth: "780px",
-            margin: "48px auto 0",
-            textAlign: "center",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--fm)",
-              fontSize: "0.5625rem",
-              fontWeight: 500,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "var(--text-l)",
-              lineHeight: 2.4,
-            }}
-          >
-            CURIOUS{" "}
-            <Link href="/about" style={{ color: "var(--orange)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
-              WHAT THIS IS
-            </Link>
-            ?&nbsp;&nbsp;&nbsp;WANT TO{" "}
-            <Link href="/submit" style={{ color: "var(--orange)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
-              ADD SOMETHING
-            </Link>
-            ?
-          </p>
-        </div>
-
       </section>
+
+      {/* ── MARQUEE TICKER (separator) ── */}
+      <MarqueeTicker items={tickerItemsDoubled} />
+
+      {/* ── FEATURED CLOSING (old dark featured style) ── */}
+      {closingFeat && (
+        <section
+          style={{ padding: "80px 48px 64px", background: "var(--black)" }}
+        >
+          <div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
+            <Link href={`/entry/${closingFeat.id}`} style={{ display: "block" }}>
+              <div className="hp-feat-grid">
+                {/* LEFT: Closing panel */}
+                <div className="feat-exp">
+                  <span className="section-label" style={{ color: "rgba(255,255,255,0.7)" }}>
+                    GATE IS CLOSING
+                  </span>
+                  <div style={{ marginTop: 8 }}>
+                    <CounterYear year={parseInt(closingYearStr) || 0} />
+                  </div>
+                  <div style={{ marginTop: 8 }}>
+                    <CountdownTimer targetDate={closingFeat.predictedDateNormalized} />
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--fm)",
+                      fontSize: "0.6875rem",
+                      letterSpacing: "0.06em",
+                      color: "rgba(255,255,255,0.5)",
+                      marginTop: 16,
+                      lineHeight: 1.8,
+                    }}
+                  >
+                    <div>WRITTEN: {closingFeat.dateWritten}</div>
+                    <div>ADDRESSED TO: {closingFeat.predictedDate}</div>
+                  </div>
+                  {closingFeat.is_fiction && (
+                    <span className="fiction-badge" style={{ marginTop: 12, marginLeft: 0 }}>FICTION</span>
+                  )}
+                </div>
+                {/* RIGHT: Quote panel */}
+                <div
+                  className="hp-feat-quote"
+                  style={{
+                    background: "#0A0A0A",
+                    padding: "64px 48px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <blockquote
+                    style={{
+                      fontFamily: "var(--fq)",
+                      fontSize: "1.75rem",
+                      fontStyle: "italic",
+                      lineHeight: 1.45,
+                      color: "var(--text-d)",
+                      margin: 0, padding: 0, border: "none",
+                    }}
+                  >
+                    &ldquo;{closingFeat.quote.length > 350 ? truncate(closingFeat.quote, 350) : closingFeat.quote}&rdquo;
+                  </blockquote>
+                  <p style={{ fontFamily: "var(--fh)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--text-d)", marginTop: 24 }}>
+                    {closingFeat.author}
+                  </p>
+                  <p style={{ fontFamily: "var(--fm)", fontSize: "0.6875rem", letterSpacing: "0.04em", color: "var(--muted-d)", marginTop: 4 }}>
+                    {closingFeat.source}
+                  </p>
+                </div>
+              </div>
+              {/* Annotation bar */}
+              <div
+                className="hp-annotation"
+                style={{
+                  background: "#111",
+                  maxWidth: "var(--max-width)",
+                  margin: "4px auto 0",
+                  padding: "32px 48px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: 32,
+                }}
+              >
+                <p style={{ fontFamily: "var(--fq)", fontSize: "0.9375rem", fontStyle: "italic", lineHeight: 1.65, color: "var(--muted-d)", margin: 0, flex: 1 }}>
+                  {closingFeat.annotation}
+                </p>
+              </div>
+            </Link>
+            <div style={{ textAlign: "right", marginTop: 16 }}>
+              <Link
+                href="/closing"
+                style={{
+                  fontFamily: "var(--fm)",
+                  fontSize: "0.5625rem",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "var(--muted-d)",
+                }}
+              >
+                View more →
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
     </div>
   );
 }
@@ -312,5 +292,29 @@ const labelStyle: React.CSSProperties = {
   textTransform: "uppercase",
   color: "var(--muted-l)",
   margin: 0,
+  marginBottom: 16,
 };
 
+const sectionHeadStyle: React.CSSProperties = {
+  fontFamily: "var(--fh)",
+  fontSize: "0.6875rem",
+  fontWeight: 800,
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+  color: "var(--text-l)",
+  marginBottom: "14px",
+};
+
+const bodyStyle: React.CSSProperties = {
+  fontFamily: "var(--fh)",
+  fontSize: "0.8125rem",
+  lineHeight: 1.7,
+  color: "var(--text-l)",
+  marginBottom: "16px",
+};
+
+const hrStyle: React.CSSProperties = {
+  border: "none",
+  borderTop: "1px solid var(--rule-l)",
+  margin: "28px 0",
+};

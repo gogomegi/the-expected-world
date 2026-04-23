@@ -127,11 +127,9 @@ export function getEntriesByCategory(slug: string): Entry[] {
 }
 
 export function getFeaturedEntry(): Entry {
-  const cardin = confirmedEntries.find(e => e.id === 'joseph-barry-1968-lovable');
-  if (cardin) return cardin;
   const archive = getArchiveEntries();
   if (archive.length === 0) return confirmedEntries[0];
-  return archive[0];
+  return archive[Math.floor(Math.random() * archive.length)];
 }
 
 export function getRecentEntries(n = 10): Entry[] {

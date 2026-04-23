@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { getConfirmedEntries, isExpired, displayYear } from "@/lib/corpus";
+import { getArchiveEntries, isExpired, displayYear } from "@/lib/corpus";
 import type { Entry } from "@/lib/corpus";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -12,7 +12,7 @@ const TimelineSlider = dynamic(() => import("@/components/TimelineSlider"), { ss
 const COLOR_VARS = ["var(--orange)", "var(--blue)", "var(--green)", "var(--amber)"];
 
 export default function TimelinePage() {
-  const allEntries = useMemo(() => getConfirmedEntries(), []);
+  const allEntries = useMemo(() => getArchiveEntries(), []);
   const total = allEntries.length;
 
   const [minYear, maxYear] = useMemo(() => {

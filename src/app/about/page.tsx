@@ -28,20 +28,13 @@ export default function AboutPage() {
             hopefully, about a moment the reader has already lived through. The
             gap between expectation and outcome is the editorial territory.
           </p>
+
           <h2 style={sectionHeadStyle}>How Entries Are Selected</h2>
           <p style={bodyStyle}>
             Every entry must satisfy four criteria. The source text must
             reference a specific future date, year, or bounded period. The
-            predicted date must be in the past. The source must be verifiable.
-            And the pairing of prediction and elapsed reality must reward
-            attention.
-          </p>
-          <p style={bodyStyle}>
-            The fourth criterion is the most important and the most subjective.
-            Ask: does this entry surface a genuine surprise, a buried
-            assumption, a forgotten anxiety, an uncanny accuracy, or a telling
-            blind spot? If yes, it belongs. If it merely demonstrates that
-            people in the past did not have perfect foresight, it does not.
+            source must be verifiable. And the pairing of prediction and elapsed
+            reality must reward attention.
           </p>
 
           <hr style={hrStyle} />
