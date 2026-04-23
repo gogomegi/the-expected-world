@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s | The Expected World",
   },
   description:
-    "An archive of expired futures.",
+    "An archive of expired futures",
   alternates: { canonical: "/" },
   icons: {
     icon: [
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "The Expected World",
-    description: "An archive of expired futures.",
+    description: "An archive of expired futures",
     siteName: "The Expected World",
     locale: "en_US",
     type: "website",
@@ -101,7 +101,7 @@ export default function RootLayout({
             <div className="footer-left">
               <SealedE size={28} />
               <span className="footer-colophon">
-                An archive of expired futures.
+                An archive of expired futures
               </span>
             </div>
             <nav>
@@ -112,18 +112,6 @@ export default function RootLayout({
                 <li><Link href="/submit">submit</Link></li>
               </ul>
             </nav>
-          </div>
-          <div style={{
-            maxWidth: "var(--max-width)",
-            margin: "32px auto 0",
-            textAlign: "center",
-            fontFamily: "var(--fm)",
-            fontSize: "0.5rem",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--muted-d)",
-          }}>
-            MMXXVI
           </div>
         </footer>
 

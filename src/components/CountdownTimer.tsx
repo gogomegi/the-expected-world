@@ -41,7 +41,8 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
         fontSize: "0.6875rem",
         fontWeight: 500,
         letterSpacing: "0.04em",
-        color: "rgba(255,255,255,0.8)",
+        color: "inherit",
+        opacity: 0.7,
         fontVariantNumeric: "tabular-nums",
       }}
     >

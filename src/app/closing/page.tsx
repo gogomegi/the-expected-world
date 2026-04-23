@@ -1,8 +1,6 @@
-import { getClosingEntries, timeRemaining, displayYear } from "@/lib/corpus";
+import { getClosingEntries, displayYear } from "@/lib/corpus";
 import Link from "next/link";
 import type { Metadata } from "next";
-import LazyPaintCanvas from "@/components/LazyPaintCanvas";
-import ScrollReveal from "@/components/ScrollReveal";
 import CounterYear from "@/components/CounterYear";
 import CountdownTimer from "@/components/CountdownTimer";
 
@@ -12,146 +10,164 @@ export const metadata: Metadata = {
   alternates: { canonical: "/closing" },
 };
 
-const CARD_COLORS = ["amber", "green", "blue", "orange"] as const;
+const COLOR_VARS = ["var(--orange)", "var(--blue)", "var(--green)", "var(--amber)"];
 
 export default function ClosingPage() {
   const entries = getClosingEntries();
 
   return (
-    <div>
-      {/* Dark hero */}
-      <section
-        className="grid-bg"
-        style={{
-          padding: "180px 48px 80px",
-          position: "relative",
-          overflow: "hidden",
-          background: "var(--black)",
-          textAlign: "center",
-        }}
-      >
-        <LazyPaintCanvas />
-        <ScrollReveal delay={0}>
-          <h1
-            className="section-title"
-            style={{ fontSize: "4rem", color: "var(--text-d)", margin: 0 }}
-          >
-            GATE IS CLOSING
-          </h1>
-        </ScrollReveal>
-        <ScrollReveal delay={0.08}>
+    <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
+      <section style={{ padding: "120px 48px 80px" }}>
+        <div className="phone-frame-outer">
+        <div className="phone-frame-inner">
+          <p style={pageLabelStyle}>Closing</p>
           <p
             style={{
               fontFamily: "var(--fq)",
               fontStyle: "italic",
-              fontSize: "1.125rem",
-              color: "var(--muted-d)",
-              marginTop: "16px",
+              fontSize: "0.8125rem",
+              lineHeight: 1.6,
+              color: "var(--text-l)",
+              opacity: 0.5,
+              marginBottom: "32px",
             }}
           >
-            Predictions addressed to dates that have not yet arrived.
+            Predictions addressed to dates that have not yet arrived. The clock is still running.
           </p>
-        </ScrollReveal>
-        <ScrollReveal delay={0.16}>
-          <p
-            style={{
-              fontFamily: "var(--fh)",
-              fontSize: "0.875rem",
-              color: "var(--muted-d)",
-              maxWidth: "520px",
-              margin: "16px auto 0",
-              lineHeight: 1.65,
-            }}
-          >
-            These passages speak to a future that has not yet closed. The clock is still running.
-          </p>
-        </ScrollReveal>
-      </section>
 
-      {/* Dark entries section */}
-      <section
-        style={{
-          padding: "80px 48px",
-          background: "var(--black)",
-        }}
-      >
-        {entries.length === 0 ? (
-          <p
-            style={{
-              fontFamily: "var(--fq)",
-              fontStyle: "italic",
-              fontSize: "1rem",
-              color: "var(--muted-d)",
-              textAlign: "center",
-            }}
-          >
-            No predictions with future dates in the confirmed corpus yet.
-          </p>
-        ) : (
-          <div className="closing-grid">
-            {entries.map((entry, i) => {
-              const colorKey = CARD_COLORS[i % 4];
-              const year = parseInt(entry.predictedDateNormalized.slice(0, 4));
-              return (
-                <Link
-                  key={entry.id}
-                  href={`/entry/${entry.id}`}
-                  style={{ display: "block", textDecoration: "none" }}
-                >
-                  <div className={`gate-card gate-card--${colorKey}`}>
-                    <span
-                      style={{
-                        fontFamily: "var(--fm)",
-                        fontSize: "0.625rem",
-                        fontWeight: 500,
-                        letterSpacing: "0.14em",
-                        textTransform: "uppercase",
-                        color: "rgba(255,255,255,0.6)",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      closing
-                    </span>
-                    <div style={{ marginBottom: "8px" }}>
-                      <CounterYear year={year} style={{ fontFamily: "var(--fh)", fontSize: "4rem", fontWeight: 900, color: "var(--white)", lineHeight: 1 }} />
+          {entries.length === 0 ? (
+            <p
+              style={{
+                fontFamily: "var(--fq)",
+                fontStyle: "italic",
+                fontSize: "0.875rem",
+                color: "var(--muted-l)",
+                textAlign: "center",
+              }}
+            >
+              No predictions with future dates in the confirmed corpus yet.
+            </p>
+          ) : (
+            <div className="closing-grid">
+              {entries.map((entry, i) => {
+                const yearStr = displayYear(entry);
+                const hoverBg = COLOR_VARS[i % COLOR_VARS.length];
+                return (
+                  <Link
+                    key={entry.id}
+                    href={`/entry/${entry.id}`}
+                    style={{ display: "block", textDecoration: "none" }}
+                  >
+                    <div className="ac-light">
+                      <div
+                        className="ac-hover-bg"
+                        style={{ background: hoverBg }}
+                      />
+                      <span className="ac-ghost">{yearStr}</span>
+                      <div
+                        className="ac-top"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          marginBottom: 8,
+                          position: "relative",
+                          zIndex: 1,
+                        }}
+                      >
+                        <span
+                          className="ac-el"
+                          style={{
+                            fontFamily: "var(--fm)",
+                            fontSize: "0.5625rem",
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            color: "var(--muted-l)",
+                          }}
+                        >
+                          closing
+                        </span>
+                        <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
+                          <CounterYear year={parseInt(yearStr) || 0} />
+                        </span>
+                        {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
+                      </div>
+                      <div style={{ marginBottom: 16, position: "relative", zIndex: 1 }}>
+                        <CountdownTimer targetDate={entry.predictedDateNormalized} />
+                      </div>
+                      <p
+                        className="ac-excerpt"
+                        style={{
+                          fontFamily: "var(--fq)",
+                          fontStyle: "italic",
+                          fontSize: "0.9375rem",
+                          lineHeight: 1.55,
+                          color: "var(--text-l)",
+                          flex: 1,
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          position: "relative",
+                          zIndex: 1,
+                        }}
+                      >
+                        &ldquo;{entry.quote}&rdquo;
+                      </p>
+                      <div
+                        className="ac-bottom"
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginTop: 16,
+                          position: "relative",
+                          zIndex: 1,
+                        }}
+                      >
+                        <span
+                          className="ac-auth"
+                          style={{
+                            fontFamily: "var(--fh)",
+                            fontWeight: 600,
+                            fontSize: "0.75rem",
+                            color: "var(--text-l)",
+                          }}
+                        >
+                          {entry.author}
+                        </span>
+                        <span
+                          className="ac-cat"
+                          style={{
+                            fontFamily: "var(--fm)",
+                            fontSize: "0.5625rem",
+                            letterSpacing: "0.06em",
+                            textTransform: "uppercase",
+                            color: "var(--muted-l)",
+                          }}
+                        >
+                          {entry.category}
+                        </span>
+                      </div>
                     </div>
-                    <div style={{ marginBottom: "16px" }}>
-                      <CountdownTimer targetDate={entry.predictedDateNormalized} />
-                    </div>
-                    <p
-                      style={{
-                        fontFamily: "var(--fq)",
-                        fontStyle: "italic",
-                        fontSize: "0.9375rem",
-                        lineHeight: 1.5,
-                        color: "rgba(255,255,255,0.9)",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                        marginBottom: "16px",
-                        flex: 1,
-                      }}
-                    >
-                      {entry.quote}
-                    </p>
-                    <p
-                      style={{
-                        fontFamily: "var(--fm)",
-                        fontSize: "0.6875rem",
-                        letterSpacing: "0.04em",
-                        color: "rgba(255,255,255,0.6)",
-                      }}
-                    >
-                      {entry.author} · {entry.source.split(",")[0]}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        </div>
       </section>
     </div>
   );
 }
+
+const pageLabelStyle: React.CSSProperties = {
+  fontFamily: "var(--fm)",
+  fontSize: "0.5625rem",
+  fontWeight: 500,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: "var(--muted-l)",
+  marginBottom: "32px",
+};

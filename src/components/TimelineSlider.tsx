@@ -41,7 +41,8 @@ export default function TimelineSlider({ minYear, maxYear, onChange }: TimelineS
           textAlign: "center",
           marginBottom: "24px",
           letterSpacing: "0.02em",
-          color: displayYear ? "var(--orange)" : "var(--white)",
+          color: displayYear ? "var(--orange)" : "var(--text-l)",
+          opacity: displayYear ? 1 : 0.6,
           minHeight: "3.5rem",
         }}
       >
@@ -98,7 +99,8 @@ export default function TimelineSlider({ minYear, maxYear, onChange }: TimelineS
               fontSize: "0.625rem",
               fontWeight: 500,
               letterSpacing: "0.08em",
-              color: "var(--muted-d)",
+              color: "var(--text-l)",
+              opacity: 0.5,
             }}
           >
             {minYear}
@@ -109,7 +111,8 @@ export default function TimelineSlider({ minYear, maxYear, onChange }: TimelineS
               fontSize: "0.625rem",
               fontWeight: 500,
               letterSpacing: "0.08em",
-              color: "var(--muted-d)",
+              color: "var(--text-l)",
+              opacity: 0.5,
             }}
           >
             {maxYear}

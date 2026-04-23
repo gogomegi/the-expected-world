@@ -1,7 +1,5 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import LazyPaintCanvas from "@/components/LazyPaintCanvas";
-import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "About",
@@ -11,65 +9,13 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div>
-      {/* Dark hero */}
-      <section
-        className="grid-bg hero-section"
-        style={{
-          padding: "180px 48px 80px",
-          position: "relative",
-          overflow: "hidden",
-          background: "var(--black)",
-          textAlign: "center",
-        }}
-      >
-        <LazyPaintCanvas />
-        <ScrollReveal delay={0}>
-          <h1
-            className="section-title"
-            style={{ fontSize: "4rem", color: "var(--text-d)", margin: 0 }}
-          >
-            ABOUT THIS ARCHIVE
-          </h1>
-        </ScrollReveal>
-        <ScrollReveal delay={0.08}>
-          <p
-            style={{
-              fontFamily: "var(--fq)",
-              fontStyle: "italic",
-              fontSize: "1.125rem",
-              color: "var(--muted-d)",
-              marginTop: "16px",
-            }}
-          >
-            What it is, how entries are selected, and how to contribute.
-          </p>
-        </ScrollReveal>
-      </section>
+    <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
+      <section style={{ padding: "120px 48px 80px" }}>
+        <div className="phone-frame-outer" style={{ maxWidth: "780px" }}>
+        <div className="phone-frame-inner">
+          <p style={pageLabelStyle}>About</p>
 
-      {/* Cream body */}
-      <section
-        className="cream-section"
-        style={{
-          padding: "80px 48px",
-          background: "var(--cream)",
-        }}
-      >
-        <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-          {/* What This Is */}
-          <h2
-            style={{
-              fontFamily: "var(--fh)",
-              fontSize: "0.75rem",
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--text-l)",
-              marginBottom: "24px",
-            }}
-          >
-            What This Is
-          </h2>
+          <h2 style={sectionHeadStyle}>What This Is</h2>
           <p style={bodyStyle}>
             The Expected World is an archival publication that surfaces texts
             originally written about the future — predictions, forecasts, policy
@@ -93,20 +39,7 @@ export default function AboutPage() {
 
           <hr style={hrStyle} />
 
-          {/* How Entries Are Selected */}
-          <h2
-            style={{
-              fontFamily: "var(--fh)",
-              fontSize: "0.75rem",
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--text-l)",
-              marginBottom: "24px",
-            }}
-          >
-            How Entries Are Selected
-          </h2>
+          <h2 style={sectionHeadStyle}>How Entries Are Selected</h2>
           <p style={bodyStyle}>
             Every entry must satisfy four criteria. The source text must
             reference a specific future date, year, or bounded period. The
@@ -124,20 +57,7 @@ export default function AboutPage() {
 
           <hr style={hrStyle} />
 
-          {/* Editorial Standards */}
-          <h2
-            style={{
-              fontFamily: "var(--fh)",
-              fontSize: "0.75rem",
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--text-l)",
-              marginBottom: "24px",
-            }}
-          >
-            Editorial Standards
-          </h2>
+          <h2 style={sectionHeadStyle}>Editorial Standards</h2>
           <p style={bodyStyle}>
             The voice of The Expected World is intellectual but not academic,
             concise but not glib. We write for readers who are curious, literate,
@@ -148,20 +68,7 @@ export default function AboutPage() {
 
           <hr style={hrStyle} />
 
-          {/* Contact & Submissions */}
-          <h2
-            style={{
-              fontFamily: "var(--fh)",
-              fontSize: "0.75rem",
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--text-l)",
-              marginBottom: "24px",
-            }}
-          >
-            Contact & Submissions
-          </h2>
+          <h2 style={sectionHeadStyle}>Contact & Submissions</h2>
           <p style={bodyStyle}>
             If you have found a passage that meets our criteria, we would like
             to hear about it.{" "}
@@ -183,7 +90,7 @@ export default function AboutPage() {
               href="mailto:contact@theexpectedworld.com"
               style={{
                 fontFamily: "var(--fm)",
-                fontSize: "0.875rem",
+                fontSize: "0.8125rem",
                 color: "var(--orange)",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
@@ -193,21 +100,42 @@ export default function AboutPage() {
             </a>
           </p>
         </div>
+        </div>
       </section>
     </div>
   );
 }
 
+const pageLabelStyle: React.CSSProperties = {
+  fontFamily: "var(--fm)",
+  fontSize: "0.5625rem",
+  fontWeight: 500,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: "var(--muted-l)",
+  marginBottom: "32px",
+};
+
+const sectionHeadStyle: React.CSSProperties = {
+  fontFamily: "var(--fh)",
+  fontSize: "0.6875rem",
+  fontWeight: 800,
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+  color: "var(--text-l)",
+  marginBottom: "14px",
+};
+
 const bodyStyle: React.CSSProperties = {
   fontFamily: "var(--fh)",
-  fontSize: "1rem",
-  lineHeight: 1.75,
+  fontSize: "0.8125rem",
+  lineHeight: 1.7,
   color: "var(--text-l)",
-  marginBottom: "24px",
+  marginBottom: "16px",
 };
 
 const hrStyle: React.CSSProperties = {
   border: "none",
   borderTop: "1px solid var(--rule-l)",
-  margin: "40px 0",
+  margin: "28px 0",
 };
