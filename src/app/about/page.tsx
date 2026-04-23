@@ -28,17 +28,6 @@ export default function AboutPage() {
             hopefully, about a moment the reader has already lived through. The
             gap between expectation and outcome is the editorial territory.
           </p>
-          <p style={bodyStyle}>
-            This is not a retro-futurism blog. We do not present the past as
-            quaint or its predictions as fodder for amusement. A prediction is
-            not interesting merely because it was wrong. It is interesting when
-            the texture of the expectation — what was assumed, what was feared,
-            what was considered obvious — reveals something about the mind that
-            produced it, the era it emerged from, or the world we actually built.
-          </p>
-
-          <hr style={hrStyle} />
-
           <h2 style={sectionHeadStyle}>How Entries Are Selected</h2>
           <p style={bodyStyle}>
             Every entry must satisfy four criteria. The source text must
@@ -53,17 +42,6 @@ export default function AboutPage() {
             assumption, a forgotten anxiety, an uncanny accuracy, or a telling
             blind spot? If yes, it belongs. If it merely demonstrates that
             people in the past did not have perfect foresight, it does not.
-          </p>
-
-          <hr style={hrStyle} />
-
-          <h2 style={sectionHeadStyle}>Editorial Standards</h2>
-          <p style={bodyStyle}>
-            The voice of The Expected World is intellectual but not academic,
-            concise but not glib. We write for readers who are curious, literate,
-            and impatient with padding. Annotations provide context; they do not
-            editorialize, moralize, or gloat. The governing question is always:
-            would a thoughtful reader feel this was worth their attention?
           </p>
 
           <hr style={hrStyle} />
