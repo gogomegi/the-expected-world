@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const links = [
@@ -13,13 +13,22 @@ const links = [
 
 export default function ShowcaseNav() {
   const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <div
+      className="showcase-nav"
       style={{
         position: "fixed",
-        bottom: 64,
-        right: 24,
+        bottom: isMobile ? 100 : 64,
+        right: isMobile ? 12 : 24,
         zIndex: 95,
       }}
     >

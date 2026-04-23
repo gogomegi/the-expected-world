@@ -9,14 +9,12 @@ import {
 } from "@/lib/corpus";
 import Link from "next/link";
 import type { Metadata } from "next";
-import MouseTrail from "@/components/MouseTrail";
 import BottomBar from "@/components/BottomBar";
-import PaintCanvas from "@/components/PaintCanvas";
-import MagicCube from "@/components/MagicCube";
 import CounterYear from "@/components/CounterYear";
 import ScrollReveal from "@/components/ScrollReveal";
 import MarqueeTicker from "@/components/MarqueeTicker";
 import CountdownTimer from "@/components/CountdownTimer";
+import HeroVideo from "@/components/HeroVideo";
 
 export const metadata: Metadata = {
   title: "The Expected World — An archive of expired futures",
@@ -45,32 +43,6 @@ export default function HomePage() {
   const confirmed = getConfirmedEntries();
   const archiveCount = getArchiveEntries().length;
 
-  // Cube years — spread across eras for variety
-  const cubeYearPicks: typeof archiveEntries = [];
-  const seenDecades = new Set<string>();
-  // Walk all entries sorted by predicted date, pick one per decade spread
-  const sorted = [...archiveEntries].sort((a, b) =>
-    a.predictedDateNormalized.localeCompare(b.predictedDateNormalized)
-  );
-  for (const e of sorted) {
-    if (cubeYearPicks.length >= 6) break;
-    const yr = parseInt(e.predictedDateNormalized.slice(0, 4));
-    const decade = `${Math.floor(yr / 50) * 50}`;
-    if (!seenDecades.has(decade)) {
-      seenDecades.add(decade);
-      cubeYearPicks.push(e);
-    }
-  }
-  // Fill remaining slots if needed
-  for (const e of sorted) {
-    if (cubeYearPicks.length >= 6) break;
-    if (!cubeYearPicks.includes(e)) cubeYearPicks.push(e);
-  }
-  const cubeYears = cubeYearPicks.map((e) => ({
-    year: displayYear(e),
-    label: isExpired(e.predictedDateNormalized) ? "Expires" : "Closing",
-  }));
-
   // Ticker items from confirmed entries
   const tickerSource = confirmed.slice(0, 12);
   const tickerItems = tickerSource.map((e, i) => ({
@@ -86,44 +58,36 @@ export default function HomePage() {
 
   return (
     <div>
-      <MouseTrail />
       <BottomBar closedCount={archiveCount} />
 
       {/* ── HERO ── */}
-      <section
-        className="grid-bg"
-        style={{
-          minHeight: "100vh",
-          padding: "160px 48px 120px",
-          background: "var(--black)",
-          position: "relative",
-        }}
-      >
-        <PaintCanvas />
-        <div className="hp-hero-grid">
-          {/* LEFT */}
-          <div>
-            <ScrollReveal delay={0}>
-              <span className="section-label">Archive of Expired Futures</span>
-              <h1
-                style={{
-                  fontFamily: "var(--fh)",
-                  fontSize: "clamp(2.75rem, 5vw, 5rem)",
-                  fontWeight: 900,
-                  textTransform: "uppercase",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 0.95,
-                  color: "var(--text-d)",
-                  marginTop: 12,
-                }}
-              >
-                The Expected World
-              </h1>
-            </ScrollReveal>
-          </div>
-          {/* RIGHT */}
-          <div>
-            <MagicCube years={cubeYears} />
+      <section className="hero-phello">
+        <div className="hero-phello-outer">
+          <div className="hero-phello-inner">
+            {/* Video */}
+            <div className="hero-video-container">
+              <HeroVideo />
+              {/* Title overlay on video */}
+              <div className="hero-title-overlay">
+                <span className="section-label" style={{ color: "rgba(255,255,255,0.45)" }}>
+                  Archive of Expired Futures
+                </span>
+                <h1
+                  style={{
+                    fontFamily: "var(--fh)",
+                    fontSize: "clamp(2.5rem, 5vw, 5rem)",
+                    fontWeight: 900,
+                    textTransform: "uppercase",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 0.95,
+                    color: "var(--text-d)",
+                    marginTop: 10,
+                  }}
+                >
+                  The Expected World
+                </h1>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -344,7 +308,7 @@ export default function HomePage() {
       )}
 
       {/* ── ARCHIVE (LIGHT BG) ── */}
-      <section
+      <section className="cream-section"
         style={{
           padding: "120px 48px",
           background: "var(--cream)",
@@ -359,7 +323,7 @@ export default function HomePage() {
               marginBottom: 40,
             }}
           >
-            <h2
+            <h2 className="archive-heading"
               style={{
                 fontFamily: "var(--fh)",
                 fontWeight: 900,
