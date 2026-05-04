@@ -33,6 +33,8 @@ export interface Submission {
   yearImagined?: string;
   topic?: string;
   sourceUrl?: string;
+  annotation?: string;
+  actualOutcome?: string;
   email?: string;
   submittedAt: string;
   status: "pending" | "approved" | "rejected";

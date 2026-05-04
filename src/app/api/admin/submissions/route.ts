@@ -2,6 +2,7 @@ import { isAuthenticated } from "@/lib/admin-auth";
 import {
   getAllSubmissions,
   updateSubmissionStatus,
+  updateSubmission,
   getSubmissionById,
   saveQuote,
   slugify,
@@ -19,6 +20,24 @@ export async function GET() {
     console.error("Failed to fetch submissions:", err);
     return Response.json(
       { error: "Failed to load submissions", detail: err instanceof Error ? err.message : String(err) },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: Request) {
+  if (!(await isAuthenticated())) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    const { id, ...updates } = await request.json();
+    if (!id) return Response.json({ error: "Missing id" }, { status: 400 });
+    const updated = await updateSubmission(id, updates);
+    if (!updated) return Response.json({ error: "Not found" }, { status: 404 });
+    return Response.json({ ok: true, submission: updated });
+  } catch (err) {
+    return Response.json(
+      { error: "Failed to update", detail: err instanceof Error ? err.message : String(err) },
       { status: 500 }
     );
   }
@@ -70,8 +89,8 @@ export async function POST(request: Request) {
       ? `${sub.yearImagined.replace(/\D/g, "").slice(0, 4).padEnd(4, "0")}-01-01`
       : "2100-01-01",
     category: sub.topic || "Culture & Society",
-    annotation: "",
-    actualOutcome: "",
+    annotation: sub.annotation || "",
+    actualOutcome: sub.actualOutcome || "",
     tags: [],
     source_type: "human" as const,
     status: "confirmed" as const,
