@@ -37,7 +37,6 @@ export const metadata: Metadata = {
   },
   description:
     "An archive of expired futures",
-  alternates: { canonical: "/" },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -52,6 +51,12 @@ export const metadata: Metadata = {
     siteName: "The Expected World",
     locale: "en_US",
     type: "website",
+  },
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
   },
 };
 

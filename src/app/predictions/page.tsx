@@ -5,7 +5,7 @@ import { MasonryCard } from "@/components/MasonryCard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "The Archive — The Expected World",
+  title: "The Archive",
   description:
     "Browse our full archive of historical predictions about the future.",
 };
