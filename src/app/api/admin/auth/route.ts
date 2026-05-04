@@ -1,4 +1,4 @@
-import { isAuthenticated, verifyPassword, ADMIN_COOKIE } from "@/lib/admin-auth";
+import { isAuthenticated, verifyPassword, getSessionToken, ADMIN_COOKIE } from "@/lib/admin-auth";
 import { cookies } from "next/headers";
 
 export async function GET() {
@@ -13,9 +13,14 @@ export async function POST(request: Request) {
   if (!verifyPassword(password)) {
     return Response.json({ error: "Invalid password" }, { status: 401 });
   }
+  const token = getSessionToken();
+  if (!token) {
+    return Response.json({ error: "Server misconfigured" }, { status: 500 });
+  }
   const cookieStore = await cookies();
-  cookieStore.set(ADMIN_COOKIE, password, {
+  cookieStore.set(ADMIN_COOKIE, token, {
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24, // 24 hours

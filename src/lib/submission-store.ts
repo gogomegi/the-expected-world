@@ -71,6 +71,7 @@ async function blobWrite(submissions: Submission[]): Promise<void> {
   await put(BLOB_KEY, JSON.stringify(submissions, null, 2), {
     access: "private",
     addRandomSuffix: false,
+    allowOverwrite: true,
     contentType: "application/json",
     token: process.env.BLOB_READ_WRITE_TOKEN,
   });
