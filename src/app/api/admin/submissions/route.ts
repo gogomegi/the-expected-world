@@ -6,6 +6,7 @@ import {
   saveQuote,
   slugify,
 } from "@/lib/quotes";
+import { commitFileToGitHub } from "@/lib/github-commit";
 import type { Quote } from "@/types/quote";
 
 export async function GET() {
@@ -55,7 +56,24 @@ export async function POST(request: Request) {
     quoteSource: "user-submission",
   };
 
-  saveQuote(quote);
+  // In production: commit to GitHub (triggers Vercel rebuild)
+  // In dev: write to filesystem directly
+  if (process.env.GITHUB_TOKEN) {
+    const result = await commitFileToGitHub({
+      path: `src/data/quotes/${quote.slug}.json`,
+      content: JSON.stringify(quote, null, 2),
+      message: `Publish approved submission: ${quote.author} (${quote.yearWritten})`,
+    });
+    if (!result.ok) {
+      return Response.json(
+        { error: "Failed to publish quote", detail: result.error },
+        { status: 500 }
+      );
+    }
+  } else {
+    saveQuote(quote);
+  }
+
   await updateSubmissionStatus(id, "approved");
   return Response.json({ ok: true, quote });
 }
