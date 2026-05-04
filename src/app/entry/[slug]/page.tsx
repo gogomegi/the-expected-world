@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const entry = getEntryById(slug);
   if (!entry) return {};
   const label = isExpired(entry.predictedDateNormalized) ? "Expires" : "Closing";
-  const title = `${entry.author} — ${label}: ${entry.predictedDate} | The Expected World`;
+  const title = `${entry.author} — ${label}: ${entry.predictedDate}`;
   const description =
     entry.annotation.length > 160
       ? entry.annotation.slice(0, 157) + "…"
@@ -64,15 +64,31 @@ export default async function EntryPage({ params }: Props) {
     author: { "@type": "Person", name: entry.author },
     datePublished: entry.dateWritten,
     description: entry.annotation,
-    publisher: { "@type": "Organization", name: "The Expected World", url: "https://theexpectedworld.com" },
+    articleSection: entry.category,
+    publisher: {
+      "@type": "Organization",
+      name: "The Expected World",
+      url: "https://theexpectedworld.com",
+      logo: { "@type": "ImageObject", url: "https://theexpectedworld.com/favicon.svg" },
+    },
     mainEntityOfPage: `https://theexpectedworld.com/entry/${entry.id}`,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://theexpectedworld.com" },
+      { "@type": "ListItem", position: 2, name: entry.category, item: `https://theexpectedworld.com/category/${catSlug}` },
+      { "@type": "ListItem", position: 3, name: `${entry.author} — ${entry.predictedDate}` },
+    ],
   };
 
   return (
     <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbJsonLd]) }}
       />
 
       {/* ── QUOTE CARD (white on cream) ── */}

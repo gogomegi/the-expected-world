@@ -65,8 +65,28 @@ export default function HomePage() {
     is_fiction: e.is_fiction,
   }));
 
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "The Expected World",
+    url: "https://theexpectedworld.com",
+    description: "A curated archive of predictions, prophecies, and forecasts — tracking when the future was supposed to arrive.",
+  };
+
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "The Expected World",
+    url: "https://theexpectedworld.com",
+    logo: "https://theexpectedworld.com/favicon.svg",
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([websiteJsonLd, orgJsonLd]) }}
+      />
       <ScrollToTop />
       <BottomBar closedCount={archiveCount} />
 
