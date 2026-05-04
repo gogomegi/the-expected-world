@@ -285,11 +285,21 @@ export default function AdminPanel() {
 
   const handleSubAction = async (id: string, action: "approve" | "reject") => {
     setActioningSub(id);
-    await fetch("/api/admin/submissions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, action }),
-    });
+    try {
+      const res = await fetch("/api/admin/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, action }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(`${action} failed: ${err.detail || err.error || res.status}`);
+      } else if (action === "approve") {
+        alert("Approved! The entry will appear on the site after Vercel rebuilds (~2 min).");
+      }
+    } catch (e) {
+      alert(`${action} failed: ${e instanceof Error ? e.message : "Network error"}`);
+    }
     await fetchSubmissions();
     if (action === "approve") await fetchEntries();
     if (selectedSub?.id === id) setSelectedSub(null);

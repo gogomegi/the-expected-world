@@ -8,6 +8,30 @@
 const REPO_OWNER = "gogomegi";
 const REPO_NAME = "the-expected-world";
 
+interface GitHubFileResult {
+  content: string;
+  sha: string;
+}
+
+export async function readFileFromGitHub(path: string, branch = "main"): Promise<GitHubFileResult | null> {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) return null;
+
+  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${branch}`;
+  const res = await fetch(apiUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github.v3+json",
+    },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return {
+    content: Buffer.from(data.content, "base64").toString("utf-8"),
+    sha: data.sha,
+  };
+}
+
 interface CommitFileOptions {
   path: string;
   content: string;
