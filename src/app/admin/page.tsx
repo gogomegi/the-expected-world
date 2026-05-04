@@ -68,6 +68,7 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState<"corpus" | "submissions">("corpus");
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [submissionsLoading, setSubmissionsLoading] = useState(false);
+  const [submissionsError, setSubmissionsError] = useState("");
   const [selectedSub, setSelectedSub] = useState<Submission | null>(null);
   const [subSearch, setSubSearch] = useState("");
   const [subFilterStatus, setSubFilterStatus] = useState<string>("all");
@@ -117,10 +118,18 @@ export default function AdminPanel() {
 
   const fetchSubmissions = useCallback(async () => {
     setSubmissionsLoading(true);
-    const res = await fetch("/api/admin/submissions");
-    if (res.ok) {
-      const data = await res.json();
-      setSubmissions(data);
+    setSubmissionsError("");
+    try {
+      const res = await fetch("/api/admin/submissions");
+      if (res.ok) {
+        const data = await res.json();
+        setSubmissions(data);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        setSubmissionsError(err.error || `Failed to load submissions (${res.status})`);
+      }
+    } catch (e) {
+      setSubmissionsError(e instanceof Error ? e.message : "Network error loading submissions");
     }
     setSubmissionsLoading(false);
   }, []);
@@ -753,7 +762,9 @@ export default function AdminPanel() {
             </div>
           </div>
           <p style={styles.resultCount}>{filteredSubs.length} submissions shown</p>
-          {submissionsLoading ? (
+          {submissionsError ? (
+            <p style={{ ...styles.mono, color: "#C03A1E" }}>Error: {submissionsError}</p>
+          ) : submissionsLoading ? (
             <p style={styles.mono}>Loading submissions...</p>
           ) : filteredSubs.length === 0 ? (
             <p style={styles.mono}>No submissions found.</p>
