@@ -30,6 +30,8 @@ interface Submission {
   yearImagined?: string;
   topic?: string;
   sourceUrl?: string;
+  annotation?: string;
+  actualOutcome?: string;
   email?: string;
   submittedAt: string;
   status: "pending" | "approved" | "rejected";
@@ -70,6 +72,7 @@ export default function AdminPanel() {
   const [submissionsLoading, setSubmissionsLoading] = useState(false);
   const [submissionsError, setSubmissionsError] = useState("");
   const [selectedSub, setSelectedSub] = useState<Submission | null>(null);
+  const [editingSub, setEditingSub] = useState<Submission | null>(null);
   const [subSearch, setSubSearch] = useState("");
   const [subFilterStatus, setSubFilterStatus] = useState<string>("all");
   const [actioningSub, setActioningSub] = useState<string | null>(null);
@@ -385,13 +388,60 @@ export default function AdminPanel() {
 
   // Submission detail view
   if (selectedSub) {
-    const sub = selectedSub;
+    const sub = editingSub || selectedSub;
+    const isEditingSub = !!editingSub;
+
+    const handleSaveSub = async () => {
+      if (!editingSub) return;
+      setSaving(true);
+      try {
+        const res = await fetch("/api/admin/submissions", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(editingSub),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          alert(`Save failed: ${err.detail || err.error || res.status}`);
+        } else {
+          setSelectedSub(editingSub);
+          setEditingSub(null);
+          await fetchSubmissions();
+        }
+      } catch (e) {
+        alert(`Save failed: ${e instanceof Error ? e.message : "Network error"}`);
+      }
+      setSaving(false);
+    };
+
+    const updateSubField = (field: string, value: string | number) => {
+      if (!editingSub) return;
+      setEditingSub({ ...editingSub, [field]: value });
+    };
+
     return (
       <div style={styles.container}>
         <div style={styles.topBar}>
-          <button onClick={() => setSelectedSub(null)} style={styles.backBtn}>
+          <button onClick={() => { setSelectedSub(null); setEditingSub(null); }} style={styles.backBtn}>
             ← back to submissions
           </button>
+          <div style={{ display: "flex", gap: "8px" }}>
+            {!isEditingSub && sub.status === "pending" && (
+              <button onClick={() => setEditingSub({ ...selectedSub })} style={styles.actionBtn}>
+                edit
+              </button>
+            )}
+            {isEditingSub && (
+              <>
+                <button onClick={() => setEditingSub(null)} style={styles.actionBtn}>
+                  cancel
+                </button>
+                <button onClick={handleSaveSub} disabled={saving} style={{ ...styles.actionBtn, ...styles.confirmBtn }}>
+                  {saving ? "saving..." : "save"}
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         <div style={styles.statusBar}>
@@ -401,21 +451,21 @@ export default function AdminPanel() {
           <span style={styles.mono}>
             submitted {new Date(sub.submittedAt).toLocaleDateString()}
           </span>
-          {sub.status === "pending" && (
+          {sub.status === "pending" && !isEditingSub && (
             <div style={{ marginLeft: "auto", display: "flex", gap: "8px" }}>
               <button
-                onClick={() => handleSubAction(sub.id, "approve")}
-                disabled={actioningSub === sub.id}
+                onClick={() => handleSubAction(selectedSub.id, "approve")}
+                disabled={actioningSub === selectedSub.id}
                 style={{ ...styles.smallBtn, borderColor: "#2d6a30", color: "#2d6a30" }}
               >
-                {actioningSub === sub.id ? "..." : "approve"}
+                {actioningSub === selectedSub.id ? "..." : "approve"}
               </button>
               <button
-                onClick={() => handleSubAction(sub.id, "reject")}
-                disabled={actioningSub === sub.id}
+                onClick={() => handleSubAction(selectedSub.id, "reject")}
+                disabled={actioningSub === selectedSub.id}
                 style={{ ...styles.smallBtn, borderColor: "#C03A1E", color: "#C03A1E" }}
               >
-                {actioningSub === sub.id ? "..." : "reject"}
+                {actioningSub === selectedSub.id ? "..." : "reject"}
               </button>
             </div>
           )}
@@ -423,17 +473,66 @@ export default function AdminPanel() {
 
         <div style={styles.fieldGrid}>
           <Field label="ID" value={sub.id} />
-          <Field label="Prediction Text" value={sub.text} multiline />
-          <Field label="Author" value={sub.author} />
-          <Field label="Source" value={sub.source || "—"} />
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-            <Field label="Year Written" value={String(sub.yearWritten)} />
-            <Field label="Year Imagined" value={sub.yearImagined || "—"} />
-          </div>
-          <Field label="Topic" value={sub.topic || "—"} />
-          <Field label="Source URL" value={sub.sourceUrl || "—"} />
-          <Field label="Email" value={sub.email || "—"} />
-          <Field label="Submitted At" value={new Date(sub.submittedAt).toLocaleString()} />
+          {isEditingSub ? (
+            <>
+              <div>
+                <label style={styles.fieldLabel}>Prediction Text</label>
+                <textarea value={editingSub.text} onChange={(e) => updateSubField("text", e.target.value)} rows={5} style={styles.textarea} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div>
+                  <label style={styles.fieldLabel}>Author</label>
+                  <input value={editingSub.author} onChange={(e) => updateSubField("author", e.target.value)} style={styles.input} />
+                </div>
+                <div>
+                  <label style={styles.fieldLabel}>Source</label>
+                  <input value={editingSub.source || ""} onChange={(e) => updateSubField("source", e.target.value)} style={styles.input} />
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div>
+                  <label style={styles.fieldLabel}>Year Written</label>
+                  <input type="number" value={editingSub.yearWritten} onChange={(e) => updateSubField("yearWritten", Number(e.target.value))} style={styles.input} />
+                </div>
+                <div>
+                  <label style={styles.fieldLabel}>Year Imagined</label>
+                  <input value={editingSub.yearImagined || ""} onChange={(e) => updateSubField("yearImagined", e.target.value)} style={styles.input} />
+                </div>
+              </div>
+              <div>
+                <label style={styles.fieldLabel}>Topic</label>
+                <input value={editingSub.topic || ""} onChange={(e) => updateSubField("topic", e.target.value)} style={styles.input} />
+              </div>
+              <div>
+                <label style={styles.fieldLabel}>Annotation</label>
+                <textarea value={editingSub.annotation || ""} onChange={(e) => updateSubField("annotation", e.target.value)} rows={4} style={styles.textarea} placeholder="Context about the prediction..." />
+              </div>
+              <div>
+                <label style={styles.fieldLabel}>What Actually Happened</label>
+                <textarea value={editingSub.actualOutcome || ""} onChange={(e) => updateSubField("actualOutcome", e.target.value)} rows={4} style={styles.textarea} placeholder="How did reality compare?" />
+              </div>
+              <div>
+                <label style={styles.fieldLabel}>Source URL</label>
+                <input value={editingSub.sourceUrl || ""} onChange={(e) => updateSubField("sourceUrl", e.target.value)} style={styles.input} />
+              </div>
+            </>
+          ) : (
+            <>
+              <Field label="Prediction Text" value={sub.text} multiline />
+              <Field label="Author" value={sub.author} />
+              <Field label="Source" value={sub.source || "—"} />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <Field label="Year Written" value={String(sub.yearWritten)} />
+                <Field label="Year Imagined" value={sub.yearImagined || "—"} />
+              </div>
+              <Field label="Topic" value={sub.topic || "—"} />
+              <Field label="Annotation" value={sub.annotation || "—"} multiline />
+              <Field label="What Actually Happened" value={sub.actualOutcome || "—"} multiline />
+              <Field label="Source URL" value={sub.sourceUrl || "—"} />
+              <Field label="Email" value={sub.email || "—"} />
+              <Field label="Submitted At" value={new Date(sub.submittedAt).toLocaleString()} />
+            </>
+          )}
         </div>
       </div>
     );

@@ -151,6 +151,15 @@ export async function getSubmissionById(id: string): Promise<Submission | undefi
   return subs.find((s) => s.id === id);
 }
 
+export async function updateSubmission(id: string, updates: Partial<Omit<Submission, "id" | "submittedAt" | "status">>): Promise<Submission | null> {
+  const submissions = await storeRead();
+  const sub = submissions.find((s) => s.id === id);
+  if (!sub) return null;
+  Object.assign(sub, updates);
+  await storeWrite(submissions);
+  return sub;
+}
+
 // ── Utility ──
 
 export function slugify(text: string): string {

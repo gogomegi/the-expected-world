@@ -28,6 +28,8 @@ export async function POST(request: Request) {
       yearImagined: data.yearImagined ? String(data.yearImagined) : undefined,
       topic: data.topic ? String(data.topic) : undefined,
       sourceUrl: data.sourceUrl ? String(data.sourceUrl) : undefined,
+      annotation: data.annotation ? String(data.annotation) : undefined,
+      actualOutcome: data.actualOutcome ? String(data.actualOutcome) : undefined,
       email: data.email ? String(data.email) : undefined,
     });
 

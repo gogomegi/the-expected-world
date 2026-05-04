@@ -53,6 +53,8 @@ export default function SubmitFormClient() {
       yearImagined: (formData.get("yearImagined") as string) || undefined,
       topic: (formData.get("topic") as string) || undefined,
       source: (formData.get("source") as string) || undefined,
+      annotation: (formData.get("annotation") as string) || undefined,
+      actualOutcome: (formData.get("actualOutcome") as string) || undefined,
       email: (formData.get("email") as string) || undefined,
     };
 
@@ -214,6 +216,34 @@ export default function SubmitFormClient() {
           </label>
           <div className="input-frame">
             <input id="source" name="source" type="text" placeholder="Book, article, URL..." />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="annotation" style={labelStyle}>
+            Annotation
+          </label>
+          <div className="input-frame">
+            <textarea
+              id="annotation"
+              name="annotation"
+              rows={3}
+              placeholder="Context about the prediction — who made it, why, what was happening at the time..."
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="actualOutcome" style={labelStyle}>
+            What actually happened
+          </label>
+          <div className="input-frame">
+            <textarea
+              id="actualOutcome"
+              name="actualOutcome"
+              rows={3}
+              placeholder="How did reality compare to the prediction?"
+            />
           </div>
         </div>
 
