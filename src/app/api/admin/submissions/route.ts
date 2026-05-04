@@ -12,7 +12,15 @@ export async function GET() {
   if (!(await isAuthenticated())) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
-  return Response.json(await getAllSubmissions());
+  try {
+    return Response.json(await getAllSubmissions());
+  } catch (err) {
+    console.error("Failed to fetch submissions:", err);
+    return Response.json(
+      { error: "Failed to load submissions", detail: err instanceof Error ? err.message : String(err) },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
