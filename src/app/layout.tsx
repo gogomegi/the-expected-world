@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Lora, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import LazyShowcaseNav from "@/components/LazyShowcaseNav";
 import "./globals.css";
 
@@ -122,6 +123,13 @@ export default function RootLayout({
 
         <LazyShowcaseNav />
         <Analytics />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CCNZN7EGV2"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-CCNZN7EGV2');`}
+        </Script>
       </body>
     </html>
   );
