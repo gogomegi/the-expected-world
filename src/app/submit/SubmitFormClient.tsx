@@ -198,6 +198,7 @@ export default function SubmitFormClient() {
                 <option value="Transportation">Transportation</option>
                 <option value="Communication">Communication</option>
                 <option value="Health & Medicine">Health &amp; Medicine</option>
+                <option value="Medicine & the Body">Medicine &amp; the Body</option>
                 <option value="Economy">Economy</option>
                 <option value="Energy">Energy</option>
                 <option value="Fashion">Fashion</option>
