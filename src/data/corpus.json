@@ -3238,5 +3238,23 @@
     "verification_status": "unverified",
     "source_url": "",
     "is_fiction": false
+  },
+  {
+    "id": "virginia-woolf-moreover-in-a-hundred-years-1929",
+    "quote": "Moreover, in a hundred years, I thought, reaching my own doorstep, women will have ceased to be the protected sex. Logically they will take part in all the activities and exertions that were once denied them. The nursemaid will heave coal. The shop-woman will drive an engine. All assumptions founded on the facts observed when women were the protected sex will have disappeared — as, for example (here a squad of soldiers marched down the street), that women and clergymen and gardeners live longer than other people. Remove that protection, expose them to the same exertions and activities, make them soldiers and sailors and engine-drivers and dock labourers, and will not women die off so much younger, so much quicker, than men that one will say, 'I saw a woman today,' as one used to say, 'I saw an aeroplane.' Anything may happen when womanhood has ceased to be a protected occupation.",
+    "author": "Virginia Woolf",
+    "source": "A Room of One's Own, Chapter 3 (Hogarth Press, 1929)",
+    "dateWritten": "1929",
+    "predictedDate": "2029",
+    "predictedDateNormalized": "2029-01-01",
+    "category": "Society",
+    "annotation": "Woolf delivered A Room of One's Own as lectures at Cambridge in October 1928. Her argument is about women's access to money and intellectual space, but here she allows herself a rare flight of predictive fancy. The tone is deliberately ambivalent. She's testing a hypothesis to its logical extremity: if protection is the mechanism of inequality, what happens when the protection is removed? She assumes women's longer lives are an artifact of their sheltered existence, that biology is merely circumstance. The feminist argument of her era required this assumption.",
+    "actualOutcome": "Women entered nearly every profession Woolf names. The general prediction proved correct well ahead of schedule: women serve in combat roles, command naval vessels, and pilot aircraft. But her corollary that removing protection would equalize life expectancy downward proved exactly backward. Women still outlive men in every developed nation, by an average of five years. The gap has narrowed only slightly. Womanhood ceased to be a protected occupation without women becoming rare.",
+    "tags": [],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "source_url": "",
+    "is_fiction": false
   }
 ]
