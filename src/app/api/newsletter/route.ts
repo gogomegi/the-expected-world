@@ -1,27 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { join } from "node:path";
+import { readSubscribers, writeSubscribers } from "@/lib/newsletter-store";
 
-const DATA_DIR = join(process.cwd(), "data");
-const SUBSCRIBERS_FILE = join(DATA_DIR, "newsletter-subscribers.json");
-
-interface Subscriber {
-  email: string;
-  subscribedAt: string;
-}
-
-async function getSubscribers(): Promise<Subscriber[]> {
+export async function GET() {
   try {
-    const data = await readFile(SUBSCRIBERS_FILE, "utf-8");
-    return JSON.parse(data);
+    const subscribers = await readSubscribers();
+    return NextResponse.json(subscribers);
   } catch {
-    return [];
+    return NextResponse.json(
+      { error: "Failed to load subscribers." },
+      { status: 500 }
+    );
   }
-}
-
-async function saveSubscribers(subscribers: Subscriber[]): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(SUBSCRIBERS_FILE, JSON.stringify(subscribers, null, 2));
 }
 
 export async function POST(request: NextRequest) {
@@ -36,14 +25,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const subscribers = await getSubscribers();
+    const subscribers = await readSubscribers();
 
     if (subscribers.some((s) => s.email === email)) {
       return NextResponse.json({ message: "You're already subscribed!" });
     }
 
     subscribers.push({ email, subscribedAt: new Date().toISOString() });
-    await saveSubscribers(subscribers);
+    await writeSubscribers(subscribers);
 
     return NextResponse.json({ message: "Welcome aboard." });
   } catch {
