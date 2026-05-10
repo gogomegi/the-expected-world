@@ -3256,5 +3256,23 @@
     "verification_status": "unverified",
     "source_url": "",
     "is_fiction": false
+  },
+  {
+    "id": "john-maynard-keynes-we-have-been-expressly-e-1930",
+    "quote": "[...] we have been expressly evolved by nature — with all our impulses and deepest instincts — for the purpose of solving the economic problem. If the economic problem is solved, mankind will be deprived of its traditional purpose. Will this be a benefit? If one believes at all in the real values of life, the prospect at least opens up the possibility of benefit. Yet I think with dread of the readjustment of the habits and instincts of the ordinary man, bred into him for countless generations, which he may be asked to discard within a few decades.",
+    "author": "John Maynard Keynes",
+    "source": "Economic Possibilities for Our Grandchildren, Essays in Persuasion, 1930",
+    "dateWritten": "1930",
+    "predictedDate": "2030",
+    "predictedDateNormalized": "2030-01-01",
+    "category": "Daily Life",
+    "annotation": "Delivered as two lectures to undergraduates in 1928 and published in 1930, at the onset of the Great Depression, the essay asked its audience to look past the immediate catastrophe. In a hundred years, Keynes promised, the standard of living in progressive countries would be four to eight times higher. The economic problem, the struggle for subsistence that had governed human life since its beginning, would be solved. Humanity would then face its \"real, its permanent problem\": what to do with itself.\n\nKeynes was not optimistic about the answer. He imagined a species bred across countless generations for purposeful struggle, suddenly released from it. The leisure class of his own time offered a discouraging preview, people who, \"with no ties and no objectives,\" had already demonstrated how badly freedom from necessity could go. He predicted \"nervous breakdowns\" on a civilisational scale. The ordinary man, his instincts forged in scarcity, would be asked to become something entirely new within a few decades. \n\n",
+    "actualOutcome": "Global GDP per capita has risen approximately sixfold since 1930, within Keynes's range. But the economic problem was not solved; it was redistributed. Productivity gains accrued overwhelmingly to capital. The fifteen-hour work week Keynes imagined elsewhere in the essay never arrived, average working hours in the US have barely declined since the 1970s, and in many sectors they increased.\n\nFour years remain before Keynes's hundred-year horizon closes.",
+    "tags": [],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "source_url": "",
+    "is_fiction": false
   }
 ]
