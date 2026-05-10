@@ -49,7 +49,7 @@ export default async function Image({
 
   const accentColor = colorForEntry(entry.id);
   const expired = isExpired(entry.predictedDateNormalized);
-  const label = expired ? 'EXPIRES' : 'CLOSING';
+  const label = expired ? 'EXPIRED' : 'CLOSING';
   const year = entry.predictedDateNormalized.slice(0, 4);
 
   // Truncate quote for display

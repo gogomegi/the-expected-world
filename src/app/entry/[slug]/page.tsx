@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const entry = getEntryById(slug);
   if (!entry) return {};
-  const label = isExpired(entry.predictedDateNormalized) ? "Expires" : "Closing";
+  const label = isExpired(entry.predictedDateNormalized) ? "Expired" : "Closing";
   const title = `${entry.author} — ${label}: ${entry.predictedDate}`;
   const description =
     entry.annotation.length > 160
@@ -115,7 +115,7 @@ export default async function EntryPage({ params }: Props) {
               >
                 <div>
                   <span className="section-label" style={{ color: "rgba(255,255,255,0.6)" }}>
-                    {expired ? "expires" : "gate is closing"}
+                    {expired ? "expired" : "gate is closing"}
                   </span>
                   <div style={{ marginTop: 8 }}>
                     <CounterYear year={parseInt(yearStr) || 0} />
@@ -239,7 +239,7 @@ export default async function EntryPage({ params }: Props) {
                       <span className="ac-ghost">{relYear}</span>
                       <div className="ac-top" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, position: "relative", zIndex: 1 }}>
                         <span className="ac-el" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted-l)" }}>
-                          {isExpired(rel.predictedDateNormalized) ? "expires" : "closing"}
+                          {isExpired(rel.predictedDateNormalized) ? "expired" : "closing"}
                         </span>
                         <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
                           <CounterYear year={parseInt(relYear) || 0} />
