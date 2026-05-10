@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import LazyShowcaseNav from "@/components/LazyShowcaseNav";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import "./globals.css";
 
 const inter = Inter({
@@ -49,9 +50,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Expected World",
     description: "An archive of expired futures",
+    url: "/",
     siteName: "The Expected World",
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
   alternates: {
     canonical: "/",
@@ -110,6 +115,7 @@ export default function RootLayout({
                 An archive of expired futures
               </span>
             </div>
+            <NewsletterSignup variant="footer" />
             <nav>
               <ul className="footer-nav">
                 <li><Link href="/timeline">archive</Link></li>

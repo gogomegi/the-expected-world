@@ -18,7 +18,7 @@ export async function GET() {
 
   const items = entries.map((entry) => {
     const year = displayYear(entry);
-    const label = isExpired(entry.predictedDateNormalized) ? "Expires" : "Closing";
+    const label = isExpired(entry.predictedDateNormalized) ? "Expired" : "Closing";
     return `    <item>
       <title>${escapeXml(`${entry.author} — ${label}: ${year}`)}</title>
       <link>${SITE_URL}/entry/${entry.id}</link>

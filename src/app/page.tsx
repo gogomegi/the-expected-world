@@ -38,7 +38,7 @@ export default function HomePage() {
   const tickerSource = confirmed.slice(0, 12);
   const tickerItems = tickerSource.map((e, i) => ({
     year: displayYear(e),
-    label: `${isExpired(e.predictedDateNormalized) ? "Expires" : "Closing"} ${displayYear(e)}`,
+    label: `${isExpired(e.predictedDateNormalized) ? "Expired" : "Closing"} ${displayYear(e)}`,
     excerpt: truncate(e.quote, 80),
     colorClass: COLORS[i % COLORS.length],
   }));

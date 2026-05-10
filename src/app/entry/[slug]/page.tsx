@@ -11,6 +11,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import CounterYear from "@/components/CounterYear";
 import ShareButtons from "@/components/ShareButtons";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const entry = getEntryById(slug);
   if (!entry) return {};
-  const label = isExpired(entry.predictedDateNormalized) ? "Expires" : "Closing";
+  const label = isExpired(entry.predictedDateNormalized) ? "Expired" : "Closing";
   const title = `${entry.author} — ${label}: ${entry.predictedDate}`;
   const description =
     entry.annotation.length > 160
@@ -43,7 +44,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: `/entry/${entry.id}` },
-    openGraph: { title, description, type: "article", authors: [entry.author] },
+    openGraph: {
+      title,
+      description,
+      url: `/entry/${entry.id}`,
+      siteName: "The Expected World",
+      type: "article",
+      authors: [entry.author],
+      publishedTime: entry.dateWritten.length === 4
+        ? `${entry.dateWritten}-01-01`
+        : entry.dateWritten,
+      section: entry.category,
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -104,7 +117,7 @@ export default async function EntryPage({ params }: Props) {
               >
                 <div>
                   <span className="section-label" style={{ color: "rgba(255,255,255,0.6)" }}>
-                    {expired ? "expires" : "gate is closing"}
+                    {expired ? "expired" : "gate is closing"}
                   </span>
                   <div style={{ marginTop: 8 }}>
                     <CounterYear year={parseInt(yearStr) || 0} />
@@ -238,7 +251,7 @@ export default async function EntryPage({ params }: Props) {
                       <span className="ac-ghost">{relYear}</span>
                       <div className="ac-top" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, position: "relative", zIndex: 1 }}>
                         <span className="ac-el" style={{ fontFamily: "var(--fm)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted-l)" }}>
-                          {isExpired(rel.predictedDateNormalized) ? "expires" : "closing"}
+                          {isExpired(rel.predictedDateNormalized) ? "expired" : "closing"}
                         </span>
                         <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
                           <CounterYear year={parseInt(relYear) || 0} />
@@ -259,6 +272,8 @@ export default async function EntryPage({ params }: Props) {
           </div>
         )}
       </section>
+
+      <NewsletterSignup variant="inline" />
     </div>
   );
 }

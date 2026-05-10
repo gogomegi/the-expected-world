@@ -125,7 +125,7 @@ function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; o
               color: "var(--muted-l)",
             }}
           >
-            {isExpired(entry.predictedDateNormalized) ? "expires" : "closing"}
+            {isExpired(entry.predictedDateNormalized) ? "expired" : "closing"}
           </span>
           <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
             <CounterYear year={parseInt(yearStr) || 0} />
