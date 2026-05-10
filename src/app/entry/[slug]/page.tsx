@@ -42,7 +42,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: `/entry/${entry.id}` },
-    openGraph: { title, description, type: "article", authors: [entry.author] },
+    openGraph: {
+      title,
+      description,
+      url: `/entry/${entry.id}`,
+      siteName: "The Expected World",
+      type: "article",
+      authors: [entry.author],
+      publishedTime: entry.dateWritten.length === 4
+        ? `${entry.dateWritten}-01-01`
+        : entry.dateWritten,
+      section: entry.category,
+    },
     twitter: { card: "summary_large_image" },
   };
 }

@@ -49,6 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Expected World",
     description: "An archive of expired futures",
+    url: "/",
     siteName: "The Expected World",
     locale: "en_US",
     type: "website",
