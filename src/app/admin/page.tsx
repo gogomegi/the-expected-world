@@ -1124,7 +1124,7 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     maxWidth: "1040px",
     margin: "0 auto",
-    padding: "48px 64px 96px",
+    padding: "96px 64px 96px",
   },
   title: {
     fontFamily: "var(--font-chrome)",
