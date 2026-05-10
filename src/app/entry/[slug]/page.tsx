@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import type { Metadata } from "next";
 import CounterYear from "@/components/CounterYear";
+import ShareButtons from "@/components/ShareButtons";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -211,6 +212,16 @@ export default async function EntryPage({ params }: Props) {
             ))}
           </div>
         )}
+
+        {/* Share buttons */}
+        <div style={{ marginTop: 40 }}>
+          <ShareButtons
+            url={`/entry/${entry.id}`}
+            quote={entry.quote}
+            author={entry.author}
+            year={yearStr}
+          />
+        </div>
 
         {/* Related entries */}
         {related.length > 0 && (
