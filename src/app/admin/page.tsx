@@ -67,7 +67,7 @@ export default function AdminPanel() {
   const [filterSource, setFilterSource] = useState<string>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [filterVerification, setFilterVerification] = useState<string>("all");
-  const [activeTab, setActiveTab] = useState<"corpus" | "submissions">("corpus");
+  const [activeTab, setActiveTab] = useState<"corpus" | "submissions" | "subscribers">("corpus");
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [submissionsLoading, setSubmissionsLoading] = useState(false);
   const [submissionsError, setSubmissionsError] = useState("");
@@ -76,6 +76,8 @@ export default function AdminPanel() {
   const [subSearch, setSubSearch] = useState("");
   const [subFilterStatus, setSubFilterStatus] = useState<string>("all");
   const [actioningSub, setActioningSub] = useState<string | null>(null);
+  const [subscribers, setSubscribers] = useState<{ email: string; subscribedAt: string }[]>([]);
+  const [subscribersLoading, setSubscribersLoading] = useState(false);
 
   // Check if already authenticated
   useEffect(() => {
@@ -137,12 +139,25 @@ export default function AdminPanel() {
     setSubmissionsLoading(false);
   }, []);
 
+  const fetchSubscribers = useCallback(async () => {
+    setSubscribersLoading(true);
+    try {
+      const res = await fetch("/api/newsletter");
+      if (res.ok) {
+        const data = await res.json();
+        setSubscribers(data);
+      }
+    } catch {}
+    setSubscribersLoading(false);
+  }, []);
+
   useEffect(() => {
     if (authed) {
       fetchEntries();
       fetchSubmissions();
+      fetchSubscribers();
     }
-  }, [authed, fetchEntries, fetchSubmissions]);
+  }, [authed, fetchEntries, fetchSubmissions, fetchSubscribers]);
 
   // Auth check in progress
   if (authed === null) {
@@ -840,9 +855,42 @@ export default function AdminPanel() {
             <span style={styles.pendingBadge}>{subStatusCounts.pending}</span>
           )}
         </button>
+        <button
+          onClick={() => setActiveTab("subscribers")}
+          style={{
+            ...styles.tabBtn,
+            ...(activeTab === "subscribers" ? styles.tabBtnActive : {}),
+          }}
+        >
+          Subscribers ({subscribers.length})
+        </button>
       </div>
 
-      {activeTab === "submissions" ? (
+      {activeTab === "subscribers" ? (
+        <>
+          <p style={styles.subtitle}>{subscribers.length} newsletter subscribers</p>
+          {subscribersLoading ? (
+            <p style={styles.mono}>Loading subscribers...</p>
+          ) : subscribers.length === 0 ? (
+            <p style={styles.mono}>No subscribers yet.</p>
+          ) : (
+            <div>
+              {[...subscribers].sort((a, b) => b.subscribedAt.localeCompare(a.subscribedAt)).map((sub) => (
+                <div key={sub.email} style={styles.row}>
+                  <div style={styles.rowLeft}>
+                    <span style={styles.rowQuote}>{sub.email}</span>
+                  </div>
+                  <div style={styles.rowRight}>
+                    <span style={styles.rowMeta}>
+                      {new Date(sub.subscribedAt).toLocaleDateString()} {new Date(sub.subscribedAt).toLocaleTimeString()}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      ) : activeTab === "submissions" ? (
         <>
           <div style={styles.filterBar}>
             <input
