@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import type { Metadata } from "next";
 import CounterYear from "@/components/CounterYear";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -260,6 +261,8 @@ export default async function EntryPage({ params }: Props) {
           </div>
         )}
       </section>
+
+      <NewsletterSignup variant="inline" />
     </div>
   );
 }
