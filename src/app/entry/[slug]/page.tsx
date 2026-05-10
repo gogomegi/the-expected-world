@@ -196,7 +196,7 @@ export default async function EntryPage({ params }: Props) {
 
           {entry.actualOutcome && (
             <div>
-              <h2 style={{ ...sectionHeadStyle, color: vividColor }}>What Actually Happened</h2>
+              <h2 style={{ ...sectionHeadStyle, color: vividColor }}>{expired ? "What Actually Happened" : "What Happened So Far"}</h2>
               <div style={{ borderLeft: `3px solid ${vividColor}`, paddingLeft: 20 }}>
                 <p style={bodyStyle}>{entry.actualOutcome}</p>
               </div>
