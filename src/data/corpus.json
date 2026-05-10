@@ -3274,5 +3274,23 @@
     "verification_status": "unverified",
     "source_url": "",
     "is_fiction": false
+  },
+  {
+    "id": "raymond-ruyer-les-nouveaux-gnostiques-ne-peu-1977",
+    "quote": "Les Nouveaux Gnostiques ne peuvent prouver qu'aux XXIe et XXIIe siècles la science ne trouvera pas de nouvelles sources d'énergie pour remplacer le pétrole, mais prouvent que l'on se fait illusion quand on croit le problème des énergies nouvelles aussi facile à résoudre que celui d'envoyer des hommes dans la Lune, et quand on attend des savants qu'ils inventent des forces motrices comme ils inventent des mécanismes ou des ordinateurs.",
+    "author": "Raymond Ruyer",
+    "source": "Les Cent prochains siècles: Le destin historique de l'homme selon la Nouvelle Gnose américaine (Fayard, 1977)",
+    "dateWritten": "1977",
+    "predictedDate": "2100-2200",
+    "predictedDateNormalized": "2100-01-01",
+    "category": "Environment & Resources",
+    "annotation": "Raymond Ruyer spent his entire career at the Université de Nancy, having turned down the Sorbonne. A philosopher of consciousness and finalism, he was also a former prisoner of war who founded a clandestine university inside Oflag XVII A. By 1977, he had become deeply unfashionable in French intellectual life — anti-Marxist, anti-existentialist, and metaphysically inclined in an era that rewarded none of these.\n\nLes Cent prochains siècles was the second volume of what became his 'gnostic trilogy,' and it was passed over in near-total silence upon publication. Its central thesis was that modern civilization had mastered the conquest of space but was incapable of conquering time — of enduring. The energy argument was pivotal: Ruyer drew a philosophical distinction between engineering problems and discovery problems. Sending men to the Moon required assembling known physical principles into complex machines. Replacing petroleum requires discovering new physical forces — a categorically different challenge that no amount of ingenuity can guarantee.\n\nThe timing sharpens the claim. In 1977, France was deep into the Plan Messmer, its massive post-oil-crisis nuclear program launched under the slogan 'En France, on n'a pas de pétrole, mais on a des idées.' The prevailing mood was techno-optimistic: nuclear power would solve everything, just as Apollo had proved that concentrated scientific effort could overcome any obstacle. Ruyer attacked this analogy directly. The Moon, he argued, was an engineering triumph. Energy is something else entirely.",
+    "actualOutcome": "Nearly fifty years later, Ruyer's distinction holds. The global energy transition away from fossil fuels has proven vastly more difficult than any single engineering project in history. Solar and wind have scaled dramatically but supply roughly 5% of global primary energy. Nuclear fusion — the great hope of limitless clean power — remains perpetually decades away. The world still derives over 80% of its energy from fossil fuels, roughly the same proportion as when Ruyer wrote.\n\nFrance's own nuclear bet partly vindicated the optimists: nuclear supplies ~70% of French electricity. But even France has not escaped oil dependence for transport, industry, and petrochemicals. Globally, the analogy Ruyer attacked — that replacing oil is like going to the Moon — continues to mislead policymakers and public alike, conflating the difficulty of building complex machines with the difficulty of finding new foundations for civilization.\n\nThe closing date stretches into the 22nd century. We are a quarter of the way in.",
+    "tags": [],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "source_url": "",
+    "is_fiction": false
   }
 ]
