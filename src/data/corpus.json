@@ -3292,5 +3292,23 @@
     "verification_status": "unverified",
     "source_url": "",
     "is_fiction": false
+  },
+  {
+    "id": "pippa-norris-the-inter-parliamentary-union-2003",
+    "quote": "The Inter-Parliamentary Union estimates that there were about 5,500 women in parliament worldwide in spring 2002, representing 14.3% of all members, up from 9% in 1987. If growth at this level is maintained (0.36% per annum), a simple linear projection predicts that women parliamentarians will achieve parity with men at the turn of the twenty-second century.",
+    "author": "Pippa Norris",
+    "source": "Rising Tide: Gender Equality and Cultural Change around the World, Pippa Norris and Ronald Inglehart (Cambridge University Press, 2003), Chapter 6, p. 130",
+    "dateWritten": "2003",
+    "predictedDate": "2100",
+    "predictedDateNormalized": "2100-01-01",
+    "category": "Governance & Power",
+    "annotation": "Norris is one of the most cited political scientists alive — ranked second globally on Google Scholar — and Rising Tide, co-authored with Ronald Inglehart, was an attempt to map the relationship between modernisation and gender equality across the world using decades of World Values Survey data. The parliamentary parity projection appears in Chapter 6, buried in a discussion of institutional reforms. It is not the book's thesis. It is a footnote to the argument, a simple linear extrapolation offered almost in passing to dramatise the scale of the problem. That is what makes it devastating.\n\nThe arithmetic is plain. In 1987, women held 9% of parliamentary seats worldwide. By 2002, the figure had risen to 14.3% — a gain of 5.3 percentage points in fifteen years, or 0.36% per annum. At that rate, the remaining 35.7 points to parity would take ninety-nine years. The turn of the twenty-second century. Norris and Inglehart immediately added a qualification: institutional reforms like gender quotas 'hold considerable promise that projections can perhaps be accelerated to create a more optimistic scenario for democracy, so that women achieve political parity well before the dawn of the twenty-second century.' The hedge was deliberate. The projection was the baseline — the what-happens-if-nothing-changes number. The hope was that something would change.\n\nSomething did. Since 2003, over sixty countries have adopted some form of gender quota for political representation. Rwanda, Bolivia, Cuba, Mexico, and the UAE now have parliaments where women hold 40% or more of seats. The global average has risen from 14.3% in 2002 to roughly 27% by 2026 — significantly ahead of the linear projection, which would have predicted around 23%. The quotas worked, or at least accelerated the trend. But parity remains distant. At the post-quota growth rate of approximately 0.5% per year, the revised arrival date is somewhere around 2070. The acceleration is real. It is also not enough to make the original projection feel comfortable.",
+    "actualOutcome": "Twenty-three years into the projection, the world sits at roughly 27% women in parliaments — ahead of the 0.36% linear pace but still closer to the starting line than the finish. The countries that intervened with quotas leapt forward; those that did not barely moved. The United States, which Norris studied from her perch at Harvard, reached 29% in Congress by 2026 — a record, but one that would have been unremarkable in Scandinavia in the 1990s. The projection's deepest insight was not the number but the implication: that without deliberate institutional disruption, the arc of democratic representation does not bend toward equality on any timescale a human life can perceive. Norris gave the problem a deadline. The deadline is seventy-four years away.",
+    "tags": [],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "source_url": "",
+    "is_fiction": false
   }
 ]
