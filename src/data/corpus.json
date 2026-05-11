@@ -3310,5 +3310,23 @@
     "verification_status": "unverified",
     "source_url": "",
     "is_fiction": false
+  },
+  {
+    "id": "cornelius-castoriadis-at-any-time-between-now-and-th-1972",
+    "quote": "At any time between now and the end of the century, hundreds of thousands — nay, millions — of men and women may well be confronted with problems of the kind here discussed.",
+    "author": "Cornelius Castoriadis",
+    "source": "Workers' Councils and the Economics of Self-Management (1957), preface to the 1972 Solidarity edition",
+    "dateWritten": "1972",
+    "predictedDate": "2000",
+    "predictedDateNormalized": "2000-01-01",
+    "category": "Governance & Power",
+    "annotation": "The pamphlet was first written in 1957 for Socialisme ou Barbarie, offering a detailed blueprint for how workers could manage production without bosses or bureaucrats — pricing, planning, allocation, wages, all reimagined from below. Castoriadis was not writing utopian fiction. He was writing a manual, complete with formulas for calculating production costs and distributing surplus. When the British group Solidarity republished it in 1972 with a new preface, Castoriadis added this prediction: that before the century ended, millions would face the practical question of self-management.\n\nThe confidence was understandable. The late 1960s and early 1970s were the high-water mark of workers' insurgency in the postwar West. May 1968 in France had seen factory occupations on a massive scale. The Italian Hot Autumn of 1969, the British miners' strikes, the Portuguese Revolution of 1974 — Castoriadis could point to real events where workers had, however briefly, taken control of their workplaces. The trajectory seemed clear: capitalism was producing a crisis of meaning and authority that would force the question of who actually runs production.",
+    "actualOutcome": "The question was never asked. The late 1970s brought Thatcher, Reagan, and the neoliberal counterrevolution. Trade union membership collapsed across the industrialized world. The factory occupations, workers' councils, and rank-and-file movements that Castoriadis had theorized — and that had briefly flickered into existence — were dismantled by deindustrialization, globalization, and the deliberate destruction of organized labor. By 2000, the very concept of workers' self-management had vanished from mainstream political discourse. The millions Castoriadis imagined confronting these problems were instead confronting something he diagnosed elsewhere: the rising tide of insignificancy — privatization, apathy, withdrawal into consumption. The manual he had written so carefully was never opened.",
+    "tags": [],
+    "source_type": "human",
+    "status": "confirmed",
+    "verification_status": "unverified",
+    "source_url": "",
+    "is_fiction": false
   }
 ]
