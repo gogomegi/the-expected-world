@@ -1,3 +1,4 @@
+import { isAuthenticated } from "@/lib/admin-auth";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join } from "path";
 
@@ -94,11 +95,22 @@ function syncQuoteFile(entry: CorpusEntry) {
   }
 }
 
+function unauthorized() {
+  return Response.json({ error: "Unauthorized" }, {
+    status: 401,
+    headers: { "Cache-Control": "private, no-store" },
+  });
+}
+
 export async function GET() {
-  return Response.json(readCorpus());
+  if (!(await isAuthenticated())) return unauthorized();
+  return Response.json(readCorpus(), {
+    headers: { "Cache-Control": "private, no-store" },
+  });
 }
 
 export async function PUT(request: Request) {
+  if (!(await isAuthenticated())) return unauthorized();
   const updated = await request.json();
   const corpus = readCorpus();
   const idx = corpus.findIndex((e) => e.id === updated.id);
@@ -112,6 +124,7 @@ export async function PUT(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  if (!(await isAuthenticated())) return unauthorized();
   const { id, status } = await request.json();
   const corpus = readCorpus();
   const idx = corpus.findIndex((e) => e.id === id);
