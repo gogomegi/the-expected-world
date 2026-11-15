@@ -150,10 +150,10 @@ export default function HomePage() {
               </p>
               <h2 style={sectionHeadStyle}>How Entries Are Selected</h2>
               <p style={bodyStyle}>
-                Every entry must satisfy four criteria. The source text must
-                reference a specific future date, year, or bounded period. The
-                source must be verifiable. And the pairing of prediction and elapsed
-                reality must reward attention.
+                We select passages written before the futures they describe,
+                anchored to a recognizable date or period, traceable to an
+                original source, and worth encountering again. The quotations
+                stand on their own, without our verdict on what came to pass.
               </p>
               <hr style={hrStyle} />
               <h2 style={sectionHeadStyle}>Contact & Submissions</h2>
@@ -262,24 +262,6 @@ export default function HomePage() {
                     {closingFeat.source}
                   </p>
                 </div>
-              </div>
-              {/* Annotation bar */}
-              <div
-                className="hp-annotation"
-                style={{
-                  background: "#111",
-                  maxWidth: "var(--max-width)",
-                  margin: "4px auto 0",
-                  padding: "32px 48px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: 32,
-                }}
-              >
-                <p style={{ fontFamily: "var(--fq)", fontSize: "0.9375rem", fontStyle: "italic", lineHeight: 1.65, color: "var(--muted-d)", margin: 0, flex: 1 }}>
-                  {closingFeat.annotation}
-                </p>
               </div>
             </Link>
             <div style={{ textAlign: "right", marginTop: 16 }}>
