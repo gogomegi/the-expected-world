@@ -23,7 +23,7 @@ export async function GET() {
       <title>${escapeXml(`${entry.author} — ${label}: ${year}`)}</title>
       <link>${SITE_URL}/entry/${entry.id}</link>
       <guid isPermaLink="true">${SITE_URL}/entry/${entry.id}</guid>
-      <description>${escapeXml(`"${entry.quote}" — ${entry.author}, ${entry.dateWritten}. ${entry.annotation}`)}</description>
+      <description>${escapeXml(`"${entry.quote}" — ${entry.author}, ${entry.dateWritten}. Source: ${entry.source}`)}</description>
       <category>${escapeXml(entry.category)}</category>
     </item>`;
   });
