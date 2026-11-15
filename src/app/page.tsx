@@ -13,25 +13,18 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const archiveEntries = getArchiveEntries()
-    .sort((a, b) => b.predictedDateNormalized.localeCompare(a.predictedDateNormalized));
+  const archiveEntries = getArchiveEntries();
   const archiveCount = archiveEntries.length;
 
-  // Put Fourier 1818 first, then the rest
-  const fourierIdx = archiveEntries.findIndex(e => e.id === "charles-fourier-1808-lovable");
-  if (fourierIdx > 0) {
-    const [fourier] = archiveEntries.splice(fourierIdx, 1);
-    archiveEntries.unshift(fourier);
-  }
-
-  // Serialize archive entries for client component
-  const archiveForBrowser = archiveEntries.map(e => ({
-    id: e.id,
-    quote: e.quote,
-    author: e.author,
-    predictedDateNormalized: e.predictedDateNormalized,
-    category: e.category,
-    is_fiction: e.is_fiction,
+  // The browser owns the chronological ordering for each date mode.
+  const archiveForBrowser = archiveEntries.map(entry => ({
+    id: entry.id,
+    quote: entry.quote,
+    author: entry.author,
+    dateWritten: entry.dateWritten,
+    predictedDateNormalized: entry.predictedDateNormalized,
+    category: entry.category,
+    is_fiction: entry.is_fiction,
   }));
 
   const websiteJsonLd = {
