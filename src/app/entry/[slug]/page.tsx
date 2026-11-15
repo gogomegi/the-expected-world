@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   getEntryById,
-  getAllEntries,
+  getConfirmedEntries,
   getRelatedEntries,
   categoryToSlug,
   isExpired,
@@ -27,7 +27,7 @@ function colorForEntry(id: string): string {
 const COLOR_VARS = ["var(--orange)", "var(--blue)", "var(--green)", "var(--amber)"];
 
 export async function generateStaticParams() {
-  return getAllEntries().map((e) => ({ slug: e.id }));
+  return getConfirmedEntries().map((e) => ({ slug: e.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

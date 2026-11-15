@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readSubscribers, writeSubscribers } from "@/lib/newsletter-store";
+import { isAuthenticated } from "@/lib/admin-auth";
 
 export async function GET() {
+  if (!(await isAuthenticated())) {
+    return NextResponse.json({ error: "Unauthorized" }, {
+      status: 401,
+      headers: { "Cache-Control": "private, no-store" },
+    });
+  }
   try {
     const subscribers = await readSubscribers();
-    return NextResponse.json(subscribers);
+    return NextResponse.json(subscribers, {
+      headers: { "Cache-Control": "private, no-store" },
+    });
   } catch {
     return NextResponse.json(
       { error: "Failed to load subscribers." },
@@ -28,7 +37,7 @@ export async function POST(request: NextRequest) {
     const subscribers = await readSubscribers();
 
     if (subscribers.some((s) => s.email === email)) {
-      return NextResponse.json({ message: "You're already subscribed!" });
+      return NextResponse.json({ message: "Welcome aboard." });
     }
 
     subscribers.push({ email, subscribedAt: new Date().toISOString() });

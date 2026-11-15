@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import type { Quote, Submission } from "@/types/quote";
+import { getConfirmedEntries } from "@/lib/corpus";
 
 const quotesDirectory = path.join(process.cwd(), "src/data/quotes");
 
@@ -22,7 +23,8 @@ export function getAllQuotesRaw(): Quote[] {
 
 export function getAllQuotes(): Quote[] {
   // Public-facing: only published quotes
-  return getAllQuotesRaw().filter((q) => q.status === "published" || !q.status);
+  const confirmedSlugs = new Set(getConfirmedEntries().map((entry) => entry.id));
+  return getAllQuotesRaw().filter((q) => q.status === "published" && confirmedSlugs.has(q.slug));
 }
 
 export function getQuoteBySlug(slug: string): Quote | undefined {

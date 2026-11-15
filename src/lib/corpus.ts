@@ -118,7 +118,7 @@ export function getAllEntries(): Entry[] { return allEntries; }
 /** Confirmed entries only (public site) */
 export function getConfirmedEntries(): Entry[] { return confirmedEntries; }
 
-export function getEntryById(id: string): Entry | undefined { return allEntries.find(e => e.id === id); }
+export function getEntryById(id: string): Entry | undefined { return confirmedEntries.find(e => e.id === id); }
 export function getAllCategories(): Category[] { return categories; }
 export function getCategoryBySlug(slug: string): Category | undefined { return categories.find(c => c.slug === slug); }
 
