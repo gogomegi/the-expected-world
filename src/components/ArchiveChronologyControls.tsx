@@ -51,22 +51,11 @@ export default function ArchiveChronologyControls({
           style={{
             display: "flex",
             flexWrap: "wrap",
-            alignItems: "center",
-            columnGap: 8,
+            alignItems: "baseline",
+            columnGap: 18,
             rowGap: 8,
           }}
         >
-          <span
-            style={{
-              fontFamily: "var(--fm)",
-              fontSize: "0.625rem",
-              letterSpacing: "0.04em",
-              color: "var(--muted-l)",
-              marginRight: 6,
-            }}
-          >
-            Browse by
-          </span>
           {choices.map((choice) => (
             <button
               type="button"
@@ -75,14 +64,18 @@ export default function ArchiveChronologyControls({
               onClick={() => onModeChange(choice.id)}
               style={{
                 fontFamily: "var(--fm)",
-                fontSize: "0.625rem",
-                letterSpacing: "0.02em",
-                padding: "7px 12px",
-                borderRadius: 16,
-                background: mode === choice.id ? "var(--text-l)" : "transparent",
-                border: "1px solid var(--text-l)",
-                color: mode === choice.id ? "var(--cream)" : "var(--text-l)",
+                fontSize: "0.6875rem",
+                letterSpacing: "0.03em",
+                padding: "0 0 5px",
+                border: "none",
+                borderBottom: mode === choice.id ? "1px solid var(--text-l)" : "1px solid transparent",
+                borderRadius: 0,
+                background: "transparent",
+                color: "var(--text-l)",
+                fontWeight: mode === choice.id ? 600 : 400,
+                opacity: mode === choice.id ? 1 : 0.45,
                 cursor: "pointer",
+                transition: "opacity 150ms ease, border-color 150ms ease",
               }}
             >
               {choice.label}
