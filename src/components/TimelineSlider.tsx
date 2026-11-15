@@ -1,22 +1,23 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 
 interface TimelineSliderProps {
   minYear: number;
   maxYear: number;
   onChange: (year: number | null) => void;
+  selectedYear?: number | null;
+  allLabel?: string;
 }
 
-export default function TimelineSlider({ minYear, maxYear, onChange }: TimelineSliderProps) {
-  const [value, setValue] = useState(0);
+export default function TimelineSlider({ minYear, maxYear, onChange, selectedYear = null, allLabel = "All Eras" }: TimelineSliderProps) {
+  const value = selectedYear === null ? 0 : selectedYear - minYear + 1;
 
   const totalSteps = maxYear - minYear + 1;
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const v = Number(e.target.value);
-      setValue(v);
       if (v === 0) {
         onChange(null);
       } else {
@@ -46,7 +47,7 @@ export default function TimelineSlider({ minYear, maxYear, onChange }: TimelineS
           minHeight: "3.5rem",
         }}
       >
-        {displayYear ? displayYear : "All Eras"}
+        {displayYear ?? allLabel}
       </div>
 
       <div
