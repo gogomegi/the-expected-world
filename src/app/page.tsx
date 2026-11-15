@@ -162,7 +162,8 @@ export default function HomePage() {
         </div>
       </section>
 
-
+      {/* A quiet tonal passage from the archive to the footer. */}
+      <div className="hp-footer-transition" aria-hidden="true" />
     </div>
   );
 }
