@@ -1,20 +1,6 @@
 import Link from "next/link";
 import type { Quote } from "@/types/quote";
 
-const verdictClass: Record<string, string> = {
-  "came-true": "verdict-confirmed",
-  "partially-true": "verdict-partial",
-  "did-not-come-true": "verdict-busted",
-  pending: "verdict-pending",
-};
-
-const verdictLabel: Record<string, string> = {
-  "came-true": "✓ Confirmed",
-  "partially-true": "~ Partially",
-  "did-not-come-true": "✗ Busted",
-  pending: "? Pending",
-};
-
 export function MasonryCard({
   quote,
   featured = false,
@@ -68,13 +54,6 @@ export function MasonryCard({
         </div>
 
         <div className="flex items-center gap-2">
-          {quote.didItHoldUp && (
-            <span
-              className={`font-mono text-[9px] tracking-[0.08em] uppercase px-2.5 py-0.5 rounded-2xl ${verdictClass[quote.didItHoldUp.verdict]}`}
-            >
-              {verdictLabel[quote.didItHoldUp.verdict]}
-            </span>
-          )}
           {quote.categories.slice(0, 1).map((cat) => (
             <span
               key={cat}
