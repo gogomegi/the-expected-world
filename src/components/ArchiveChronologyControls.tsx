@@ -77,7 +77,7 @@ export default function ArchiveChronologyControls({
         maxYear={maxYear}
         selectedYear={selectedYear}
         onChange={onYearChange}
-        allLabel={mode === "written" ? "All written dates" : "All imagined dates"}
+        allLabel="All Years"
       />
 
       <form
