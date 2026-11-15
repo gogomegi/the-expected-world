@@ -1,12 +1,13 @@
 import { ImageResponse } from 'next/og';
-import { getEntryById, getAllEntries, isExpired } from '@/lib/corpus';
+import { notFound } from 'next/navigation';
+import { getEntryById, getConfirmedEntries, isExpired } from '@/lib/corpus';
 
 export const alt = 'The Expected World — Entry';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export async function generateStaticParams() {
-  return getAllEntries().map((e) => ({ slug: e.id }));
+  return getConfirmedEntries().map((e) => ({ slug: e.id }));
 }
 
 const COLORS = ['#E8652A', '#2B5CE6', '#1A8C54', '#D4952B'];
@@ -25,27 +26,7 @@ export default async function Image({
   const { slug } = await params;
   const entry = getEntryById(slug);
 
-  if (!entry) {
-    return new ImageResponse(
-      (
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            background: '#000',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#F5F2EB',
-            fontSize: 48,
-          }}
-        >
-          The Expected World
-        </div>
-      ),
-      { ...size }
-    );
-  }
+  if (!entry) notFound();
 
   const accentColor = colorForEntry(entry.id);
   const expired = isExpired(entry.predictedDateNormalized);
