@@ -31,10 +31,15 @@ export default function AboutPage() {
 
           <h2 style={sectionHeadStyle}>How Entries Are Selected</h2>
           <p style={bodyStyle}>
-            Every entry must satisfy four criteria. The source text must
-            reference a specific future date, year, or bounded period. The
-            source must be verifiable. And the pairing of prediction and elapsed
-            reality must reward attention.
+            We look for four things: words written before the future they
+            describe, a recognizable date or bounded period, an identifiable
+            original source, and a passage that rewards a second encounter.
+            Fictional futures are identified as fiction, not treated as forecasts.
+          </p>
+          <p style={bodyStyle}>
+            We present the passages without verdicts or explanations of what
+            happened afterward. The distance between expectation and experience
+            belongs to the reader.
           </p>
 
           <hr style={hrStyle} />
