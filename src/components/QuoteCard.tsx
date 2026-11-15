@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { Quote } from "@/types/quote";
-import { VerdictBadge } from "./VerdictBadge";
 import { TopicPill } from "./TopicPill";
 import { TimelineIndicator } from "./TimelineIndicator";
 
@@ -50,9 +49,6 @@ export function QuoteCard({
       </div>
 
       <div className="flex flex-wrap items-center gap-2 mt-4">
-        {quote.didItHoldUp && (
-          <VerdictBadge verdict={quote.didItHoldUp.verdict} />
-        )}
         {quote.categories.map((cat) => (
           <TopicPill key={cat} topic={cat} />
         ))}
