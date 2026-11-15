@@ -78,7 +78,7 @@ export default function MiniArchiveBrowser({ entries }: { entries: ArchiveEntry[
               {yearStr}
             </span>
             {currentEntry.is_fiction && <span className="fiction-badge">FICTION</span>}
-            <span style={{ marginLeft: "auto", fontFamily: "var(--fm)", fontSize: "0.5625rem", color: "var(--muted-l)" }}>Written {currentEntry.dateWritten} · Imagined {currentEntry.predictedDateNormalized.slice(0, 4)}</span>
+
           </div>
           <p className="ac-excerpt" style={{ fontFamily: "var(--fq)", fontStyle: "italic", fontSize: "0.875rem", lineHeight: 1.5, color: "var(--text-l)", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", position: "relative", zIndex: 1 }}>
             &ldquo;{currentEntry.quote}&rdquo;
