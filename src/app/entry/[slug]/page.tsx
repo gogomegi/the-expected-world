@@ -37,9 +37,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const label = isExpired(entry.predictedDateNormalized) ? "Expired" : "Closing";
   const title = `${entry.author} — ${label}: ${entry.predictedDate}`;
   const description =
-    entry.annotation.length > 160
-      ? entry.annotation.slice(0, 157) + "…"
-      : entry.annotation;
+    entry.quote.length > 160
+      ? entry.quote.slice(0, 157).trimEnd() + "…"
+      : entry.quote;
   return {
     title,
     description,
@@ -77,7 +77,7 @@ export default async function EntryPage({ params }: Props) {
     headline: `${entry.author}: ${entry.quote.slice(0, 110)}`,
     author: { "@type": "Person", name: entry.author },
     datePublished: entry.dateWritten,
-    description: entry.annotation,
+    description: entry.quote,
     articleSection: entry.category,
     publisher: {
       "@type": "Organization",
@@ -179,6 +179,19 @@ export default async function EntryPage({ params }: Props) {
                 </p>
                 <p style={{ fontFamily: "var(--fm)", fontSize: "0.6875rem", letterSpacing: "0.04em", color: "var(--muted-l)", marginTop: 4 }}>
                   {entry.source}
+                  {entry.source_url && /^https?:\/\//i.test(entry.source_url) && (
+                    <>
+                      {" · "}
+                      <a
+                        href={entry.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "var(--text-l)", textDecoration: "underline", textUnderlineOffset: "3px" }}
+                      >
+                        View source
+                      </a>
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -186,48 +199,10 @@ export default async function EntryPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── ANNOTATION + WHAT ACTUALLY HAPPENED ── */}
-      <section style={{ padding: "64px 48px 80px" }}>
-        <div className="entry-anno-grid">
-          <div>
-            <h2 style={sectionHeadStyle}>Annotation</h2>
-            <p style={bodyStyle}>{entry.annotation}</p>
-          </div>
-
-          {entry.actualOutcome && (
-            <div>
-              <h2 style={{ ...sectionHeadStyle, color: vividColor }}>{expired ? "What Actually Happened" : "What Happened So Far"}</h2>
-              <div style={{ borderLeft: `3px solid ${vividColor}`, paddingLeft: 20 }}>
-                <p style={bodyStyle}>{entry.actualOutcome}</p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Tags */}
-        {entry.tags.length > 0 && (
-          <div style={{ maxWidth: "var(--max-width)", margin: "40px auto 0", display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {entry.tags.map((tag) => (
-              <span
-                key={tag}
-                style={{
-                  fontFamily: "var(--fm)",
-                  fontSize: "0.6875rem",
-                  letterSpacing: "0.04em",
-                  color: "var(--muted-l)",
-                  border: "1px solid var(--rule-l)",
-                  padding: "4px 12px",
-                  borderRadius: 20,
-                }}
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )}
-
+      {/* Share and browse other passages without editorial verdicts. */}
+      <section style={{ padding: "24px 48px 80px" }}>
         {/* Share buttons */}
-        <div style={{ marginTop: 40 }}>
+        <div style={{ marginTop: 8 }}>
           <ShareButtons
             url={`/entry/${entry.id}`}
             quote={entry.quote}
@@ -239,7 +214,7 @@ export default async function EntryPage({ params }: Props) {
         {/* Related entries */}
         {related.length > 0 && (
           <div style={{ maxWidth: "var(--max-width)", margin: "64px auto 0" }}>
-            <h3 style={sectionHeadStyle}>Related Entries</h3>
+            <h3 style={sectionHeadStyle}>Other passages</h3>
             <div className="entry-related-grid">
               {related.map((rel, i) => {
                 const relYear = displayYear(rel);
@@ -288,10 +263,3 @@ const sectionHeadStyle: React.CSSProperties = {
   marginBottom: 16,
 };
 
-const bodyStyle: React.CSSProperties = {
-  fontFamily: "var(--fq)",
-  fontSize: "0.9375rem",
-  lineHeight: 1.75,
-  color: "var(--text-l)",
-  opacity: 0.8,
-};
