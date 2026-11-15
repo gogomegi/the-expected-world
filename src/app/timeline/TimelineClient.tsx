@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from "react";
 import type { Entry } from "@/lib/corpus";
+import { getChronologyYear, sortChronologically } from "@/lib/archive-chronology";
+import type { ArchiveDateMode } from "@/lib/archive-chronology";
 import Link from "next/link";
 
 function isExpired(date: string): boolean {
@@ -16,39 +18,45 @@ function displayYear(entry: Entry): string {
   return entry.predictedDateNormalized.slice(0, 4);
 }
 
-import dynamic from "next/dynamic";
+import ArchiveChronologyControls from "@/components/ArchiveChronologyControls";
 import CounterYear from "@/components/CounterYear";
 
-const TimelineSlider = dynamic(() => import("@/components/TimelineSlider"), { ssr: false });
 
 const COLOR_VARS = ["var(--orange)", "var(--blue)", "var(--green)", "var(--amber)"];
 
 export default function TimelineClient({ allEntries }: { allEntries: Entry[] }) {
   const total = allEntries.length;
 
-  const [minYear, maxYear] = useMemo(() => {
-    let min = 9999, max = 0;
-    for (const e of allEntries) {
-      const y = parseInt(e.predictedDateNormalized.slice(0, 4));
-      if (y < min) min = y;
-      if (y > max) max = y;
-    }
-    return [min, max];
-  }, [allEntries]);
-
+  const [mode, setMode] = useState<ArchiveDateMode>("written");
   const [filterYear, setFilterYear] = useState<number | null>(null);
 
+  const chronologicalEntries = useMemo(
+    () => sortChronologically(allEntries, mode),
+    [allEntries, mode]
+  );
+
+  const [minYear, maxYear] = useMemo(() => {
+    const years = allEntries
+      .map((entry) => getChronologyYear(entry, mode))
+      .filter((year): year is number => year !== null);
+    return years.length ? [Math.min(...years), Math.max(...years)] : [0, 0];
+  }, [allEntries, mode]);
+
   const visibleEntries = useMemo(() => {
-    if (filterYear === null) return allEntries;
-    return allEntries
-      .map((e) => {
-        const y = parseInt(e.predictedDateNormalized.slice(0, 4));
-        const dist = Math.abs(y - filterYear);
-        if (dist > 15) return null;
-        return { entry: e, opacity: Math.max(0.15, 1 - dist / 15) };
-      })
-      .filter(Boolean) as { entry: Entry; opacity: number }[];
-  }, [allEntries, filterYear]);
+    if (filterYear === null) return chronologicalEntries.map((entry) => ({ entry, opacity: 1 }));
+    return chronologicalEntries.flatMap((entry) => {
+      const year = getChronologyYear(entry, mode);
+      if (year === null) return [];
+      const distance = Math.abs(year - filterYear);
+      if (distance > 15) return [];
+      return [{ entry, opacity: Math.max(0.15, 1 - distance / 15) }];
+    });
+  }, [chronologicalEntries, mode, filterYear]);
+
+  function changeMode(nextMode: ArchiveDateMode) {
+    setMode(nextMode);
+    setFilterYear(null);
+  }
 
   return (
     <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
@@ -65,22 +73,18 @@ export default function TimelineClient({ allEntries }: { allEntries: Entry[] }) 
                 color: "var(--muted-l)",
               }}
             >
-              {total} entries · {maxYear - minYear} years
+              {total} entries · {mode === "written" ? "chronological by year written" : "chronological by year imagined"}
             </span>
           </div>
 
           <div style={{ marginBottom: "32px" }}>
-            <TimelineSlider minYear={minYear} maxYear={maxYear} onChange={setFilterYear} />
+            <ArchiveChronologyControls mode={mode} onModeChange={changeMode} minYear={minYear} maxYear={maxYear} selectedYear={filterYear} onYearChange={setFilterYear} />
           </div>
 
           <div className="archive-grid">
-            {filterYear === null
-              ? allEntries.map((entry, i) => (
-                  <ArchiveCard key={entry.id} entry={entry} index={i} opacity={1} />
-                ))
-              : (visibleEntries as { entry: Entry; opacity: number }[]).map(({ entry, opacity }, i) => (
-                  <ArchiveCard key={entry.id} entry={entry} index={i} opacity={opacity} />
-                ))}
+            {visibleEntries.map(({ entry, opacity }, i) => (
+              <ArchiveCard key={entry.id} entry={entry} index={i} opacity={opacity} mode={mode} />
+            ))}
           </div>
           {filterYear !== null && visibleEntries.length === 0 && (
             <p
@@ -103,8 +107,8 @@ export default function TimelineClient({ allEntries }: { allEntries: Entry[] }) 
   );
 }
 
-function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; opacity: number }) {
-  const yearStr = displayYear(entry);
+function ArchiveCard({ entry, index, opacity, mode }: { entry: Entry; index: number; opacity: number; mode: ArchiveDateMode }) {
+  const yearStr = mode === "written" ? (getChronologyYear(entry, "written")?.toString() ?? "Unknown") : displayYear(entry);
   const hoverBg = COLOR_VARS[index % COLOR_VARS.length];
 
   return (
@@ -136,12 +140,13 @@ function ArchiveCard({ entry, index, opacity }: { entry: Entry; index: number; o
               color: "var(--muted-l)",
             }}
           >
-            {isExpired(entry.predictedDateNormalized) ? "expired" : "closing"}
+            {mode === "written" ? "written" : "imagined"}
           </span>
           <span className="ac-yr" style={{ fontSize: "1.5rem" }}>
             <CounterYear year={parseInt(yearStr) || 0} />
           </span>
           {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
+          <span className="ac-el" style={{ fontSize: "0.5625rem", color: "var(--muted-l)", marginLeft: "auto" }}>{isExpired(entry.predictedDateNormalized) ? "expired" : "closing"}</span>
         </div>
         <p
           className="ac-excerpt"
