@@ -131,11 +131,6 @@ export default async function EntryPage({ params }: Props) {
                       <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>{entry.dateWritten}</span>
                     </div>
                     <div style={{ marginTop: 8 }}>
-                      <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>Addressed to</span>
-                      <br />
-                      <span style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>{entry.predictedDate}</span>
-                    </div>
-                    <div style={{ marginTop: 8 }}>
                       <span style={{ color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>Category</span>
                       <br />
                       <Link href={`/category/${catSlug}`} style={{ color: "var(--text-d)", fontFamily: "var(--fh)", fontWeight: 500, fontSize: "0.8125rem" }}>

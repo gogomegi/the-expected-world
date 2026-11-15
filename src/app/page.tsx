@@ -89,7 +89,6 @@ export default function HomePage() {
           {/* LEFT: Mini archive with era slider */}
           <div className="phone-frame-outer">
             <div className="phone-frame-inner">
-              <p style={labelStyle}>Archive</p>
               <MiniArchiveBrowser entries={archiveForBrowser} />
             </div>
           </div>
@@ -160,17 +159,6 @@ export default function HomePage() {
     </div>
   );
 }
-
-const labelStyle: React.CSSProperties = {
-  fontFamily: "var(--fm)",
-  fontSize: "0.5625rem",
-  fontWeight: 500,
-  letterSpacing: "0.14em",
-  textTransform: "uppercase",
-  color: "var(--muted-l)",
-  margin: 0,
-  marginBottom: 16,
-};
 
 const sectionHeadStyle: React.CSSProperties = {
   fontFamily: "var(--fh)",

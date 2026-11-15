@@ -6,10 +6,6 @@ import { getChronologyYear, sortChronologically } from "@/lib/archive-chronology
 import type { ArchiveDateMode } from "@/lib/archive-chronology";
 import Link from "next/link";
 
-function isExpired(date: string): boolean {
-  return date <= new Date().toISOString().slice(0, 10);
-}
-
 function displayYear(entry: Entry): string {
   const match = entry.predictedDate.match(/(\d+)(?:st|nd|rd|th)\s+century/i);
   if (/distant future|approx/i.test(entry.predictedDate)) {
@@ -25,8 +21,6 @@ import CounterYear from "@/components/CounterYear";
 const COLOR_VARS = ["var(--orange)", "var(--blue)", "var(--green)", "var(--amber)"];
 
 export default function TimelineClient({ allEntries }: { allEntries: Entry[] }) {
-  const total = allEntries.length;
-
   const [mode, setMode] = useState<ArchiveDateMode>("written");
   const [filterYear, setFilterYear] = useState<number | null>(null);
 
@@ -63,20 +57,6 @@ export default function TimelineClient({ allEntries }: { allEntries: Entry[] }) 
       <section style={{ padding: "120px 48px 80px" }}>
         <div className="phone-frame-outer">
         <div className="phone-frame-inner">
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "24px" }}>
-            <p style={pageLabelStyle}>Archive</p>
-            <span
-              style={{
-                fontFamily: "var(--fm)",
-                fontSize: "0.5625rem",
-                letterSpacing: "0.06em",
-                color: "var(--muted-l)",
-              }}
-            >
-              {total} entries · {mode === "written" ? "chronological by year written" : "chronological by year imagined"}
-            </span>
-          </div>
-
           <div style={{ marginBottom: "32px" }}>
             <ArchiveChronologyControls mode={mode} onModeChange={changeMode} minYear={minYear} maxYear={maxYear} selectedYear={filterYear} onYearChange={setFilterYear} />
           </div>
@@ -146,7 +126,7 @@ function ArchiveCard({ entry, index, opacity, mode }: { entry: Entry; index: num
             <CounterYear year={parseInt(yearStr) || 0} />
           </span>
           {entry.is_fiction && <span className="fiction-badge">FICTION</span>}
-          <span className="ac-el" style={{ fontSize: "0.5625rem", color: "var(--muted-l)", marginLeft: "auto" }}>{isExpired(entry.predictedDateNormalized) ? "expired" : "closing"}</span>
+
         </div>
         <p
           className="ac-excerpt"
@@ -207,12 +187,3 @@ function ArchiveCard({ entry, index, opacity, mode }: { entry: Entry; index: num
   );
 }
 
-const pageLabelStyle: React.CSSProperties = {
-  fontFamily: "var(--fm)",
-  fontSize: "0.5625rem",
-  fontWeight: 500,
-  letterSpacing: "0.14em",
-  textTransform: "uppercase",
-  color: "var(--muted-l)",
-  margin: 0,
-};
