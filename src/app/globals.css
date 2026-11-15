@@ -180,6 +180,27 @@ a { color: inherit; text-decoration: none; }
 .timeline-range::-moz-range-track { height: 4px; background: rgba(0,0,0,0.08); border-radius: 2px; border: none; }
 .timeline-range::-moz-range-thumb { width: 16px; height: 16px; background: var(--orange); border-radius: 50%; border: 2px solid var(--cream); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
 
+/* Homepage only: a brief tonal dissolve into the dark footer. */
+.hp-footer-transition {
+  height: 88px;
+  background: linear-gradient(180deg,
+    #F5F3EE 0%,
+    #E2DDD6 26%,
+    #968B87 55%,
+    #302D2E 82%,
+    #000 100%);
+  pointer-events: none;
+}
+
+body:has(.hp-footer-transition) .site-footer {
+  border-top: none;
+  padding-top: 24px;
+}
+
+@media(max-width:640px) {
+  .hp-footer-transition { height: 64px; }
+}
+
 /* ── FOOTER ── */
 .site-footer { padding: 80px 48px 100px; background: var(--black); border-top: 1px solid var(--rule-d); }
 .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
